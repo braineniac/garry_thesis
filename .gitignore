@@ -1,0 +1,9 @@
+*.pdf
+*.aux
+*.toc
+*.bib
+
+.kile/*
+
+main.*
+!main.tex
