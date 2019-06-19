@@ -1,0 +1,240 @@
+\section{Electrical structure}\label{sec:elec_struct}
+\begin{itemize}
+\item Describe electrical layout and how everything is connected
+\item Improvement:
+ \begin{itemize}
+  \item Battery voltage watcher->preferably beeping
+  \item better connections and connectors for connecting new sensors and components
+  \item 3d printed base with considerations for a battery holder and one switch to power off
+  \item servos reacting because of self interference in wiring
+ \end{itemize}
+\end{itemize}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{SBC}\label{sec:sbc_lim}
+\begin{itemize}
+ \item compare Raspi to other SBCs
+ \item compare to jetson nano, cuda toolkit
+ \item RAM limitations->cross compile during development
+ \item Ethernet and Wifi limitations
+ \item storage durability->no onboard flash
+ \item overheating when compiling
+ \item USB power limitation
+\end{itemize}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Software}\label{software_lim}
+\begin{itemize}
+ \item compare ROS1 and ROS2
+ \item driver availability for the raspberry and ROS support
+ \item Raspbian vs Ubuntu 16.04 for the raspberry and the ubiquity ROS image
+\end{itemize}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{IMU}\label{imu_lim}
+\begin{itemize}
+ \item Describe the drawbacks of the IMU and the drifting issue in general
+\end{itemize}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Motors}\label{motor_lim}
+\begin{itemize}
+ \item no feedback mechanism->rotary encoder
+ \item cant go forward and turn at the same time
+ \item generally loud
+\end{itemize}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Similar platforms}\label{sec:similar_platforms}
+\begin{itemize}
+ \item Find similar platforms and compare uses and price
+\end{itemize}
+
+
+\begin{itemize}
+ \item Describe vaguely what a Kalman filter is and where it is used(with example applications)
+ \item Explain why it is important in basic odometry and robotics
+\end{itemize}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Custom Kalman filter}\label{sec:custom_kalman}
+
+\begin{itemize}
+ \item Describe why we implemented a custom Kalman filter(insight to how it works I guess?)
+ \item Maybe a better name for this section?
+ \item add all the equations that describe the system from the code and add explanations with each step
+ \item reference Kugi's script and how my system differs
+\end{itemize}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Extended Kalman Filter}\label{sec:extended_kalman}
+
+\begin{itemize}
+ \item Describe what it does and why it is better than my own Kalman filter
+ \item Why do we also use this(reference later tests)
+ \item Further reading in Kugi's script
+\end{itemize}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Simulation}\label{sec:sim}
+
+\begin{itemize}
+ \item Describe why the simulation was necessary and what purpose it serves.
+ \item Describe what the real inputs look like(add ref) and why you chose the specific mathematical description(add equations)
+ \item Hypotesize about the effects of covariances
+\end{itemize}
+\hrulefill
+\begin{itemize}
+ \item Before this input figure, describe the actual parameters in the equations and why you chose them
+\end{itemize}
+
+\begin{figure}[h]
+ \begin{subfigure}[b]{0.45\textwidth}
+  \input{plots/input_vel_sim.tex}\label{InputVelSim}
+  \caption{Simulated input from joystick}
+ \end{subfigure}
+ \hfill
+ \begin{subfigure}[b]{0.45\textwidth}
+  \input{plots/input_accel_sim.tex}\label{InputAccelSim}
+  \caption{Simulated input from accelerometer}
+ \end{subfigure}
+ \caption{Input simulation}
+\end{figure}
+
+\begin{itemize}
+ \item Explain why the figures below look like this
+ \item Describe the stdevs you chose and how they impacted the velocity(add ref for the actual comparison below)
+ \item TODO: fix the $m/s^2 and 5*10^-2$ in figures
+\end{itemize}
+
+\begin{figure}[H]
+ \flushleft
+ \begin{subfigure}[c]{0.8\textwidth}
+  \input{plots/robot_dist_sim.tex}\label{RobotDistSim}
+  \caption{Kalman filter x state}
+ \end{subfigure}
+ \hfill
+ \begin{subfigure}[c]{0.8\textwidth}
+  \input{plots/robot_vel_sim.tex}\label{RobotVelSim}
+  \caption{Kalman filter $\dot{x}$ state}
+ \end{subfigure}
+ \hfill
+ \begin{subfigure}[c]{0.8\textwidth}
+  \input{plots/robot_accel_sim.tex}\label{RobotAccelSim}
+  \caption{Kalman filter $\ddot{x}$ state}
+ \end{subfigure}
+ \caption{Kalman filter states}
+\end{figure}
+
+\begin{itemize}
+ \item Describe how changing the stdev ratio impacts the velocity(ref Kalman filter covariances)
+ \item Add three velocity figures with >,<,= stdevs(a bit exaggerated ones)
+ \item Explain why the variation of stdevs is important during different situations(standing still, moving)
+\end{itemize}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Driving in a straight line}\label{sec:straight_line}
+
+\begin{itemize}
+ \item Explain why this test is important->longer paths are made out of the sum of straight lines(garry cant turn and move forward, add ref to limitations)
+\end{itemize}
+
+\subsection{Simulation vs reality}\label{subsec:simvsreal}
+\begin{itemize}
+ \item Describe how the real input differs from the simulated one
+ \item add two real input figures side by side
+\end{itemize}
+\hrulefill
+\begin{itemize}
+ \item Explain the differences between the real and simulated Kalman states(with static covar)
+ \item add 3 figures like in the sim figure
+\end{itemize}
+
+\subsection{Covariance dependance}\label{subsec:covardep}
+\begin{itemize}
+ \item Explain why the adaptive covariance during the different phases(standing still, moving) smooths out the the $\dot{x}$ state during movement
+ \item add two figures of the $\dot{x}$ state with static and adaptive covariance
+\end{itemize}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{EKF vs custom Kalman filter comparison}\label{subsec:ekfvscustom}
+\begin{itemize}
+ \item add section for comparison between ekf and custom kalman filter
+ \item add a $\dot{x}$ figure of the two side by side
+ \item check out if they deal with variations in input velocity differently(+-20,+-50\%)
+ \item add figures for differences
+\end{itemize}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Odometry dependance on acceleration}\label{subsec:odomdepaccel}
+\begin{itemize}
+ \item disable acceleration and compare that with the Kalman filter results
+ \item add figure with comparison in distance
+\end{itemize}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Looping though an octagon}\label{sec:octagon}
+
+\begin{itemize}
+ \item Explain why we are doing this test->see drifts after each loop
+ \item Describe testing parameters(setup of ekf package)
+ \item Describe what happens in the figure below
+ \item add figure
+\end{itemize}
+
+
+\begin{itemize}
+ \item Describe the purpose of the platform->reference abstract?
+ \item Describe platform in general parts terms(wheeled robot with imu, linux based SBC, microcontroller etc.)
+\end{itemize}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Hardware}
+\pagestyle{scrheadings}
+
+\begin{itemize}
+ \item Explain the hardware choices and what we had to work with and what we chose to work with
+ \item add pictures
+\end{itemize}
+
+This is just here so I remember the exact names, I would describe the part choices and use in separate paragraphs.
+\begin{itemize}
+ \item Raspberry Pi 3 Model B Rev 1.2
+ \item Arduino Uno Rev3
+ \item Arduino Motor Shield Rev3
+ \item Raspberry Pi Night Vision Camera Module
+ \item Logitech C905 Webcam
+ \item SparkFun 9DoF Razor IMU M0
+ \item Logitech Dual Action Gamepad
+ \item 2x generic 5V DC motors
+ \item 2x EMAX ES08MA II 12g Mini Metal Gear Analog Servo
+\end{itemize}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Software}
+\pagestyle{scrheadings}
+
+\begin{itemize}
+ \item Describe the software stack: Linux+ROS+Arduino
+ \item Why using linux+ROS makes sense instead of hardcoding everything, highlight ROS pros and contras
+ \item Arduino platform and software uses here and in general-> comparison to full real time systems and microROS projects and how the comm bridge to ROS is implemented
+\end{itemize}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Expandability}
+\pagestyle{scrheadings}
+
+\begin{itemize}
+ \item Describe the possible expansions of the platform for different applications
+ \item Application ideas: 
+ \begin{itemize}
+ \item odometry based on vision->maybe moving the camera with the servos
+ \item adding a distance measuring sensor and use it for mapping(lidar or ultrasonic)
+ \item mapping pointclouds with the camera
+ \item use both cameras for 360 degree simultaneous mapping
+ \item other ideas?
+ \end{itemize}
+\end{itemize}
+
+

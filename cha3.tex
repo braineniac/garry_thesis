@@ -1,57 +1,31 @@
-\chapter{Platform limitations and comparisons}\label{cha:PlatformLimits}
+\chapter{Approach}\label{cha:approach}
+\pagestyle{scrheadings}
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\section{Electrical structure}\label{sec:elec_struct}
-\begin{itemize}
-\item Describe electrical layout and how everything is connected
-\item Improvement:
- \begin{itemize}
-  \item Battery voltage watcher->preferably beeping
-  \item better connections and connectors for connecting new sensors and components
-  \item 3d printed base with considerations for a battery holder and one switch to power off
-  \item servos reacting because of self interference in wiring
- \end{itemize}
-\end{itemize}
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\section{SBC}\label{sec:sbc_lim}
-\begin{itemize}
- \item compare Raspi to other SBCs
- \item compare to jetson nano, cuda toolkit
- \item RAM limitations->cross compile during development
- \item Ethernet and Wifi limitations
- \item storage durability->no onboard flash
- \item overheating when compiling
- \item USB power limitation
-\end{itemize}
+What is your approach (Approach / System)
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Hardware}\label{sec:hardware}
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\section{Software}\label{software_lim}
-\begin{itemize}
- \item compare ROS1 and ROS2
- \item driver availability for the raspberry and ROS support
- \item Raspbian vs Ubuntu 16.04 for the raspberry and the ubiquity ROS image
-\end{itemize}
+\subsection{SoC}\label{subsec:soc}
+Renamed it to Soc so I can talk about the whole package:CPU+GPU+memory+Ethernet
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\section{IMU}\label{imu_lim}
-\begin{itemize}
- \item Describe the drawbacks of the IMU and the drifting issue in general
-\end{itemize}
+\subsection{Chassis}\label{subsec:chassis}
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\section{Motors}\label{motor_lim}
-\begin{itemize}
- \item no feedback mechanism->rotary encoder
- \item cant go forward and turn at the same time
- \item generally loud
-\end{itemize}
+\subsection{Actuators}\label{subsec:actuators}
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\section{Similar platforms}\label{sec:similar_platforms}
-\begin{itemize}
- \item Find similar platforms and compare uses and price
-\end{itemize}
+\subsection{Sensors}\label{subsec:sensors}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\section{Software}\label{sec:software}
+
+\subsection{ROS}\label{subsec:ros}
+
+\subsection{rlocal}\label{subsec:robot_localization}
+
+\subsection{Simple Kalman filter}\label{subsec:simple_kalman}
+
+\subsection{ORB slam 2}\label{subsec:orbslam2}
 
 
 
