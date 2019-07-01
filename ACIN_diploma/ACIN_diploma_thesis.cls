@@ -268,7 +268,7 @@
 			defernumbers
 			]{biblatex}[2012/08/17]
 	\addbibresource{bibliography.bib}
-	
+
 	\RequirePackage{hyperref}
 	\RequirePackage[all]{hypcap} % Damit werden die Links auf ein figure nicht mehr auf die Bildunterschrift sondern auf den Begin der Umgebung gesetzt. (must be loaded after hyperref)
 }
@@ -285,10 +285,10 @@
 % general macros
 %==================
 
-\input{ACIN_diploma_GeneralMacros}
-\input{ACIN_diploma_macros}
+\input{ACIN_diploma/ACIN_diploma_GeneralMacros}
+\input{ACIN_diploma/ACIN_diploma_macros}
 
-\input{ACIN_diploma_colors}
+\input{ACIN_diploma/ACIN_diploma_colors}
 
 
 \setcounter{secnumdepth}{2}
@@ -357,7 +357,7 @@
 		{\hfill}
 		{\hfill}
 	}
-	
+
 \newpagestyle{ChapterOnly} % neuer Seitenstil
   %Seitenkopf:
 	{
@@ -371,7 +371,7 @@
 		{\hfill\rmfamily\thepage\hfill}
 		{\hfill\rmfamily\thepage\hfill}
 	}
-	
+
 %
 % %----- modify pagesetup and headings
 % % \textheight 22cm
@@ -385,24 +385,23 @@
 % ||   hyphen rules   ||
 % ======================
 
-	\IfFileExists{hyphen_german.tex}{
+	\IfFileExists{ACIN_diploma/hyphen_german.tex}{
 		\begin{otherlanguage*}{ngerman}
-			{\input{hyphen_german.tex}}
+			{\input{ACIN_diploma/hyphen_german.tex}}
 		\end{otherlanguage*}
 		\begin{otherlanguage*}{naustrian}
-			{\input{hyphen_german.tex}}
+			{\input{ACIN_diploma/hyphen_german.tex}}
 		\end{otherlanguage*}
 	}{
 		\ClassWarningNoLine{ACIN_diploma_thesis}{File hyphen_german.tex does not exist!}
 	}
-	\IfFileExists{hyphen_english.tex}{
+	\IfFileExists{ACIN_diploma/hyphen_english.tex}{
 		\begin{otherlanguage*}{USenglish}{
-			{\input{hyphen_english.tex}}
+			{\input{ACIN_diploma/hyphen_english.tex}}
 		}\end{otherlanguage*}
 	}{
 		\ClassWarningNoLine{ACIN_diploma_thesis}{File hyphen_english.tex does not exist!}
 	}
 
 
-\input{ACIN_diploma_Title}
-
+\input{ACIN_diploma/ACIN_diploma_Title}

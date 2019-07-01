@@ -156,35 +156,35 @@
 
 	\pagestyle{Preface}
 	\pagenumbering{Roman}
-
-	\begin{hyphenrules}{ngerman}
-		\InputIfFileExists{pre1_Preface}{}
-		{
-			\ClassError{ACIN_diploma_thesis}{File pre1_Preface does not exist!}
-			{The file pre1_Preface.tex must exist!} 
-		}
-	\end{hyphenrules}
-
-	\begin{hyphenrules}{USenglish}
-		\InputIfFileExists{pre2_Abstract}{}
-		{
-			\ClassError{ACIN_diploma_thesis}{File pre2_Abstract does not exist!}
-			{The file pre2_Abstract.tex must exist!}
-		}
-	\end{hyphenrules}
-
-	\begin{hyphenrules}{ngerman}
-		\InputIfFileExists{pre3_Kurzzusammenfassung}{}
-		{
-			\ifthenelse{\boolean{LANGaustrian}}{
-	 			\selectlanguage{naustrian}
-	 		}{
-	 			\selectlanguage{ngerman}
-	 		}
-			\ClassError{ACIN_diploma_thesis}{File pre3_Kurzzusammenfassung does not exist!}
-			{The file pre3_Kurzzusammenfassung.tex must exist!}
-		}
-	\end{hyphenrules}
+    %
+	% \begin{hyphenrules}{ngerman}
+	% 	\InputIfFileExists{pre1_Preface}{}
+	% 	{
+	% 		\ClassError{ACIN_diploma_thesis}{File pre1_Preface does not exist!}
+	% 		{The file pre1_Preface.tex must exist!}
+	% 	}
+	% \end{hyphenrules}
+    %
+	% \begin{hyphenrules}{USenglish}
+	% 	\InputIfFileExists{pre2_Abstract}{}
+	% 	{
+	% 		\ClassError{ACIN_diploma_thesis}{File pre2_Abstract does not exist!}
+	% 		{The file pre2_Abstract.tex must exist!}
+	% 	}
+	% \end{hyphenrules}
+    %
+	% \begin{hyphenrules}{ngerman}
+	% 	\InputIfFileExists{pre3_Kurzzusammenfassung}{}
+	% 	{
+	% 		\ifthenelse{\boolean{LANGaustrian}}{
+	%  			\selectlanguage{naustrian}
+	%  		}{
+	%  			\selectlanguage{ngerman}
+	%  		}
+	% 		\ClassError{ACIN_diploma_thesis}{File pre3_Kurzzusammenfassung does not exist!}
+	% 		{The file pre3_Kurzzusammenfassung.tex must exist!}
+	% 	}
+	% \end{hyphenrules}
 
  	\GerEng{
  		\ifthenelse{\boolean{LANGaustrian}}{
@@ -235,13 +235,13 @@
 % 	% Eidesstattliche Erklärung ohne Seitennummer am Ende des Dokumentes.
 % 	\addchap*{Eidesstattliche Erklärung}
 % 	\thispagestyle{empty}
-% 
+%
 % 	\noindent Hiermit versichere ich, dass ich die vorliegende Arbeit
 % selbstständig verfasst und keine anderen als die angegebenen Quellen und Hilfsmittel benutzt habe.\vspace{3cm}
-% 
+%
 % 	\noindent%
 % 	\PlaceAndTime
-% 
+%
 % 	\begin{flushright}
 % 	\rule{5cm}{0.01cm}
 % 	\end{flushright}
