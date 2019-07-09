@@ -1,33 +1,14 @@
-\chapter{Approach}\label{cha:approach}
-\pagestyle{scrheadings}
+\documentclass[class=article, crop=false]{standalone}
+%\usepackage[subpreambles=true]{standalone}
+\usepackage{import}
+\begin{document}
 
+\chapter{Approach}\label{cha:approach}
 
 What is your approach (Approach / System)
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\section{Hardware}\label{sec:hardware}
 
-\subsection{SoC}\label{subsec:soc}
-Renamed it to Soc so I can talk about the whole package:CPU+GPU+memory+Ethernet
+\import{sections/}{hardware}
 
-\subsection{Chassis}\label{subsec:chassis}
+\import{sections/}{software}
 
-\subsection{Actuators}\label{subsec:actuators}
-
-\subsection{Sensors}\label{subsec:sensors}
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-\section{Software}\label{sec:software}
-
-\subsection{ROS}\label{subsec:ros}
-
-\subsection{rlocal}\label{subsec:robot_localization}
-
-\subsection{Simple Kalman filter}\label{subsec:simple_kalman}
-
-\subsection{ORB slam 2}\label{subsec:orbslam2}
-
-
-
-
-
+\end{document}

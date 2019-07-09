@@ -1,9 +1,15 @@
+\documentclass[class=article, crop=false]{standalone}
+\usepackage[subpreambles=true]{standalone}
+\usepackage{import}
+
+\begin{document}
+
 \chapter{Experiments}\label{cha:experiments}
-\pagestyle{scrheadings}
 
-\section{Simple Kalman filter comparison}\label{sec:exp_comp}
+\import{sections/}{kalman-comparison}
 
-\section{robot\_localization while running in circles}\label{sec:exp_circle}
+\import{sections/}{circles}
 
-\section{Adaptive covariance comparison}\label{sec:exp_covar}
+\import{sections/}{adapt}
 
+\end{document}

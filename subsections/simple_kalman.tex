@@ -1,0 +1,86 @@
+\documentclass[class=article, crop=false]{standalone}
+\usepackage[subpreambles=true]{standalone}
+\usepackage{import}
+\input{../packages}
+\begin{document}
+
+\subsection{Simple Kalman filter description}\label{subsec:simple-kalman}
+
+Reference Kugis book:
+
+System:
+
+$ \textbf{x}_{k+1} = \boldsymbol{\Phi}_k \textbf{x}_k + \boldsymbol{\Gamma}_k \textbf{u}_k + \textbf{G}_k \textbf{w}_k $
+
+$ \textbf{y}_k =  \textbf{C}_k \textbf{x}_k + \textbf{D}_k \textbf{u}_k + \textbf{H}_k \textbf{w}_k + \textbf{v}_k $
+
+$ E(\textbf{v}_k \textbf{v}^T_j) = \textbf{R}_k \delta_{kj} $
+
+$ E(\textbf{w}_k \textbf{w}^T_j) = \textbf{Q}_k \delta_{kj} $
+
+Simple Kalman filter:
+
+    $\boldsymbol{\Phi}_k =
+    \begin{bmatrix}
+        0 & 0 \\
+        0 & \Delta t \\
+    \end{bmatrix} $
+    \hspace{1.15cm}
+    $\boldsymbol{\Gamma}_k  =
+    \begin{bmatrix}
+        0 & 0 \\
+        0 & 1 \\
+    \end{bmatrix} $
+    \hspace{.78cm}
+    $ \boldsymbol{G}_k  =
+    \begin{bmatrix}
+        0 & 0 \\
+        0 & 1 \\
+    \end{bmatrix} $
+
+    $ \textbf{C}_k =
+    \begin{bmatrix}
+        0 & 0 \\
+        \frac{1}{2} \Delta t^2 & \Delta t \\
+    \end{bmatrix} $
+    \hspace{.5cm}
+    $ \textbf{D}_k =
+    \begin{bmatrix}
+        0 & 0 \\
+        0 & \Delta t \\
+    \end{bmatrix} $
+    \hspace{.5cm}
+    $ \textbf{H}_k =
+    \begin{bmatrix}
+        0 & 0 \\
+        0 & 1 \\
+    \end{bmatrix} $
+
+
+Kalman gain matrix: $ \hat{\textbf{L}}_k = \textbf{P}^-_k \textbf{C}^T_k (\textbf{C}_k \textbf{P}^-_k \textbf{C}^T_k + \textbf{H}_k \textbf{Q}_k \textbf{H}^T_k + \textbf{R}_k)^{-1} $
+
+State update: $ \hat{\textbf{x}}^+_k = \hat{\textbf{x}}^-_k + \hat{\textbf{L}}_k (\textbf{y}_k - \textbf{C}_k \hat{\textbf{x}}^-_k - \textbf{D}_k \textbf{u}_k) $
+
+Error covariance update: $ \textbf{P}^+_k = (\textbf{E} - \hat{\textbf{L}}_k \textbf{C}_k ) \textbf{P}^-_k $
+
+State extrapolation: $ \hat{\textbf{x}}^-_{k+1} = \boldsymbol{\Phi}_k \textbf{x}^+_k + \boldsymbol{\Gamma}_k \textbf{u}_k $
+
+Error extrapolation: $ \textbf{P}^-_{k+1} = \boldsymbol{\Phi}_k \textbf{P}^+_k \boldsymbol{\Phi}^T_k + \textbf{G}_k \textbf{Q}_k \textbf{G}^T_k $
+
+
+Adaptive covariances:
+
+Sigmoid mirror function:
+
+Weights:
+$ \textbf{w}_k = \dfrac{ 1 }{ 1 + e^{\alpha \textbf{x}_k} } $
+
+Output:
+$ \textbf{y}_k = \dfrac{\textbf{x}_k \textbf{w}_k}{ \sum_{i=1}^{N} \textbf{w}_i } $
+
+Exponential window function:
+%https://pandas.pydata.org/pandas-docs/stable/user_guide/computation.html
+$ y_k = \dfrac{\sum_{i=0}^{k} \textbf{w}_i \textbf{x}_{i-k}}{ \sum_{i=0}^{k} \textbf{w}_i} $
+$ \textbf{w}_i = (1 - \alpha)^i $
+
+\end{document}

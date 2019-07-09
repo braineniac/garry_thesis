@@ -2,6 +2,11 @@
 *.aux
 *.toc
 *.bib
+*.log
+*.sta
+*.gz
+*.fls
+*latexmk
 
 .kile/*
 
