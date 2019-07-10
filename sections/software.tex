@@ -1,13 +1,29 @@
 \documentclass[class=article, crop=false]{standalone}
 \usepackage[subpreambles=true]{standalone}
 \usepackage{import}
-\input{../packages}
 \begin{document}
 
 \section{Software}\label{sec:software}
+In this section we present the software used on the platform and what alternatives were considered.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\subsection{ROS}\label{subsec:ros}
+\subsection{Operating system}\label{subsec:os}
+After careful evaluation we decided on using the classic Ubuntu 16.04 developed for the Raspberry Pi 2 from Canonical Ltd. After following the instructions found on the official page\footnotemark the image was adjusted to be used with our Raspberry Pi 3B.
+
+\footnotetext{https://wiki.ubuntu.com/ARM/RaspberryPi}
+
+Images such as the Ubuntu Core, Ubuntu 18.04 and Raspbian were considered, but they are not officially supported by ROS Kinetic and due to the limited 1-GB RAM\footnotemark on the Raspberry Pi, compiling requires considerable amount of time and setup of a dphys-swapfile that extends the memory temporarily on an external or internal storage. This setup is not ideal due to slow speed and access time, and shortens the chosen storage's lifespan over time. These drawbacks could be mitigated by an optimised cross compiling setup on a workstation computer or a server, but its out of scope of this thesis.
+
+\footnotetext{https://www.raspberrypi.org/magpi/raspberry-pi-3-specs-benchmarks/}
+
+In order to communicate with our platform remotely, we set up a wireless access point with hostapd,dchpcd and dnsmasq with a known SSID and password.
+
+For reproducability, the scripts and configuration files for the WiFi and dphys-swapfile setup were made open source\footnotemark.
+
+\footnotetext{https://github.com/braineniac/garry}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Robotic Operating System(ROS)}\label{subsec:ros}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{robot-localization}\label{subsec:robot-localization}
@@ -16,6 +32,17 @@
 \import{subsections/}{simple_kalman}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\subsection{ORB slam 2}\label{subsec:orbslam2}
+\subsection{ORB-SLAM-2}\label{subsec:orbslam2}
+In order to evaluate the platform a complete simultaneous localization and mapping solution(SLAM) described in the papers\cite{mur2015orb}\cite{mur2017orb} by Mur-Artal, Raul and Tard{\'o}s, Juan D was attempted. We used a Monocular Camera input from our Logitech C905 Webcam mounted on the front of the platform.
+
+Since the publication, the source code\footnote{https://github.com/raulmur/ORB\_SLAM2} was not maintained by the authors so we created our own fork\footnotemark in order to immediatly evaluate and plot the trajectory with the python package evo\cite{grupp2017evo}.
+
+\footnotetext{https://github.com/braineniac/ORB\_SLAM2}
+
+In our tests the CPU of the Raspberry Pi proved not to be powerful enough to run ORB-SLAM-2 in real time while the robot was moving. The very slow framerate of around 1-2 fps in Pangolin\footnotemark wasn't nearly sufficient for even automatic initialisation described in the authors previous paper\cite{mur2015orb} and was due to the CPU being overloaded. The evaluation of the 2017 paper\cite{mur2017orb} was done on an Intel Core i7-4790 and 16-GB RAM, which is has considerably more processing power.
+
+\footnotetext{https://github.com/stevenlovegrove/Pangolin}
+
+Our conclusion is that using the published ORB-SLAM-2 code in its current state is not possible in real time on the Raspberry Pi 3B and would require GPU acceleration or other code optimisations to run all system threads.
 
 \end{document}
