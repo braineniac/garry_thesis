@@ -4,83 +4,140 @@
 \input{packages}
 \begin{document}
 
-\subsection{Simple Kalman filter description}\label{subsec:simple-kalman}
+\subsection{Simple Kalman filter}\label{subsec:simple-kalman}
+State estimation is an important part of any mobile robot. Its accuracy can be easily refined by an input of multiple sensors. In order to deal with sensor noise and predict the state based on known sensor noise and unreliability, we used a linear quadratic estimator known as a Kalman Filter. Our special implementation of that is the Simple Kalman filter described in the rest of the section.
 
-Reference Kugis book:
+The following system model and Kalman Filter description used is based on a lecture script from Kemmetm{\"u}ller, W and Kugi, A\cite{regelungssysteme1}. The definition of the individual matrixes in the Simple Kalman Filter is derived from Newtonian mechanics:
 
-System:
+\vspace{0.5cm}
+\hspace{2cm}
+$ \textbf{x}_{k+1} =
+\begin{bmatrix}
+  0 & 0 \\
+  0 & \Delta t \\
+\end{bmatrix}
+\textbf{x}_k +
+\begin{bmatrix}
+  0 & 0 \\
+  0 & 1 \\
+\end{bmatrix}
+\textbf{u}_k +
+\begin{bmatrix}
+  0 & 0 \\
+  0 & 1 \\
+\end{bmatrix}
+\textbf{w}_k $
 
-$ \textbf{x}_{k+1} = \boldsymbol{\Phi}_k \textbf{x}_k + \boldsymbol{\Gamma}_k \textbf{u}_k + \textbf{G}_k \textbf{w}_k $
+\vspace{0.5cm}
+\hspace{2cm}
+$ \textbf{y}_k =
+\begin{bmatrix}
+  0 & 0 \\
+  \frac{1}{2} \Delta t^2 & \Delta t \\
+\end{bmatrix}
+\textbf{x}_k +
+\begin{bmatrix}
+    0 & 0 \\
+    0 & \Delta t \\
+\end{bmatrix}
+\textbf{u}_k +
+\begin{bmatrix}
+    0 & 0 \\
+    0 & 1 \\
+\end{bmatrix}
+\textbf{w}_k +
+\textbf{v}_k $
+\label{eqn:system}
 
-$ \textbf{y}_k =  \textbf{C}_k \textbf{x}_k + \textbf{D}_k \textbf{u}_k + \textbf{H}_k \textbf{w}_k + \textbf{v}_k $
+\vspace{1cm}
 
-$ E(\textbf{v}_k \textbf{v}^T_j) = \textbf{R}_k \delta_{kj} $
+We used the following steps in implementing the Simple Kalman filter as described in the lecture\cite{regelungssysteme1}. They are independant of the definitions of the matrixes in the system:
 
-$ E(\textbf{w}_k \textbf{w}^T_j) = \textbf{Q}_k \delta_{kj} $
+\noindent
+1, Calculate Kalman gain matrix:
+\begin{center}
+$ \hat{\textbf{L}}_k = \textbf{P}^-_k \textbf{C}^T_k (\textbf{C}_k \textbf{P}^-_k \textbf{C}^T_k + \textbf{H}_k \textbf{Q}_k \textbf{H}^T_k + \textbf{R}_k)^{-1} $
+\end{center}
+\vspace{0.5cm}
+2, Update state:
+\begin{center}
+$ \hat{\textbf{x}}^+_k = \hat{\textbf{x}}^-_k + \hat{\textbf{L}}_k (\textbf{y}_k - \textbf{C}_k \hat{\textbf{x}}^-_k - \textbf{D}_k \textbf{u}_k) $
+\end{center}
+\vspace{0.5cm}
+3, Update error covariance:
+\begin{center}
+$ \textbf{P}^+_k = (\textbf{E} - \hat{\textbf{L}}_k \textbf{C}_k ) \textbf{P}^-_k $
+\end{center}
+\vspace{0.5cm}
+4, Extrapolate state:
+\begin{center}
+$ \hat{\textbf{x}}^-_{k+1} = \boldsymbol{\Phi}_k \textbf{x}^+_k + \boldsymbol{\Gamma}_k \textbf{u}_k $
+\end{center}
+\vspace{0.5cm}
+5, Extrapolate error covariance:
+\begin{center}
+$ \textbf{P}^-_{k+1} = \boldsymbol{\Phi}_k \textbf{P}^+_k \boldsymbol{\Phi}^T_k + \textbf{G}_k \textbf{Q}_k \textbf{G}^T_k $
+\end{center}
 
-Simple Kalman filter:
+\vspace{0.5cm}
 
-    $\boldsymbol{\Phi}_k =
-    \begin{bmatrix}
-        0 & 0 \\
-        0 & \Delta t \\
-    \end{bmatrix} $
-    \hspace{1.15cm}
-    $\boldsymbol{\Gamma}_k  =
-    \begin{bmatrix}
-        0 & 0 \\
-        0 & 1 \\
-    \end{bmatrix} $
-    \hspace{.78cm}
-    $ \boldsymbol{G}_k  =
-    \begin{bmatrix}
-        0 & 0 \\
-        0 & 1 \\
-    \end{bmatrix} $
+We futher refined the Simple Kalman Filter with an additional dependency of the covariance matrixes on the system input $ \textbf{u}_k $. We used a weighted moving window function to detect any sudden jumps in $ \textbf{u}_k $. Such jumps cause additional uncertainty, which we reflect in our model by changing the ratio of the covariances $ \textbf{r}_{k} = \sqrt{\textbf{Q}^{11}_k }/\sqrt{\textbf{R}^{11}_k} $ where $ \textbf{Q}^{11}_k $ is the velocity element of the process noise covariance and the $ \textbf{R}^{11}_k $ is the acceleration element of the observation noise covariance. For their detection we used a moving exponential and mirrored sigmoid window function.
 
-    $ \textbf{C}_k =
-    \begin{bmatrix}
-        0 & 0 \\
-        \frac{1}{2} \Delta t^2 & \Delta t \\
-    \end{bmatrix} $
-    \hspace{.5cm}
-    $ \textbf{D}_k =
-    \begin{bmatrix}
-        0 & 0 \\
-        0 & \Delta t \\
-    \end{bmatrix} $
-    \hspace{.5cm}
-    $ \textbf{H}_k =
-    \begin{bmatrix}
-        0 & 0 \\
-        0 & 1 \\
-    \end{bmatrix} $
+The exponential window function was already implemented in the python package pandas, which is one of the most popular and used data analysis library. The following equations were taken from the documentation\footnotemark:
 
+\footnotetext{https://pandas.pydata.org/pandas-docs/stable/user\_guide/computation.html}
 
-Kalman gain matrix: $ \hat{\textbf{L}}_k = \textbf{P}^-_k \textbf{C}^T_k (\textbf{C}_k \textbf{P}^-_k \textbf{C}^T_k + \textbf{H}_k \textbf{Q}_k \textbf{H}^T_k + \textbf{R}_k)^{-1} $
+\vspace{0.5cm}
 
-State update: $ \hat{\textbf{x}}^+_k = \hat{\textbf{x}}^-_k + \hat{\textbf{L}}_k (\textbf{y}_k - \textbf{C}_k \hat{\textbf{x}}^-_k - \textbf{D}_k \textbf{u}_k) $
+\begin{center}
 
-Error covariance update: $ \textbf{P}^+_k = (\textbf{E} - \hat{\textbf{L}}_k \textbf{C}_k ) \textbf{P}^-_k $
+$ \textbf{w}_i = (1 - \alpha)^i $
 
-State extrapolation: $ \hat{\textbf{x}}^-_{k+1} = \boldsymbol{\Phi}_k \textbf{x}^+_k + \boldsymbol{\Gamma}_k \textbf{u}_k $
+\vspace{0.5cm}
+$ \textbf{y}_k = \dfrac{\sum_{i=0}^{k} \textbf{w}_i \textbf{x}_{i-k}}{ \sum_{i=0}^{k} \textbf{w}_i} $
 
-Error extrapolation: $ \textbf{P}^-_{k+1} = \boldsymbol{\Phi}_k \textbf{P}^+_k \boldsymbol{\Phi}^T_k + \textbf{G}_k \textbf{Q}_k \textbf{G}^T_k $
+\end{center}
 
+\vspace{0.5cm}
 
-Adaptive covariances:
+The mirrored sigmoid function was implemented for comparison and for its promising mathematical features that could improve state prediction:
+\vspace{0.5cm}
 
-Sigmoid mirror function:
+\begin{center}
 
-Weights:
-$ \textbf{w}_k = \dfrac{ 1 }{ 1 + e^{\alpha \textbf{x}_k} } $
+$ \textbf{w}_k = \dfrac{ 1 }{ 1 + e^{\alpha \textbf{x}_k} } $ \\
 
-Output:
+\vspace{0.5cm}
+
 $ \textbf{y}_k = \dfrac{\textbf{x}_k \textbf{w}_k}{ \sum_{i=1}^{N} \textbf{w}_i } $
 
-Exponential window function:
-%https://pandas.pydata.org/pandas-docs/stable/user_guide/computation.html
-$ y_k = \dfrac{\sum_{i=0}^{k} \textbf{w}_i \textbf{x}_{i-k}}{ \sum_{i=0}^{k} \textbf{w}_i} $
-$ \textbf{w}_i = (1 - \alpha)^i $
+\end{center}
+
+\vspace{0.5cm}
+
+The following steps have been used to change the ratio of covariances, where $ \bar{\textbf{w}} $ is the window functions $ \textbf{y}_k $ arithmetical mean:
+\vspace{0.5cm}
+
+\noindent
+1, Calculate the difference of the averaged windows of the last and current step:
+\begin{center}
+$ \Delta \bar{\textbf{w}}_k = \bar{\textbf{w}}_k - \bar{\textbf{w}}_{k-1} $
+\end{center}
+\vspace{0.5cm}
+2, Set coefficient $ \textbf{c}_k $:
+\begin{center}
+$ \textbf{c}_k = \dfrac{\Delta \bar{\textbf{w}}_k}{\hat{\textbf{u}^0}} (\textbf{r}_k - 1) $
+\end{center}
+\vspace{0.5cm}
+3, Set the covariance for the next step:
+\begin{center}
+$ \textbf{r}_{k+1} = \textbf{r}_{k} \textbf{c}_k $
+\end{center}
+
+\vspace{0.5cm}
+
+When the coefficient $ \textbf{c}_k $ is  multiplied by the current ratio of the covariance $ \textbf{r}_k $, it sets it between $ \textbf{r}_{k+1} \in [\textbf{r}_k,1] $ and $ \textbf{c}_k \in [1, \textbf{r}^{-1}_{k}] $ with the detected peak $ \textbf{u}^0 $. This changes the covariance ratio based on sudden changes in $ \bar{\textbf{w}} $.
+
+The author recognises that this model is not generic and not universally applicable, but further research into $ \textbf{u}_k $ and $ \textbf{r}_{k} $ dependencies is out of scope for this thesis.
 
 \end{document}

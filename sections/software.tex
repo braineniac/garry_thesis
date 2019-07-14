@@ -9,30 +9,31 @@ In this section we present the software used on the platform and what alternativ
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Operating system}\label{subsec:os}
 After careful evaluation we decided on using the classic Ubuntu 16.04 developed for the Raspberry Pi 2 from Canonical Ltd. After following the instructions found on the official page\footnotemark the image was adjusted to be used with our Raspberry Pi 3B.
+Images such as the Ubuntu Core, Ubuntu 18.04 and Raspbian were considered, but they are not officially supported by ROS Kinetic and compiling directly on the Raspberry Pi is not ideal due to the limited 1-GB RAM and CPU speed.
 
-\footnotetext{https://wiki.ubuntu.com/ARM/RaspberryPi}
+In order to communicate with our platform remotely, we set up a wireless access point on the Raspberry Pi and use secure shell(ssh) for communication.
 
-Images such as the Ubuntu Core, Ubuntu 18.04 and Raspbian were considered, but they are not officially supported by ROS Kinetic and due to the limited 1-GB RAM\footnotemark on the Raspberry Pi, compiling requires considerable amount of time and setup of a dphys-swapfile that extends the memory temporarily on an external or internal storage. This setup is not ideal due to slow speed and access time, and shortens the chosen storage's lifespan over time. These drawbacks could be mitigated by an optimised cross compiling setup on a workstation computer or a server, but its out of scope of this thesis.
+On the Arduino Uno we used the rosserial\_arduino ROS package for easy communication with the Rasberry Pi via Serial. We developed and uploaded a firmware\footnotemark that lets ROS directly control the actuators connected to the Arduino with ROS messages.
 
-\footnotetext{https://www.raspberrypi.org/magpi/raspberry-pi-3-specs-benchmarks/}
-
-In order to communicate with our platform remotely, we set up a wireless access point with hostapd,dchpcd and dnsmasq with a known SSID and password.
-
-For reproducability, the scripts and configuration files for the WiFi and dphys-swapfile setup were made open source\footnotemark.
-
-\footnotetext{https://github.com/braineniac/garry}
+\footnotetext{https://github.com/braineniac/garry-firmware}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\subsection{Robotic Operating System(ROS)}\label{subsec:ros}
+\subsection{ROS}\label{subsec:ros}
+The Robot Operating System(ROS) is a free and open-source middleware that uses nodes and message parsing to implement a highly configurable software stack intended for a single robot.
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\subsection{robot-localization}\label{subsec:robot-localization}
+Support for ROS enables the use of the wealth of software developed by the ROS community and easy adaptability of the framework for any use case envisoned.
 
+On our platform we used ROS Kinetic, because at the time of writing it has the best support for Raspberry Pi packages.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
 \import{subsections/}{simple_kalman}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\subsection{ORB-SLAM-2}\label{subsec:orbslam2}
+\subsection{State estimation}\label{subsec:state-est}
+To compare and verify our implementation of the state estimating node in the Simple Kalman Filter, we used the ekf\_localization\_node from the  robot\_localization\cite{MooreStouchKeneralizedEkf2014} package as a reference.
+It is a versatile non-linear state estimation node for robots in 3-D space without restriction on the number of sensors and tracks 15-dimensional internal states.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{ORB-SLAM2}\label{subsec:orbslam2}
 In order to evaluate the platform a complete simultaneous localization and mapping solution(SLAM) described in the papers\cite{mur2017orb}\cite{mur2015orb} by Mur-Artal, Ra\'ul and Tard{\'o}s, Juan D was attempted. We used a Monocular Camera input from our Logitech C905 Webcam mounted on the front of the platform.
 
 Since the publication, the source code\footnote{https://github.com/raulmur/ORB\_SLAM2} was not maintained by the authors so we created our own fork\footnotemark in order to immediatly evaluate and plot the trajectory with the python package evo\cite{grupp2017evo}.
@@ -43,6 +44,6 @@ In our tests the CPU of the Raspberry Pi proved not to be powerful enough to run
 
 \footnotetext{https://github.com/stevenlovegrove/Pangolin}
 
-Our conclusion is that using the published ORB-SLAM-2 code in its current state is not possible in real time on the Raspberry Pi 3B and would require GPU acceleration or other code optimisations to run all system threads.
+Our conclusion is that using the published ORB-SLAM2 code in its current state is not possible in real time on the Raspberry Pi 3B and would require GPU acceleration or other code optimisations to run all system threads.
 
 \end{document}

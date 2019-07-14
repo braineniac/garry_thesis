@@ -3,7 +3,10 @@
 \usepackage{import}
 
 \begin{document}
+
 \section{Hardware}\label{sec:hardware}
+Here is an overview of all the parts that were used to construct this platform:
+
 \begin{itemize}
  \item Raspberry Pi 3 Model B Rev 1.2
  \item Arduino Uno Rev3
@@ -12,18 +15,44 @@
  \item Logitech C905 Webcam
  \item SparkFun 9DoF Razor IMU M0
  \item Logitech Dual Action Gamepad
- \item 2x generic 5V DC motors
+ \item 2x generic DC motors
  \item 2x EMAX ES08MA II 12g Mini Metal Gear Analog Servo
+ \item 2x 1000 mAh batteries
+ \item 2x 5V voltage regulators
+ \item chassis and some board parts of the Cybot
 \end{itemize}
 
-\subsection{SoC}\label{subsec:soc}
-Renamed it to Soc so I can talk about the whole package: \\
-CPU+GPU+memory+Ethernet
+An exact cost of the platform is hard to determine, because many of the parts were either scraps or were freely available to use for this project. We estimate a sub 200\$ for all the parts used if bought new.
+
+\subsection{Embedded Computing}\label{subsec:soc}
+We built our platform around the Raspberry Pi 3 Model B. Its low cost, computational performance, availability, low power consumption and ROS support made it a clear choice.
+
+The Raspberry Pi is a single board computer(SBC) with a Broadcom BCM2837 system on chip(SoC) that has a Quad-Core ARM Cortex-A53 and a Broadcom VideoCore IV. It has 1GB of LPDDR2 memory. For communication it has Bluetooth, Wifi and 10/100 Mbit Ethernet, 40 GPIO pins, display serial interface(DSI), camera serial interface(CSI) and 4 USB ports\footnotemark.
+
+\footnotetext{https://www.raspberrypi.org/magpi/raspberry-pi-3-specs-benchmarks/}
+
+The Raspberry Pi is connected to an Arduino Uno via a USB serial port and the Arduino Uno is connected to an Arduino Motor Shield. Therefore any Arduino compatible sensors or actuators can be easily integrated onto the platform.
 
 \subsection{Chassis}\label{subsec:chassis}
+The chassis and most of the plastic parts were taken from the Cybot, which is a toy robot that came with thefortnightly partwork magazine Real Robots by Eaglemoss Publications\footnotemark.
+
+\footnotetext{https://www.getreading.co.uk/news/local-news/make-your-robot-home-4278122}
+
+The compatibility boards between the Raspberry Pi and chassis, Arduino and Raspberry Pi, the Arduino Motor Shield and Camera stand were custom designed and 3-D printed.
 
 \subsection{Actuators}\label{subsec:actuators}
+There are two generic DC motors that were left in from the Cybot that are mounted under the base plate and are connected to a wheel and can move forwards and backwards. They are directly connected to the Arduino Motor Shield.
+
+The two EMAX servos are on the top of the robot and are part of the camera stand. They are placed in a way that the lower one can fully move 360 degrees in yaw and about 120 degrees roll. They are controlled by the Arduino.
 
 \subsection{Sensors}\label{subsec:sensors}
+There are two cameras on the top of the robot facing away from each other, providing almost full 360 degrees of field of view. The Logitech Webcam is connected via USB and the Camera Module via camera serial interface(CSI) to the Raspberry Pi.
+
+As for an inertial measurment unit(IMU) we first deployed an MPU6050 and was connected through $ I^2C $ on the Raspberry Pi, but because of driver issues we went with a 9DoF Razor IMU M0, which is an all in one solution fully supported by ROS. It is communicating via a Serial USB connection.
+
+We used the Logitech Gamepad not just for teleoperation, but also an estimated velocity input for our Simple Kalman Filter, which we detail in section \ref{subsec:simple-kalman}.
+
+\subsection{Power management}\label{subsec:power}
+To ensure adequate longer mobility, two 1000 mAh LiPo batteries were used. They one of them distributes power to the actuators, while the other to the sensors and boards. For easy plug and play a power distributing board was made from the boards of the Cybot and secured with hot glue. Since the LiPo batteries voltage is 11.1V, the conversion to 5V is handled by two voltage regulators.
 
 \end{document}
