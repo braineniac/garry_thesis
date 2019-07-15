@@ -49,36 +49,36 @@
 
 
 %================ automatic selection of language-dependent sections
-\AtEndOfClass{
-	\newboolean{LANGenglish}%
-	\newboolean{LANGaustrian}
-	\setboolean{LANGenglish}{true}%
-	\setboolean{LANGaustrian}{false}
-}
-\DeclareOption{naustrian}{
-	\PassOptionsToPackage{USenglish, ngerman, naustrian}{babel}
-	\PassOptionsToClass{naustrian}{scrreprt}
-	\AtEndOfClass{
-		\setboolean{LANGenglish}{false}
-		\setboolean{LANGaustrian}{true}
-		\selectlanguage{naustrian}
-	}
-	\newcommand{\GerEng}[2]{#1}
-}
-\DeclareOption{ngerman}{
-	\PassOptionsToPackage{USenglish, naustrian, ngerman}{babel}
-	\PassOptionsToClass{ngerman}{scrreprt}
-	\AtEndOfClass{
-	 	\setboolean{LANGenglish}{false}
-	 	\selectlanguage{ngerman}
-	}
-	\newcommand{\GerEng}[2]{#1}
-}
+% \AtEndOfClass{
+% 	\newboolean{LANGenglish}%
+% 	\newboolean{LANGaustrian}
+% 	\setboolean{LANGenglish}{true}%
+% 	\setboolean{LANGaustrian}{false}
+% }
+% \DeclareOption{naustrian}{
+% 	\PassOptionsToPackage{USenglish, ngerman, naustrian}{babel}
+% 	\PassOptionsToClass{naustrian}{scrreprt}
+% 	\AtEndOfClass{
+% 		\setboolean{LANGenglish}{false}
+% 		\setboolean{LANGaustrian}{true}
+% 		\selectlanguage{naustrian}
+% 	}
+% 	\newcommand{\GerEng}[2]{#1}
+% }
+% \DeclareOption{ngerman}{
+% 	\PassOptionsToPackage{USenglish, naustrian, ngerman}{babel}
+% 	\PassOptionsToClass{ngerman}{scrreprt}
+% 	\AtEndOfClass{
+% 	 	\setboolean{LANGenglish}{false}
+% 	 	\selectlanguage{ngerman}
+% 	}
+% 	\newcommand{\GerEng}[2]{#1}
+% }
 \DeclareOption{USenglish}{
-	\PassOptionsToPackage{ngerman, naustrian,USenglish}{babel}
+	\PassOptionsToPackage{USenglish}{babel}
 	\PassOptionsToClass{USenglish}{scrreprt}
 	\AtEndOfClass{
-		\setboolean{LANGenglish}{true}
+		% \setboolean{LANGenglish}{true}
 		\selectlanguage{USenglish}
 	}
 	\newcommand{\GerEng}[2]{#2}
@@ -301,25 +301,25 @@
 % + 													 +
 % ++++++++++++++++++++++++++++++
 
-\GerEng{
-	\newrefformat{fig}{Abbildung~\ref{#1}}
-	\newrefformat{eq}{(\ref{#1})}
-	\newrefformat{apx}{Anhang~\ref{#1}}
-	\newrefformat{cha}{Kapitel~\ref{#1}}
-	\newrefformat{sec}{Abschnitt~\ref{#1}}
-	\newrefformat{sub}{Abschnitt~\ref{#1}}
-	\newrefformat{tab}{Tabelle~\ref{#1}}
-	\newrefformat{def}{Definition~\ref{#1}}
-}{
-	\newrefformat{fig}{Figure~\ref{#1}}
-	\newrefformat{eq}{(\ref{#1})}
-	\newrefformat{apx}{Appendix~\ref{#1}}
-	\newrefformat{cha}{Chapter~\ref{#1}}
-	\newrefformat{sec}{Section~\ref{#1}}
-	\newrefformat{sub}{Section~\ref{#1}}
-	\newrefformat{tab}{Table~\ref{#1}}
-	\newrefformat{def}{Definition~\ref{#1}}
-}
+% \GerEng{
+% 	\newrefformat{fig}{Abbildung~\ref{#1}}
+% 	\newrefformat{eq}{(\ref{#1})}
+% 	\newrefformat{apx}{Anhang~\ref{#1}}
+% 	\newrefformat{cha}{Kapitel~\ref{#1}}
+% 	\newrefformat{sec}{Abschnitt~\ref{#1}}
+% 	\newrefformat{sub}{Abschnitt~\ref{#1}}
+% 	\newrefformat{tab}{Tabelle~\ref{#1}}
+% 	\newrefformat{def}{Definition~\ref{#1}}
+% }
+\newrefformat{fig}{Figure~\ref{#1}}
+\newrefformat{eq}{(\ref{#1})}
+\newrefformat{apx}{Appendix~\ref{#1}}
+\newrefformat{cha}{Chapter~\ref{#1}}
+\newrefformat{sec}{Section~\ref{#1}}
+\newrefformat{sub}{Section~\ref{#1}}
+\newrefformat{tab}{Table~\ref{#1}}
+\newrefformat{def}{Definition~\ref{#1}}
+
 
 
 % +++++++++++++++++++++++++++
@@ -384,24 +384,24 @@
 % ======================
 % ||   hyphen rules   ||
 % ======================
-
-	\IfFileExists{ACIN_diploma/hyphen_german.tex}{
-		\begin{otherlanguage*}{ngerman}
-			{\input{ACIN_diploma/hyphen_german.tex}}
-		\end{otherlanguage*}
-		\begin{otherlanguage*}{naustrian}
-			{\input{ACIN_diploma/hyphen_german.tex}}
-		\end{otherlanguage*}
-	}{
-		\ClassWarningNoLine{ACIN_diploma_thesis}{File hyphen_german.tex does not exist!}
-	}
-	\IfFileExists{ACIN_diploma/hyphen_english.tex}{
-		\begin{otherlanguage*}{USenglish}{
-			{\input{ACIN_diploma/hyphen_english.tex}}
-		}\end{otherlanguage*}
-	}{
-		\ClassWarningNoLine{ACIN_diploma_thesis}{File hyphen_english.tex does not exist!}
-	}
+\input{ACIN_diploma/hyphen_english.tex}
+	% \IfFileExists{ACIN_diploma/hyphen_german.tex}{
+	% 	\begin{otherlanguage*}{ngerman}
+	% 		{\input{ACIN_diploma/hyphen_german.tex}}
+	% 	\end{otherlanguage*}
+	% 	\begin{otherlanguage*}{naustrian}
+	% 		{\input{ACIN_diploma/hyphen_german.tex}}
+	% 	\end{otherlanguage*}
+	% }{
+	% 	\ClassWarningNoLine{ACIN_diploma_thesis}{File hyphen_german.tex does not exist!}
+	% }
+	% \IfFileExists{ACIN_diploma/hyphen_english.tex}{
+	% 	\begin{otherlanguage*}{USenglish}{
+	% 		{\input{ACIN_diploma/hyphen_english.tex}}
+	% 	}\end{otherlanguage*}
+	% }{
+	% 	\ClassWarningNoLine{ACIN_diploma_thesis}{File hyphen_english.tex does not exist!}
+	% }
 
 
 \input{ACIN_diploma/ACIN_diploma_Title}
