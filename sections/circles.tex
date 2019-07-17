@@ -1,7 +1,7 @@
 \documentclass[class=article, crop=false]{standalone}
 \usepackage[subpreambles=true]{standalone}
 \usepackage{import}
-\input{../packages}
+%\input{../packages}
 \begin{document}
 
 \section{Localization drift}\label{sec:exp-circle}
@@ -13,7 +13,7 @@ As an input we used the Gamepad as an approximate velocity $\dot{x}$ in the robo
 
 \vspace{0.5cm}
 
-\begin{figure}
+\begin{figure}[H]
 \begin{flushleft}
   \begin{tikzpicture}
     \begin{axis}[
@@ -37,7 +37,7 @@ As an input we used the Gamepad as an approximate velocity $\dot{x}$ in the robo
           draw=gray!50
         },
       ]
-      \addplot+[color=blue, mark=none,line width=1pt,mark size=1pt] table {../plots/loop_xy.csv};
+      \addplot+[color=blue, mark=none,line width=1pt,mark size=1pt] table {plots/loop_xy.csv};
     \end{axis}
   \end{tikzpicture}
 \end{flushleft}
@@ -48,7 +48,7 @@ As we can see in Figure \ref{fig:octagon_xy}, the octagon shape of the path drif
 
 \vspace{0.5cm}
 
-\begin{figure}
+\begin{figure}[H]
 \begin{flushleft}
   \begin{tikzpicture}
     \begin{axis}[
@@ -71,7 +71,7 @@ As we can see in Figure \ref{fig:octagon_xy}, the octagon shape of the path drif
           draw=gray!50
         },
       ]
-      \addplot+[color=blue, mark=none,line width=1pt,mark size=1pt] table {../plots/loop_x.csv};
+      \addplot+[color=blue, mark=none,line width=1pt,mark size=1pt] table {plots/loop_x.csv};
     \end{axis}
   \end{tikzpicture}
 
@@ -96,7 +96,7 @@ As we can see in Figure \ref{fig:octagon_xy}, the octagon shape of the path drif
           draw=gray!50
         },
       ]
-      \addplot+[color=blue, mark=none,line width=1pt,mark size=1pt] table {../plots/loop_y.csv};
+      \addplot+[color=blue, mark=none,line width=1pt,mark size=1pt] table {plots/loop_y.csv};
     \end{axis}
   \end{tikzpicture}
   \begin{tikzpicture}
@@ -120,7 +120,7 @@ As we can see in Figure \ref{fig:octagon_xy}, the octagon shape of the path drif
           draw=gray!50
         },
       ]
-      \addplot+[color=blue, mark=none,line width=1pt,mark size=1pt] table {../plots/loop_yaw.csv};
+      \addplot+[color=blue, mark=none,line width=1pt,mark size=1pt] table {plots/loop_yaw.csv};
     \end{axis}
   \end{tikzpicture}
 \end{flushleft}
