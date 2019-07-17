@@ -1,54 +1,18 @@
 \documentclass[class=article, crop=false]{standalone}
 %\usepackage[subpreambles=true]{standalone}
 \usepackage{import}
-%\input{../packages}
+\input{../packages}
 \begin{document}
 \pgfplotsset{width=14cm,compat=1.9}
 \section{Simple Kalman Filter comparison}\label{sec:expcomp}
 
-For our first experiment we compare our Simple Kalman Filter(SKF) to the robot\_localization packgage's Extended Kalman Filter(EKF).
+In this experiment we compare our Simple Kalman Filter(SKF) to the robot\_localization packgage's Extended Kalman Filter(EKF).
 
-As the system input we used the Gamepads button press as an approximate velocity input, which we previously measured, and the acceleration from our Razor IMU. This can be seen in Figure \ref{fig:input}.
-\begin{figure}
-\begin{flushleft}
-  \begin{tikzpicture}
-    \begin{axis}[
-      yticklabel style={
-        /pgf/number format/fixed,
-        /pgf/number format/precision=5
-      },
-      width=12cm,
-      height=5cm,
-      xtick distance=0.5,
-      xlabel={$ Time [s] $},
-      ylabel={$ \textbf{u}^0 [m/s] $}
-      ]
-      \addplot+[color=blue, mark=none,line width=1pt,mark size=1pt] table {../plots/real_input_vel.csv};
-    \end{axis}
-  \end{tikzpicture}
-\end{flushleft}
-
-\begin{flushleft}
-  \begin{tikzpicture}
-    \begin{axis}[
-      yticklabel style={
-        /pgf/number format/fixed,
-        /pgf/number format/precision=5
-      },
-      width=12cm,
-      height=5cm,
-      xtick distance=0.5,
-      xlabel={$ Time [s] $},
-      ylabel={$ \textbf{u}^1 [m/s^2] $}
-      ]
-      \addplot+[color=blue, mark=none,line width=1pt,mark size=1pt] table {../plots/real_input_accel.csv};
-    \end{axis}
-  \end{tikzpicture}
-\end{flushleft}
-\caption{$ \textbf{u} $ input to the system }\label{fig:input}
-\end{figure}
+As the system input we use the same parameters as in Section \ref{sec:expcovar}.
 
 The robot was moved in a straight line and the messages from the Gamepad and IMU were recorded with rosbag. Launching the filter nodes was done offline with the rosbag recording for proper direct comparison of the estimated states. In this case the adaptive ability of the Simple Kalman Filter was disabled. We used a ratio of $ \textbf{r}_{k} = \frac{1}{3} $.
+
+\vspace{0.5cm}
 
 \begin{figure}
 \begin{flushleft}
@@ -61,13 +25,22 @@ The robot was moved in a straight line and the messages from the Gamepad and IMU
     width=12cm,
     height=5cm,
     xtick distance=0.5,
-    xlabel={$Time [s]$},
-    ylabel={$x state [m]$},
-    legend pos=south east
+    ytick distance=0.05,
+    xlabel={Time $[s]$},
+    ylabel={$\textbf{x}_k$ state $[m]$},
+    legend pos=north west,
+    grid=both,
+    grid style={
+      line width=.1pt,
+      draw=gray!10},
+      major grid style={
+        line width=.2pt,
+        draw=gray!50
+      },
     ]
-    \addplot+[smooth,color=blue, mark=none,line width=1pt,mark size=1pt] table {../plots/ekf_pos.csv};
+    \addplot+[smooth,color=blue, mark=none,line width=1pt,mark size=1pt, dashed] table {../plots/ekf_pos.csv};
     \addlegendentry{EKF}
-    \addplot+[smooth,color=red, mark=none,line width=1pt,mark size=1pt, dashed] table {../plots/real_robot_dist_None.csv};
+    \addplot+[smooth,color=red, mark=none,line width=1pt,mark size=1pt] table {../plots/real_robot_dist_None.csv};
     \addlegendentry{SKF}
   \end{axis}
 \end{tikzpicture}
@@ -83,9 +56,18 @@ The robot was moved in a straight line and the messages from the Gamepad and IMU
     width=12cm,
     height=5cm,
     xtick distance=0.5,
-    xlabel={$Time [s]$},
-    ylabel={$\dot{x} state [m/s]$},
-    legend pos=north east
+    ytick distance=0.05,
+    xlabel={Time $[s]$},
+    ylabel={$\dot{\textbf{x}}_k$ state $[m/s]$},
+    legend pos=north west,
+    grid=both,
+    grid style={
+      line width=.1pt,
+      draw=gray!10},
+      major grid style={
+        line width=.2pt,
+        draw=gray!50
+      },
     ]
     \addplot+[color=blue, mark=none,line width=1pt,mark size=1pt, dashed] table {../plots/ekf_vel.csv};
     \addlegendentry{EKF}
@@ -94,11 +76,76 @@ The robot was moved in a straight line and the messages from the Gamepad and IMU
   \end{axis}
 \end{tikzpicture}\label{fig:xdotcompare}
 \end{flushleft}
-\caption{$ x $ and $\dot{x} $ state estimate comparison}\label{fig:statescompare}
+\caption{$ \textbf{x}_k $ and $\dot{\textbf{x}}_k $ state estimate comparison}\label{fig:statescompare}
 \end{figure}
 
-We can observe the difference in Figure \ref{fig:statescompare} in how the acceleration during movement is seen in the $\dot{x} $ state estimation. EFK deals better with such erratic changes in $ \textbf{u}^1 $ and smooths them out while our Simple Kalman Filter remains relatively noisy in that section. EKF also reacts sooner than SKF to the jump in $ \textbf{u}^0 $.
+We can observe the difference in Figure \ref{fig:statescompare} in how the acceleration during movement is seen in the $\dot{\textbf{x}}_k $ state estimation. SFK deals better with such erratic changes in $ \textbf{u}^1_k $ and smooths them out. The jump in velocity 
 
-Further optimisations with adaptive covariances will be explored in the next experiment.
+\vspace{0.5cm}
+
+\begin{figure}
+\begin{flushleft}
+\begin{tikzpicture}
+  \begin{axis}[
+    yticklabel style={
+      /pgf/number format/fixed,
+      /pgf/number format/precision=5
+    },
+    width=12cm,
+    height=5cm,
+    xtick distance=0.5,
+    ytick distance=0.05,
+    xlabel={Time $[s]$},
+    ylabel={$\textbf{x}_k$ state $[m]$},
+    legend pos=north west,
+    grid=both,
+    grid style={
+      line width=.1pt,
+      draw=gray!10},
+      major grid style={
+        line width=.2pt,
+        draw=gray!50
+      },
+    ]
+    \addplot+[smooth,color=blue, mark=none,line width=1pt,mark size=1pt, dashed] table {../plots/ekf_pos.csv};
+    \addlegendentry{EKF}
+    \addplot+[smooth,color=red, mark=none,line width=1pt,mark size=1pt] table {../plots/real_robot_dist_sig.csv};
+    \addlegendentry{SKF(sig)}
+  \end{axis}
+\end{tikzpicture}
+\end{flushleft}
+
+\begin{flushleft}
+\begin{tikzpicture}
+  \begin{axis}[
+    yticklabel style={
+      /pgf/number format/fixed,
+      /pgf/number format/precision=5
+    },
+    width=12cm,
+    height=5cm,
+    xtick distance=0.5,
+    ytick distance=0.05,
+    xlabel={Time $[s]$},
+    ylabel={$\dot{\textbf{x}}_k$ state $[m/s]$},
+    legend pos=north west,
+    grid=both,
+    grid style={
+      line width=.1pt,
+      draw=gray!10},
+      major grid style={
+        line width=.2pt,
+        draw=gray!50
+      },
+    ]
+    \addplot+[color=blue, mark=none,line width=1pt,mark size=1pt, dashed] table {../plots/ekf_vel.csv};
+    \addlegendentry{EKF}
+    \addplot+[color=red, mark=none,line width=1pt,mark size=1pt] table {../plots/real_robot_vel_sig.csv};
+    \addlegendentry{SKF(sig)}
+  \end{axis}
+\end{tikzpicture}\label{fig:xdotcompare}
+\end{flushleft}
+\caption{$ \textbf{x}_k $ and $\dot{\textbf{x}}_k $ state estimate comparison}\label{fig:statescompare}
+\end{figure}
 
 \end{document}

@@ -1,10 +1,132 @@
 \documentclass[class=article, crop=false]{standalone}
 \usepackage[subpreambles=true]{standalone}
 \usepackage{import}
+\input{../packages}
 \begin{document}
 
-\section{robot-localization while running in circles}\label{sec:exp-circle}
+\section{Localization drift}\label{sec:exp-circle}
+For our next experiment we decided to test our robot's potential drift over time while running robot\_localization's ekf\_localization\_node.
 
+We decided to run the robot in an octagon pattern with a side length of aproximately 66cm-s. We chose this shape because of relative ease to drive the robot straight then turn and its similarity to a circle. By driving the robot in a loop through this octagon path, we can observe the drift in its localization.
 
+As an input we used the Gamepad as an approximate velocity $\dot{x}$ in the robots relative x  direction, the accelerometer's relative x direction as $\ddot{x}$ and the gyroscope's angular z velocity as a $\dot{\psi}$. We estimated the covariance of the Gampad's velocity input to the accelerometer's to $\frac{1}{10}$.
+
+\vspace{0.5cm}
+
+\begin{figure}
+\begin{flushleft}
+  \begin{tikzpicture}
+    \begin{axis}[
+      unit vector ratio =1 1,
+      yticklabel style={
+        /pgf/number format/fixed,
+        /pgf/number format/precision=5
+      },
+      width=12cm,
+      height=12cm,
+      xtick distance = 0.2,
+      ytick distance = 0.2,
+      xlabel={x $[m]$},
+      ylabel={y $[m]$},
+      grid=both,
+      grid style={
+        line width=.1pt,
+        draw=gray!10},
+        major grid style={
+          line width=.2pt,
+          draw=gray!50
+        },
+      ]
+      \addplot+[color=blue, mark=none,line width=1pt,mark size=1pt] table {../plots/loop_xy.csv};
+    \end{axis}
+  \end{tikzpicture}
+\end{flushleft}
+\caption{Octagon x-y plot}\label{fig:octagon_xy}
+\end{figure}
+
+As we can see in Figure \ref{fig:octagon_xy}, the octagon shape of the path drifts in the x direction about 1.25m. This is possibly due to to a drifting x component in the accelerometer. We can observe no such drifts in y or $\psi$ as seen in Figure \ref{fig:octagon_xyyaw}.
+
+\vspace{0.5cm}
+
+\begin{figure}
+\begin{flushleft}
+  \begin{tikzpicture}
+    \begin{axis}[
+      yticklabel style={
+        /pgf/number format/fixed,
+        /pgf/number format/precision=5
+      },
+      width=12cm,
+      height=5cm,
+      xtick distance = 50,
+      ytick distance = 0.5,
+      xlabel={Time $[s]$},
+      ylabel={x $[m] $},
+      grid=both,
+      grid style={
+        line width=.1pt,
+        draw=gray!10},
+        major grid style={
+          line width=.2pt,
+          draw=gray!50
+        },
+      ]
+      \addplot+[color=blue, mark=none,line width=1pt,mark size=1pt] table {../plots/loop_x.csv};
+    \end{axis}
+  \end{tikzpicture}
+
+  \begin{tikzpicture}
+    \begin{axis}[
+      yticklabel style={
+        /pgf/number format/fixed,
+        /pgf/number format/precision=5
+      },
+      width=12cm,
+      height=5cm,
+      xtick distance = 50,
+      ytick distance = 0.5,
+      xlabel={Time $[s]$},
+      ylabel={y $[m] $},
+      grid=both,
+      grid style={
+        line width=.1pt,
+        draw=gray!10},
+        major grid style={
+          line width=.2pt,
+          draw=gray!50
+        },
+      ]
+      \addplot+[color=blue, mark=none,line width=1pt,mark size=1pt] table {../plots/loop_y.csv};
+    \end{axis}
+  \end{tikzpicture}
+  \begin{tikzpicture}
+    \begin{axis}[
+      yticklabel style={
+        /pgf/number format/fixed,
+        /pgf/number format/precision=5
+      },
+      width=12cm,
+      height=5cm,
+      xtick distance = 50,
+      ytick distance = 1.5,
+      xlabel={Time $[s]$},
+      ylabel={$\psi$ $[rad] $},
+      grid=both,
+      grid style={
+        line width=.1pt,
+        draw=gray!10},
+        major grid style={
+          line width=.2pt,
+          draw=gray!50
+        },
+      ]
+      \addplot+[color=blue, mark=none,line width=1pt,mark size=1pt] table {../plots/loop_yaw.csv};
+    \end{axis}
+  \end{tikzpicture}
+\end{flushleft}
+\caption{Octagon $x$, $y$ and $\psi$ plots}\label{fig:octagon_xyyaw}
+\end{figure}
+
+Such a drift is a common issue in accelerometers and can be alleviated by relying on other sensors to close the loop and reset the sensor or using a sensor with a better or at least known in run bias stability.
 
 \end{document}
