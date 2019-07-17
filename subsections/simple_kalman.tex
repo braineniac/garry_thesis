@@ -7,7 +7,7 @@
 \subsection{Simple Kalman filter}\label{subsec:simple-kalman}
 State estimation is an important part of any mobile robot. Its accuracy can be easily refined by an input of multiple sensors. In order to deal with sensor noise and predict the state based on known sensor noise and unreliability, we used a linear quadratic estimator known as a Kalman Filter. Our special implementation of that is the Simple Kalman filter described in the rest of the section.
 
-The following system model and Kalman Filter description used is based on a lecture script from Kemmetm{\"u}ller, W and Kugi, A\cite{regelungssysteme1}. The definition of the individual matrixes in the Simple Kalman Filter is derived from Newtonian mechanics:
+The following system model and Kalman Filter description used is based on a lecture script from Kemmetm{\"u}ller, W and Kugi, A\cite{regelungssysteme1}. The definition of the individual matrices in the Simple Kalman Filter is derived from Newtonian mechanics:
 
 \vspace{0.5cm}
 \hspace{2cm}
@@ -51,7 +51,7 @@ $ \textbf{y}_k =
 
 \vspace{1cm}
 
-We used the following steps in implementing the Simple Kalman filter as described in the lecture\cite{regelungssysteme1}. They are independant of the definitions of the matrixes in the system:
+We used the following steps in implementing the Simple Kalman filter as described in the lecture\cite{regelungssysteme1}. They are independent of the definitions of the matrices in the system:
 
 \noindent
 1, Calculate Kalman gain matrix:
@@ -81,7 +81,7 @@ $ \textbf{P}^-_{k+1} = \boldsymbol{\Phi}_k \textbf{P}^+_k \boldsymbol{\Phi}^T_k 
 
 \vspace{0.5cm}
 
-We futher refined the Simple Kalman Filter with an additional dependency of the covariance matrixes on the system input $ \textbf{u}_k $. We used a weighted moving window function to detect any sudden jumps in $ \textbf{u}_k $. Such jumps cause additional uncertainty, which we reflect in our model by changing the ratio of the covariances $ \textbf{r}_{k} = \sqrt{\textbf{Q}^{11}_k }/\sqrt{\textbf{R}^{11}_k} $ where $ \textbf{Q}^{11}_k $ is the velocity element of the process noise covariance and the $ \textbf{R}^{11}_k $ is the acceleration element of the observation noise covariance. For their detection we used a moving exponential and mirrored sigmoid window function.
+We further refined the Simple Kalman Filter with an additional dependency of the covariance matrices on the system input $ \textbf{u}_k $. We used a weighted moving window function to detect any sudden jumps in $ \textbf{u}_k $. Such jumps cause additional uncertainty, which we reflect in our model by changing the ratio of the covariances $ \textbf{r}_{k} = \sqrt{\textbf{Q}^{11}_k }/\sqrt{\textbf{R}^{11}_k} $ where $ \textbf{Q}^{11}_k $ is the velocity element of the process noise covariance and the $ \textbf{R}^{11}_k $ is the acceleration element of the observation noise covariance. For their detection we used a moving exponential and mirrored sigmoid window function.
 
 The exponential window function was already implemented in the python package pandas, which is one of the most popular and used data analysis library. The following equations were taken from the documentation\footnotemark:
 
@@ -101,6 +101,7 @@ $ \textbf{y}_k = \dfrac{\sum_{i=0}^{k} \textbf{w}_i \textbf{x}_{i-k}}{ \sum_{i=0
 \vspace{0.5cm}
 
 The mirrored sigmoid function was implemented for comparison and for its promising mathematical features that could improve state prediction:
+
 \vspace{0.5cm}
 
 \begin{center}
@@ -138,6 +139,6 @@ $ \textbf{r}_{k+1} = \textbf{r}_{k} \textbf{c}_k $
 
 When the coefficient $ \textbf{c}_k $ is  multiplied by the current ratio of the covariance $ \textbf{r}_k $, it sets it between $ \textbf{r}_{k+1} \in [\textbf{r}_k,1] $ and $ \textbf{c}_k \in [1, \textbf{r}^{-1}_{k}] $ with the detected peak $ \textbf{u}^0 $. This changes the covariance ratio based on sudden changes in $ \bar{\textbf{w}} $.
 
-The author recognises that this model is not generic and not universally applicable, but further research into $ \textbf{u}_k $ and $ \textbf{r}_{k} $ dependencies is out of scope for this thesis.
+%The author recognizes that this model is not generic and not universally applicable, but further research into $ \textbf{u}_k $ and $ \textbf{r}_{k} $ dependencies is out of scope for this thesis.
 
 \end{document}

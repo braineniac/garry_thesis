@@ -9,11 +9,12 @@ In this section we present the software used on the platform and what alternativ
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Operating system}\label{subsec:os}
 After careful evaluation we decided on using the classic Ubuntu 16.04 developed for the Raspberry Pi 2 from Canonical Ltd. After following the instructions found on the official page\footnotemark the image was adjusted to be used with our Raspberry Pi 3B.
+
 Images such as the Ubuntu Core, Ubuntu 18.04 and Raspbian were considered, but they are not officially supported by ROS Kinetic and compiling directly on the Raspberry Pi is not ideal due to the limited 1-GB RAM and CPU speed.
 
 In order to communicate with our platform remotely, we set up a wireless access point on the Raspberry Pi and use secure shell(ssh) for communication.
 
-On the Arduino Uno we used the rosserial\_arduino ROS package for easy communication with the Rasberry Pi via Serial. We developed and uploaded a firmware\footnotemark that lets ROS directly control the actuators connected to the Arduino with ROS messages.
+On the Arduino Uno we used the rosserial\_arduino ROS package for easy communication with the Raspberry Pi via Serial. We developed and uploaded a firmware\footnotemark that lets ROS directly control the actuators connected to the Arduino with ROS messages.
 
 \footnotetext{https://github.com/braineniac/garry-firmware}
 
@@ -21,7 +22,7 @@ On the Arduino Uno we used the rosserial\_arduino ROS package for easy communica
 \subsection{ROS}\label{subsec:ros}
 The Robot Operating System(ROS) is a free and open-source middleware that uses nodes and message parsing to implement a highly configurable software stack intended for a single robot.
 
-Support for ROS enables the use of the wealth of software developed by the ROS community and easy adaptability of the framework for any use case envisoned.
+Support for ROS enables the use of the wealth of software developed by the ROS community and easy adaptability of the framework for any use case envisioned.
 
 On our platform we used ROS Kinetic, because at the time of writing it has the best support for Raspberry Pi packages.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -30,20 +31,23 @@ On our platform we used ROS Kinetic, because at the time of writing it has the b
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{State estimation}\label{subsec:state-est}
+
 To compare and verify our implementation of the state estimating node in the Simple Kalman Filter, we used the ekf\_localization\_node from the  robot\_localization\cite{MooreStouchKeneralizedEkf2014} package as a reference.
 It is a versatile non-linear state estimation node for robots in 3-D space without restriction on the number of sensors and tracks 15-dimensional internal states.
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{ORB-SLAM2}\label{subsec:orbslam2}
+
 In order to evaluate the platform a complete simultaneous localization and mapping solution(SLAM) described in the papers\cite{mur2017orb}\cite{mur2015orb} by Mur-Artal, Ra\'ul and Tard{\'o}s, Juan D was attempted. We used a Monocular Camera input from our Logitech C905 Webcam mounted on the front of the platform.
 
-Since the publication, the source code\footnote{https://github.com/raulmur/ORB\_SLAM2} was not maintained by the authors so we created our own fork\footnotemark in order to immediatly evaluate and plot the trajectory with the python package evo\cite{grupp2017evo}.
+Since the publication, the source code\footnote{https://github.com/raulmur/ORB\_SLAM2} was not maintained by the authors so we created our own fork\footnotemark in order to immediately evaluate and plot the trajectory with the python package evo\cite{grupp2017evo}.
 
 \footnotetext{https://github.com/braineniac/ORB\_SLAM2}
 
-In our tests the CPU of the Raspberry Pi proved not to be powerful enough to run ORB-SLAM-2 in real time while the robot was moving. The very slow framerate of around 1-2 fps in Pangolin\footnotemark wasn't nearly sufficient for even automatic initialisation described in the authors previous paper\cite{mur2015orb} and was due to the CPU being overloaded. The evaluation of the 2017 paper\cite{mur2017orb} was done on an Intel Core i7-4790 and 16-GB RAM, which is has considerably more processing power.
+In our tests the CPU of the Raspberry Pi proved not to be powerful enough to run ORB-SLAM-2 in real time while the robot was moving. The very slow framerate of around 1-2 fps in Pangolin\footnotemark wasn't nearly sufficient for even automatic initialization described in the authors previous paper\cite{mur2015orb} and was due to the CPU being overloaded. The evaluation of the 2017 paper\cite{mur2017orb} was done on an Intel Core i7-4790 and 16-GB RAM, which is has considerably more processing power.
 
 \footnotetext{https://github.com/stevenlovegrove/Pangolin}
 
-Our conclusion is that using the published ORB-SLAM2 code in its current state is not possible in real time on the Raspberry Pi 3B and would require GPU acceleration or other code optimisations to run all system threads.
+Our conclusion is that using the published ORB-SLAM2 code in its current state is not possible in real time on the Raspberry Pi 3B and would require GPU acceleration or other code optimizations to run all system threads.
 
 \end{document}
