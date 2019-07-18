@@ -6,12 +6,15 @@
 
 \chapter{Outlook}\label{cha:outlook}
 
-The accelerometer's drift could be accounted for in a loop closing method if the path is relatively short or manually accounting of the sensor by staying still. Another option would be to fine tune the $\textbf{r}_k$ ratio and use the robot\_localization package, but it would require very time consuming tests and an accurate distance measuring sensor.
+The gyroscope's drift seen in Section \ref{sec:circles} could be accounted for in a loop closing method if the path is relatively short or continuously correct it with a magnetometer.
 
-The platform is well suited for not very demanding visual SLAM methods using the available cameras, but for such research the Jetbot mentioned in Section \ref{sec:jetbot} is better suited for it. An upgrade to the newly released Raspberry Pi 4 would be well justified, because of greatly updated specifications, especially GPU, and support for OpenGL ES 3\footnotemark.
+The underlying electrical structure could be improved for reliability and ease of use similar to the Turtlebot 3 Burger described in Section \ref{sec:turtlebot3burger}. Either a custom PCB or an Arduino Shield designed for the platform would make it easier to upgrade and maintain it.
+
+The platform could be also equipped with a wealth of enviroment sensors similar to the Wolfbot mentioned in \ref{sec:wolfbot}. Replacing the wheels with omnidirectional ones would also give it more manueverablility or replacing the motors and using a real wheel encoder.
+
+The platform is well suited for not very demanding visual SLAM methods using the available cameras, for such research the Jetbot mentioned in Section \ref{sec:jetbot} is better suited for it due to better access to the GPU. An upgrade to the newly released Raspberry Pi 4 would be well justified, because of greatly updated specifications, especially GPU, and support for OpenGL ES 3\footnotemark.
 
 \footnotetext{https://opensource.com/article/19/6/raspberry-pi-4}
 
-Equipped with 
 
 \end{document}

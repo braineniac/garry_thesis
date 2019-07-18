@@ -4,11 +4,11 @@
 %\input{../packages}
 \begin{document}
 \pgfplotsset{width=14cm,compat=1.9}
-\section{Adaptive covariance comparison}\label{sec:expcovar}
+\section{Adaptive covariance comparison}\label{sec:adapt}
 
 In our first experiment we will try to determine how our Simple Kalman Filter(SKF) behaves with and without adaptive covariance feature described in \ref{subsec:simple-kalman}.
 
-As the system input we used the Gamepads button press as an approximate velocity input $ \textbf{u}^0_k $ from a wheel encoder, which was previously measured to have a top speed of 0.2821 $m/s(we set it to half speed) $, and the acceleration $ \textbf{u}^1_k$ from our Razor IMU as seen in Figure \ref{fig:input}. Throughout the whole experiment we used a ratio of $ \textbf{r}_{k} = \frac{1}{3} $, which stands for a wheel encoder to IMU standard deviation ratio.
+As the system input we used he Gamepads button press as an approximate velocity input $ \textbf{u}^0_k $ from a fake wheel encoder, which was previously measured to have a top speed of 0.2821 $m/s(we set it to half speed) $, and the acceleration $ \textbf{u}^1_k$ from our Razor IMU as seen in Figure \ref{fig:input}. Throughout the whole experiment we used a ratio of $ \textbf{r}_{k} = \frac{1}{3} $, which stands for a wheel encoder to IMU standard deviation ratio.
 
 \vspace{0.5cm}
 

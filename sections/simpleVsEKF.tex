@@ -4,9 +4,9 @@
 %\input{../packages}
 \begin{document}
 \pgfplotsset{width=14cm,compat=1.9}
-\section{Simple Kalman Filter comparison}\label{sec:expcomp}
+\section{Simple Kalman Filter comparison}\label{sec:simplevsekf}
 
-In this experiment we compare our Simple Kalman Filter(SKF) to the robot\_localization package's Extended Kalman Filter(EKF). We used the same system input and experiment parameters as described in Section \ref{sec:expcovar} for direct comparability.
+In this experiment we compare our Simple Kalman Filter(SKF) to the robot\_localization package's Extended Kalman Filter(EKF). We used the same system input and experiment parameters as described in Section \ref{sec:adapt} for direct comparability.
 
 \vspace{0.5cm}
 
@@ -72,7 +72,7 @@ In this experiment we compare our Simple Kalman Filter(SKF) to the robot\_locali
   \end{axis}
 \end{tikzpicture}
 \end{flushleft}
-\caption{$ \textbf{x}_k $ and $\dot{\textbf{x}}_k $ state estimate comparison}\label{fig:ekfnone}
+\caption{EKF and SKF state estimation}\label{fig:ekfnone}
 \end{figure}
 
 We can see the difference in Figure \ref{fig:ekfnone} in how the acceleration during movement is transfers in the $\dot{\textbf{x}}_k $ state estimation. SFK deals better with such erratic changes in $ \textbf{u}^1_k $ and smooths them out compared to the EKF. The EKF on the other hand can deal better with our sudden jumps in $ \textbf{u}^0_k $ and it and smooths it out in $\dot{\textbf{x}}_k$. We will attempt to approximate similar behavior with the adaptive covariance feature of SKF.
@@ -141,7 +141,7 @@ We can see the difference in Figure \ref{fig:ekfnone} in how the acceleration du
   \end{axis}
 \end{tikzpicture}
 \end{flushleft}
-\caption{$ \textbf{x}_k $ and $\dot{\textbf{x}}_k $ state estimate comparison}\label{fig:ekfsig}
+\caption{EKF and SKF(sig) state estimation}\label{fig:ekfsig}
 \end{figure}
 
 As seen in Figure \ref{fig:ekfsig} the adaptive covariance feature somewhat improves the $\dot{\textbf{x}}_k $ estimation after the jump in $ \textbf{u}^0_k $, but its nowhere nearly as smooth as in EKF, regardless of the window function chosen.

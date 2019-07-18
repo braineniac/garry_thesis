@@ -6,7 +6,11 @@
 
 \chapter{Conclusion}\label{cha:conclusion}
 
-In this thesis we introduced a platform built out of remains of a toy robot and equipped it with components that make it a cost effective solution for research.
-From the experiments we conducted in Chapter \ref{cha:exp} we can conclude that odometry based on our fake wheel encoder is not well refined by our accelerometer due to drifts caused by low in run bias stability. Such issues do not plague the gyroscope in our IMU and can be used with our fake wheel encoder for relatively accurate odometry as seen in Section.TODO
+In this thesis we introduced a platform built out of remains of a toy robot and equipped it with components that make it a cost effective solution for research. Its current odometrical capabilities are based on a fake wheel encoder that is triggered by a Gamepad and the Razor IMU.
+
+From the experiments we conducted in Sections \ref{sec:adapt} and \ref{sec:simplevsekf} we can conclude that odometry based on our fake wheel encoder is not well refined by our accelerometer since our robot is light and reaches its top velocity in a too short amount of time for including the acceleration in our model.
+
+The experiment done in Section \ref{sec:circles} shows that the gyroscope drift causes the position to shift in a certain direction and should be continuously corrected by another sensor.
+
 
 \end{document}
