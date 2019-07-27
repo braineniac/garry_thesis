@@ -8,13 +8,16 @@ In this section we present the software used on the platform and what alternativ
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Operating system}\label{subsec:os}
-After careful evaluation we decided on using the classic Ubuntu 16.04 developed for the Raspberry Pi 2 from Canonical Ltd. After following the instructions found on the official page\footnotemark the image was adjusted to be used with our Raspberry Pi 3B.
+When deciding on what OS to run on the Raspberry Pi 3, we considered the classic Ubuntu 16.04, Ubuntu Core and Raspbian.
 
-Images such as the Ubuntu Core, Ubuntu 18.04 and Raspbian were considered, but they are not officially supported by ROS Kinetic and compiling directly on the Raspberry Pi is not ideal due to the limited 1-GB RAM and CPU speed.
+Raspbian is not officialy supported by ROS Kinetic and compiling directly on the Raspberry Pi is not ideal due to the limited 1-GB RAM and CPU speed. Ubuntu Core was ruled out due to it being in early development and ease of use.
 
+We chose classic Ubuntu 16.04 developed for the Raspberry Pi 2 from Canonical Ltd. After following the instructions found on the official page\footnotemark the image was adjusted to be used with our Raspberry Pi 3B.
+
+\footnotetext{https://wiki.ubuntu.com/ARM/RaspberryPi}
 In order to communicate with our platform remotely, we set up a wireless access point on the Raspberry Pi and use secure shell(ssh) for communication.
 
-On the Arduino Uno we used the rosserial\_arduino ROS package for easy communication with the Raspberry Pi via Serial. We developed and uploaded a firmware\footnotemark that lets ROS directly control the actuators connected to the Arduino with ROS messages.
+On the Arduino Uno we used a custom firmware\footnotemark that behaves like a node for the Raspberry Pi using the rosserial\_arduino ROS package. This way we can directly control the actuators and use the sensors connected to the Arduino with ROS messages.
 
 \footnotetext{https://github.com/braineniac/garry-firmware}
 
@@ -25,6 +28,21 @@ The Robot Operating System(ROS) is a free and open-source middleware that uses n
 Support for ROS enables the use of the wealth of software developed by the ROS community and easy adaptability of the framework for any use case envisioned.
 
 On our platform we used ROS Kinetic, because at the time of writing it has the best support for Raspberry Pi packages.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\subsection{Drivers}\label{subsec:drivers}
+The Razor IMU is connected directly to the Rasberry Pi and we used the razor\_imu\_9dof\footnotemark ROS package for reading its data. We flashed the included default firmware onto the Razor board. Further firmware tweaking for higher sensor rate doesn't yield considerable improvements and is not recommended by the software author.
+
+\footnotetext{http://wiki.ros.org/razor_imu_9dof}
+
+In our previous attempt, we developed a ROS driver\footnote{https://github.com/braineniac/rpi_mpu6050} for the MPU6050 that was connected via $ I^2C $ to the Raspberry Pi, but the underlying libraries proved to be unreliable and was completely replaced by a more stable and reliable solution, the Razor IMU.
+
+The servos are connected to the Arduino Uno's PWM pins and can be controlled by by ROS topics /servo\_upper and /servo\_lower directly. The motors are accessible through the customary /cmd\_vel topic and are connected to the Arduino Motor Shield. A differential drive was not implemented, depending on the direction a motor turns on or off and runs forwards or backwards for about 100ms, then it stops for security reasons.
+
+As for the cameras we used the the usb\_cam\footnote{http://wiki.ros.org/usb_cam} ROS package for the Logitech Webcam and the raspicam\_node\footnote{https://github.com/UbiquityRobotics/raspicam_node} from Ubiquity Robotics to provide a ROS interface. Both cameras were calibrated with a 7x9 checkerboard.
+
+The joystick was handled by the joy\footnotetext{http://wiki.ros.org/joy} ROS package and the input is repeated every 100ms for smooth operation of the motors by our teleop\_node\footnotetext{https://github.com/braineniac/garry-robot}.
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \import{subsections/}{simple_kalman}
