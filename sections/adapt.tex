@@ -13,60 +13,59 @@ As the system input we used he Gamepads button press as an approximate velocity 
 \vspace{0.5cm}
 
 \begin{figure}[H]
-\begin{flushleft}
+ \begin{flushleft}
   \begin{tikzpicture}
-    \begin{axis}[
-      yticklabel style={
-        /pgf/number format/fixed,
-        /pgf/number format/precision=5
+   \begin{axis}[
+     yticklabel style={
+       /pgf/number format/fixed,
+       /pgf/number format/precision=5},
+     width=12cm,
+     height=5cm,
+     xtick distance=0.5,
+     ytick distance=0.05,
+     xlabel={Time $[s]$},
+     ylabel={$ \textbf{u}^0_k$ $[m/s]$},
+     grid=both,
+     grid style={
+       line width=.1pt,
+       draw=gray!10},
+     major grid style={
+       line width=.2pt,
+       draw=gray!50
       },
-      width=12cm,
-      height=5cm,
-      xtick distance=0.5,
-      ytick distance=0.05,
-      xlabel={Time $[s]$},
-      ylabel={$ \textbf{u}^0_k$ $[m/s]$},
-      grid=both,
-      grid style={
-        line width=.1pt,
-        draw=gray!10},
-        major grid style={
-          line width=.2pt,
-          draw=gray!50
-        },
-      ]
-      \addplot+[color=blue, mark=none,line width=1pt,mark size=1pt] table {plots/real_input_vel.csv};
-    \end{axis}
+    ]
+    \addplot+[color=blue, mark=none,line width=1pt,mark size=1pt] table {plots/real_input_vel.csv};
+   \end{axis}
   \end{tikzpicture}
-\end{flushleft}
+ \end{flushleft}
 
-\begin{flushleft}
+ \begin{flushleft}
   \begin{tikzpicture}
-    \begin{axis}[
-      yticklabel style={
-        /pgf/number format/fixed,
-        /pgf/number format/precision=5
+   \begin{axis}[
+     yticklabel style={
+       /pgf/number format/fixed,
+       /pgf/number format/precision=5
       },
-      width=12cm,
-      height=5cm,
-      xtick distance=0.5,
-      ytick distance=1,
-      xlabel={Time $[s]$},
-      ylabel={$ \textbf{u}^1_k$ $[m/s^2] $},
-      grid=both,
-      grid style={
-        line width=.1pt,
-        draw=gray!10},
-        major grid style={
-          line width=.2pt,
-          draw=gray!50
-        },
-      ]
-      \addplot+[color=blue, mark=none,line width=1pt,mark size=1pt] table {plots/real_input_accel.csv};
-    \end{axis}
+     width=12cm,
+     height=5cm,
+     xtick distance=0.5,
+     ytick distance=1,
+     xlabel={Time $[s]$},
+     ylabel={$ \textbf{u}^1_k$ $[m/s^2] $},
+     grid=both,
+     grid style={
+       line width=.1pt,
+       draw=gray!10},
+     major grid style={
+       line width=.2pt,
+       draw=gray!50
+      },
+    ]
+    \addplot+[color=blue, mark=none,line width=1pt,mark size=1pt] table {plots/real_input_accel.csv};
+   \end{axis}
   \end{tikzpicture}
-\end{flushleft}
-\caption{$ \textbf{u}_k $ input to the system }\label{fig:input}
+ \end{flushleft}
+ \caption{$ \textbf{u}_k $ input to the system }\label{fig:input}
 \end{figure}
 
 \vspace{0.5cm}
@@ -76,129 +75,129 @@ The robot was moved in a straight line and the messages from the wheel encoder(G
 \vspace{0.5cm}
 
 \begin{figure}[H]
-  \begin{flushleft}
-    \begin{tikzpicture}
-      \begin{axis}[
-        yticklabel style={
-          /pgf/number format/fixed,
-          /pgf/number format/precision=5
-          },
-          width=12cm,
-          height=5cm,
-          xtick distance=0.5,
-          xlabel={Time $[s]$},
-          ylabel={$\textbf{x}_k$ state $[m]$},
-          legend pos=north west,
-          grid=both,
-          grid style={
-            line width=.1pt,
-            draw=gray!10},
-          major grid style={
-            line width=.2pt,
-            draw=gray!50
-          },
-      ]
-      \addplot+[smooth,color=blue, mark=none,line width=1pt,mark size=1pt] table {plots/real_robot_dist_None.csv};
-      \addlegendentry{none}
-      \addplot+[smooth,color=red, mark=none,line width=1pt,mark size=1pt, dashed] table {plots/real_robot_dist_exp.csv};
-      \addlegendentry{exp}
-      \end{axis}
-    \end{tikzpicture}
+ \begin{flushleft}
+  \begin{tikzpicture}
+   \begin{axis}[
+     yticklabel style={
+       /pgf/number format/fixed,
+       /pgf/number format/precision=5
+      },
+     width=12cm,
+     height=5cm,
+     xtick distance=0.5,
+     xlabel={Time $[s]$},
+     ylabel={$\textbf{x}_k$ state $[m]$},
+     legend pos=north west,
+     grid=both,
+     grid style={
+       line width=.1pt,
+       draw=gray!10},
+     major grid style={
+       line width=.2pt,
+       draw=gray!50
+      },
+    ]
+    \addplot+[smooth,color=blue, mark=none,line width=1pt,mark size=1pt] table {plots/real_robot_dist_None.csv};
+    \addlegendentry{none}
+    \addplot+[smooth,color=red, mark=none,line width=1pt,mark size=1pt, dashed] table {plots/real_robot_dist_exp.csv};
+    \addlegendentry{exp}
+   \end{axis}
+  \end{tikzpicture}
 
-    \begin{tikzpicture}
-      \begin{axis}[
-        yticklabel style={
-          /pgf/number format/fixed,
-          /pgf/number format/precision=5
-        },
-        width=12cm,
-        height=5cm,
-        xtick distance=0.5,
-        ytick distance=0.05,
-        xlabel={Time $[s]$},
-        ylabel={$\dot{\textbf{x}}_k$ state $[m/s]$},
-        legend pos=north west,
-        grid=both,
-        grid style={
-          line width=.1pt,
-          draw=gray!10},
-        major grid style={
-          line width=.2pt,
-          draw=gray!50
-        },
-      ]
-      \addplot+[color=red, mark=none,line width=1pt,mark size=1pt] table {plots/real_robot_vel_None.csv};
-      \addlegendentry{none}
-      \addplot+[color=blue, mark=none,line width=1pt,mark size=1pt, dashed] table {plots/real_robot_vel_exp.csv};
-      \addlegendentry{exp}
-      \end{axis}
-    \end{tikzpicture}
+  \begin{tikzpicture}
+   \begin{axis}[
+     yticklabel style={
+       /pgf/number format/fixed,
+       /pgf/number format/precision=5
+      },
+     width=12cm,
+     height=5cm,
+     xtick distance=0.5,
+     ytick distance=0.05,
+     xlabel={Time $[s]$},
+     ylabel={$\dot{\textbf{x}}_k$ state $[m/s]$},
+     legend pos=north west,
+     grid=both,
+     grid style={
+       line width=.1pt,
+       draw=gray!10},
+     major grid style={
+       line width=.2pt,
+       draw=gray!50
+      },
+    ]
+    \addplot+[color=red, mark=none,line width=1pt,mark size=1pt] table {plots/real_robot_vel_None.csv};
+    \addlegendentry{none}
+    \addplot+[color=blue, mark=none,line width=1pt,mark size=1pt, dashed] table {plots/real_robot_vel_exp.csv};
+    \addlegendentry{exp}
+   \end{axis}
+  \end{tikzpicture}
 
-  \end{flushleft}
-\caption{No window compared to the exponential window}
+ \end{flushleft}
+ \caption{No window compared to the exponential window}
 \end{figure}\label{fig:exp}
 
 \begin{figure}[H]
-  \begin{flushleft}
-    \begin{tikzpicture}
-      \begin{axis}[
-        yticklabel style={
-          /pgf/number format/fixed,
-          /pgf/number format/precision=5
-          },
-          width=12cm,
-          height=5cm,
-          xtick distance=0.5,
-          xlabel={Time $[s]$},
-          ylabel={$\textbf{x}_k$ state $[m]$},
-          legend pos=north west,
-          grid=both,
-          grid style={
-            line width=.1pt,
-            draw=gray!10},
-          major grid style={
-            line width=.2pt,
-            draw=gray!50
-          },
-      ]
-      \addplot+[smooth,color=blue, mark=none,line width=1pt,mark size=1pt] table {plots/real_robot_dist_None.csv};
-      \addlegendentry{none}
-      \addplot+[smooth,color=red, mark=none,line width=1pt,mark size=1pt, dashed] table {plots/real_robot_dist_sig.csv};
-      \addlegendentry{sig}
-      \end{axis}
-    \end{tikzpicture}
+ \begin{flushleft}
+  \begin{tikzpicture}
+   \begin{axis}[
+     yticklabel style={
+       /pgf/number format/fixed,
+       /pgf/number format/precision=5
+      },
+     width=12cm,
+     height=5cm,
+     xtick distance=0.5,
+     xlabel={Time $[s]$},
+     ylabel={$\textbf{x}_k$ state $[m]$},
+     legend pos=north west,
+     grid=both,
+     grid style={
+       line width=.1pt,
+       draw=gray!10},
+     major grid style={
+       line width=.2pt,
+       draw=gray!50
+      },
+    ]
+    \addplot+[smooth,color=blue, mark=none,line width=1pt,mark size=1pt] table {plots/real_robot_dist_None.csv};
+    \addlegendentry{none}
+    \addplot+[smooth,color=red, mark=none,line width=1pt,mark size=1pt, dashed] table {plots/real_robot_dist_sig.csv};
+    \addlegendentry{sig}
+   \end{axis}
+  \end{tikzpicture}
 
-    \begin{tikzpicture}
-      \begin{axis}[
-        yticklabel style={
-          /pgf/number format/fixed,
-          /pgf/number format/precision=5
-        },
-        width=12cm,
-        height=5cm,
-        xtick distance=0.5,
-        ytick distance=0.05,
-        xlabel={Time $[s]$},
-        ylabel={$\dot{\textbf{x}}_k$ state $[m/s]$},
-        legend pos=north west,
-        grid=both,
-        grid style={
-          line width=.1pt,
-          draw=gray!10},
-        major grid style={
-          line width=.2pt,
-          draw=gray!50
-        },
-      ]
-      \addplot+[color=red, mark=none,line width=1pt,mark size=1pt] table {plots/real_robot_vel_None.csv};
-      \addlegendentry{none}
-      \addplot+[color=blue, mark=none,line width=1pt,mark size=1pt, dashed] table {plots/real_robot_vel_sig.csv};
-      \addlegendentry{sig}
-      \end{axis}
-    \end{tikzpicture}
+  \begin{tikzpicture}
+   \begin{axis}[
+     yticklabel style={
+       /pgf/number format/fixed,
+       /pgf/number format/precision=5
+      },
+     width=12cm,
+     height=5cm,
+     xtick distance=0.5,
+     ytick distance=0.05,
+     xlabel={Time $[s]$},
+     ylabel={$\dot{\textbf{x}}_k$ state $[m/s]$},
+     legend pos=north west,
+     grid=both,
+     grid style={
+       line width=.1pt,
+       draw=gray!10},
+     major grid style={
+       line width=.2pt,
+       draw=gray!50
+      },
+    ]
+    \addplot+[color=red, mark=none,line width=1pt,mark size=1pt] table {plots/real_robot_vel_None.csv};
+    \addlegendentry{none}
+    \addplot+[color=blue, mark=none,line width=1pt,mark size=1pt, dashed] table {plots/real_robot_vel_sig.csv};
+    \addlegendentry{sig}
+   \end{axis}
+  \end{tikzpicture}
 
-  \end{flushleft}
-\caption{No window compared to the mirrored sigmoid window}
+ \end{flushleft}
+ \caption{No window compared to the mirrored sigmoid window}
 \end{figure}\label{fig:sig}
 
 \vspace{0.5cm}
@@ -208,36 +207,36 @@ The exact effects on the system's $x$ and $\dot{x}$ states can be seen in Figure
 \vspace{0.5cm}
 
 \begin{figure}[H]
-  \begin{flushleft}
-        \begin{tikzpicture}
-      \begin{axis}[
-        yticklabel style={
-          /pgf/number format/fixed,
-          /pgf/number format/precision=5
-        },
-        width=12cm,
-        height=5cm,
-        xtick distance=0.5,
-        xlabel={Time $[s]$},
-        ylabel={$\textbf{r}_k$},
-        legend pos=north west,
-        grid=both,
-        grid style={
-          line width=.1pt,
-          draw=gray!10},
-        major grid style={
-          line width=.2pt,
-          draw=gray!50
-        },
-      ]
-      \addplot+[color=red, mark=none,line width=1pt,mark size=1pt] table {plots/real_robot_ratio_sig.csv};
-      \addlegendentry{sig}
-      \addplot+[color=blue, mark=none,line width=1pt,mark size=1pt, dashed] table {plots/real_robot_ratio_exp.csv};
-      \addlegendentry{exp}
-      \end{axis}
-    \end{tikzpicture}
-  \end{flushleft}
-\caption{Ratio change with different window functions}\label{fig:ratios}
+ \begin{flushleft}
+  \begin{tikzpicture}
+   \begin{axis}[
+     yticklabel style={
+       /pgf/number format/fixed,
+       /pgf/number format/precision=5
+      },
+     width=12cm,
+     height=5cm,
+     xtick distance=0.5,
+     xlabel={Time $[s]$},
+     ylabel={$\textbf{r}_k$},
+     legend pos=north west,
+     grid=both,
+     grid style={
+       line width=.1pt,
+       draw=gray!10},
+     major grid style={
+       line width=.2pt,
+       draw=gray!50
+      },
+    ]
+    \addplot+[color=red, mark=none,line width=1pt,mark size=1pt] table {plots/real_robot_ratio_sig.csv};
+    \addlegendentry{sig}
+    \addplot+[color=blue, mark=none,line width=1pt,mark size=1pt, dashed] table {plots/real_robot_ratio_exp.csv};
+    \addlegendentry{exp}
+   \end{axis}
+  \end{tikzpicture}
+ \end{flushleft}
+ \caption{Ratio change with different window functions}\label{fig:ratios}
 \end{figure}
 
 \end{document}
