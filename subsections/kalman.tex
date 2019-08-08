@@ -1,0 +1,382 @@
+\documentclass[class=article, crop=false]{standalone}
+%\usepackage[subpreambles=true]{standalone}
+\usepackage{import}
+\input{../packages}
+\begin{document}
+
+\subsection{Custom adaptive Kalman filter}\label{subsec:customkalman}
+State estimation is an important part of any mobile robot. Its accuracy can be refined by multiple sensors. In order to deal with sensor noise and other inaccuracies during our position estimation, we used a linear quadratic estimator known as the Kalman Filter.
+
+It is widely used in control theory and control systems engineering. Its applications include aircraft, spacecraft, ships and robot motion planning.
+
+\subsubsection{Kalman Filter Theory}\label{subsubsec:kalmanfilter}
+
+The Kalman Filter is a recursive digital filter that uses the system's dynamic model with uncertainties and noisy sensor measurements to estimate the system state while minimizing errors.
+
+It uses a relative weight called the Kalman gain that is used with the current state estimation and sensor measurements. Its purpose is to "trust" values more that have a smaller uncertainty and thus give a more reliable estimation. It achieves that by the using covariances of the measurements and known, also to some extent unkown, noise that effect the states.
+
+The following system model seen in \eqref{eq:generickalman} is a generic model of the Kalman Filter we used. It is based on a lecture script from Kemmetm{\"u}ller, W and Kugi, A\cite{regelungssysteme1} that is currently used in the Automation Master degree course Control Systems 1 at TU Vienna.
+
+\begin{equation}
+\begin{gathered}
+  \textbf{x}_{k+1} =
+  \boldsymbol{\Phi}_k
+  \textbf{x}_k +
+  \boldsymbol{\Gamma}_k
+  \textbf{u}_k +
+  \textbf{G}_k
+  \textbf{w}_k \\
+  \textbf{y}_k =
+  \textbf{C}_k
+  \textbf{x}_k +
+  \textbf{D}_k
+  \textbf{u}_k +
+  \textbf{H}_k
+  \textbf{w}_k +
+  \textbf{v}_k \\
+  \textbf{x}(0) = \textbf{x}_0 \\
+\end{gathered}\label{eq:generickalman}
+\end{equation}
+
+The system consists of a state vector $ \textbf{x}_k  \in  \Re^n $, an input vector $ \textbf{u}_k \in \Re^p $, an output vector $ \textbf{y}_k \in \Re^q $, a system noise vector $ \textbf{w}_k \in \Re^r $, a measurement noise vector $ \textbf{v}_k \in \Re^q $ and a time variant system dynamics matrix $ \boldsymbol{\Phi}_k \in \Re^{n \times n}$,
+an input control matrix $ \boldsymbol{\Gamma}_k \in \Re^{n \times p}$, a "INSERT $ G_k $ NAME HERE" matrix $ \boldsymbol{G}_k \in \Re^{n \times r} $, a measurement matrix $ \boldsymbol{C}_k \in \Re^{q \times n} $, a measurement input matrix $ \boldsymbol{D}_k \in \Re^{q \times p}$ and a "INSERT $ H_k $ NAME HERE" matrix $ \textbf{H}_k \in \Re^{q \times r} $.
+
+\noindent
+The following assumptions about the system were made:
+
+\noindent
+1. For the system noise vector $ \textbf{w}_k$ and measurement noise vector $ \textbf{v}_k $:
+\begin{align*}
+    E(\textbf{w}_k \textbf{w}_j^T) &= \textbf{R}_k \delta_{kj} & \textbf{R}_k &\ge \textbf{0} & E(\textbf{w}_k) &= \textbf{0} \\
+    E(\textbf{v}_k \textbf{v}_j^T) &= \textbf{Q}_k \delta_{kj} & \textbf{Q}_k &\ge \textbf{0} & E(\textbf{v}_k) &= \textbf{0} \\
+    E(\textbf{w}_k \textbf{v}_j^T) &= \textbf{0} & \textbf{H}_k  \textbf{Q}_k \textbf{H}_k^T &> \textbf{0}\\
+\end{align*}\label{eq:assumption1}
+Where $ \textbf{Q}_k \in \Re^{r \times r} $ is the system noise covariance matrix and $ \textbf{R}_k \in \Re^{q \times q} $ is the measurement noise covariance matrix and $ \delta_{kj} $ the Kroneckersymbol, which is $ \delta_{kj} = 1$ for $ k = j $ and $ \delta_{kj} = 0$ for $ k \neq j $.
+
+\vspace{0.5cm}
+\noindent
+2. The expected value of the initial state vector $ \textbf{x}_0 $ and the initial state error covariance matrix $ \textbf{P}_0 $:
+\begin{align*}
+    E(\textbf{x}_0) &= \textbf{m}_0 & E([\textbf{x}_0 - \hat{\textbf{x}}_0][\textbf{x}_0 - \hat{\textbf{x}}_0]^T) &= \textbf{P}_0 \ge 0
+\end{align*}\label{eq:assumption2}
+Where $ \hat{\textbf{x}}_0 $ is a guess for the initial state vector $ \textbf{x}_0 $.
+
+\noindent
+3. The system noise vector $\textbf{w}_k$ and measurement noise vector $\textbf{v}_k$ are not correlated with the intial state vector $ \textbf{x}_0 $:
+\begin{align*}
+    E(\textbf{w}_k \textbf{x}_0^T) &= \textbf{0}\\
+    E(\textbf{v}_k \textbf{x}_0^T)&= \textbf{0}\\
+\end{align*}\label{eq:assumption3}
+We modelled our system with the 4-dimensional state vector:
+
+\begin{center}
+ $\textbf{x}_k =
+  \begin{bmatrix}
+   x_k    \\
+   y_k    \\
+   v_k    \\
+   \Psi_k \\
+  \end{bmatrix}
+ $
+\end{center}
+
+where $x_k$ is the distance travelled in x, $y_k$ the distance travelled in y, $v_k$ is the robot's relative x speed and $\Psi_k$ is the yaw of the robot.
+
+Our system input is a joystick controller, which we use to move our robot forward and backward by setting the motors to a certain speed or rotate it left or right by setting one of the motors forward and the other backward. We modelled this joystick input as:
+\begin{center}
+$ \textbf{u}_k =
+\begin{bmatrix}
+     \vartheta_k \\
+     \eta_k    \\
+ \end{bmatrix}
+$
+\end{center}
+
+Where $\vartheta_k \in [-1,1]$ is our forwards and backwards signal and $\eta_k \in [-1,1]$ is our rotation signal in the right and left direction. The top speed of the motors, by setting $\vartheta_k = \pm 1$, is the constant $\alpha$ and the top turn speed at $\eta_k = \pm 1$ is the constant $\beta$.
+
+Our system output $y_k$ is measured by our gyroscope and accelerometer in the IMU:
+\begin{center}
+ $ \textbf{y}_k =
+  \begin{bmatrix}
+   \zeta_k \\
+   \chi_k  \\
+  \end{bmatrix}
+ $
+\end{center}
+
+where $\zeta_k$ is the acceleration measured in the x direction and $\chi_k$ is the measured yaw speed.
+
+To construct our system dynamics matrix $ \boldsymbol{\Phi_k} $ and input control matrix $ \boldsymbol{\Gamma_k} $, we used the following equations based on Newtonian motion dynamics:
+\begin{align*}
+    x_{k+1} &= x_k + v_k \Delta t sin(\Psi_k)\\
+    y_{k+1} &= y_k + v_k \Delta t cos(\Psi_k)\\
+    v_{k+1} &= \alpha \vartheta_k\\
+    \Psi_{k+1} &= \Psi_k + \beta \Delta t \eta_k\\
+\end{align*}\label{eq:systemdyn}
+For our measurement matrix and our measurement input matrix we used the following equations, also derived from Newtonian dynamics:
+\begin{align*}
+\zeta_k &= \frac{\alpha \vartheta - v_k}{\Delta t}\\
+\chi_k &= \beta \eta_k
+\end{align*}\label{eq:outdyn}
+
+The $\zeta_k$ estimation is just a forwards difference, since $\alpha \vartheta$ gives us the robot speed in the next iteration, while $v_k$ is the current velocity.
+
+Since we don't know the noise added to the system by our $\textbf{u}_k$ control input vector, we modelled it as an unknown system noise vector $\textbf{w}_k$ with a set standard deviation $\sigma$. The measurement noise vector $v_k$ was modelled similarly:
+\begin{align*}
+ \textbf{w}_k & = \begin{bmatrix}
+  \sigma^{\vartheta_k}_k \\
+  \sigma^{\eta_k}_k      \\
+ \end{bmatrix} & \textbf{Q}_k & = \begin{bmatrix}
+  (\sigma^{\vartheta_k}_k)^2 & 0                     \\
+  0                          & (\sigma^{\eta_k}_k)^2 \\
+ \end{bmatrix} \\
+ \textbf{v}_k & = \begin{bmatrix}
+  \sigma^{\zeta_k}_k \\
+  \sigma^{\chi_k}_k  \\
+ \end{bmatrix} & \textbf{R}_k & = \begin{bmatrix}
+  (\sigma^{\zeta_k}_k)^2 & 0                     \\
+  0                      & (\sigma^{\chi_k}_k)^2 \\
+ \end{bmatrix} \\
+\end{align*}\label{eq:noisemodel}
+Putting together all of the previous equations into the form \eqref{eq:generickalman} we get:
+\begin{align*}
+    \begin{bmatrix}
+     \hat{x}_{k+1}^-    \\
+     \hat{y}_{k+1}^-    \\
+     \hat{v}_{k+1}^-    \\
+     \hat{\Psi}_{k+1}^- \\
+    \end{bmatrix} &=
+    \begin{bmatrix}
+     1 & 0 & \Delta t sin(\hat{\Psi}_{k}^+) & 0 \\
+     0 & 1 & \Delta t cos(\hat{\Psi}_{k}^+) & 0 \\
+     0 & 0 & 0                              & 0 \\
+     0 & 0 & 0                              & 1 \\
+    \end{bmatrix}
+    \begin{bmatrix}
+     \hat{x}_{k}^+    \\
+     \hat{y}_{k}^+    \\
+     \hat{v}_{k}^+    \\
+     \hat{\Psi}_{k}^+ \\
+    \end{bmatrix} +
+    \begin{bmatrix}
+     0      & 0             \\
+     0      & 0             \\
+     \alpha & 0             \\
+     0      & \beta\Delta t \\
+    \end{bmatrix}
+    \begin{bmatrix}
+     \vartheta_k \\
+     \eta_k      \\
+    \end{bmatrix} +
+    \begin{bmatrix}
+     0      & 0             \\
+     0      & 0             \\
+     \alpha & 0             \\
+     0      & \beta\Delta t \\
+    \end{bmatrix}
+    \begin{bmatrix}
+     \sigma^{\vartheta_k}_k \\
+     \sigma^{\eta_k}_k      \\
+    \end{bmatrix}\\
+    \begin{bmatrix}
+     \zeta_k \\
+     \chi_k  \\
+    \end{bmatrix} &=
+    \begin{bmatrix}
+     0 & 0 & -\frac{1}{\Delta t} & 0 \\
+     0 & 0 & 0                   & 0 \\
+    \end{bmatrix}
+    \begin{bmatrix}
+     \hat{x}_{k}^- \\
+     \hat{y}_{k}^- \\
+     \hat{v}_{k}^- \\
+     \Psi_{k}^-    \\
+    \end{bmatrix} +
+    \begin{bmatrix}
+     \frac{\alpha}{\Delta t} & 0     \\
+     0                       & \beta \\
+    \end{bmatrix}
+    \begin{bmatrix}
+     \vartheta_k \\
+     \eta_k      \\
+    \end{bmatrix} +
+    \begin{bmatrix}
+     0 & 0 \\
+     0 & 0 \\
+    \end{bmatrix}
+    \begin{bmatrix}
+     \sigma^{\vartheta}_k \\
+     \sigma^{\eta}_k      \\
+    \end{bmatrix} +
+    \begin{bmatrix}
+     \sigma^{\zeta_k}_k \\
+     \sigma^{\chi_k}_k  \\
+    \end{bmatrix} \\
+\end{align*}\label{eqn:fullsystem}
+where the vector $\hat{\textbf{x}}_k^-$ is an "a priori" state estimation, the vector $\hat{\textbf{x}}_k^+$ is an "a posteriori" state estimation, which is an output corrected estimation of the "a priori" state, and an extrapolated $\hat{\textbf{x}}_{k+1}^+$, which then becomes the next iteration's "a priori" state.
+
+We left the top half of the "INSERT NAME HERE" matrix $\textbf{G}_k$ is filled with zeros because the system noise in the current iteration was already included by the last one in the $\hat{v}_{k}^-$, therefore it should not impact our current $\hat{x}_{k+1}^-$ and $\hat{y}_{k}^+$.
+
+The "INSERT NAME HERE" matrix $\textbf{H}_k$ was filled with zeros, because the system noise $\textbf{w}_k$ shouldn't impact our measurement $\textbf{y}_k$ since it is already included in $\hat{\textbf{x}}_{k}^-$.
+
+Now that our system was constructed, we set the initial state vector $\textbf{x}_0 = \textbf{0}$ and the state error estimation matrix $\textbf{P}_0 = \textbf{0}$ and executed the following steps:
+
+\noindent
+1, Calculate Kalman gain matrix:
+\vspace{0.5cm}
+\begin{center}
+$ \hat{\textbf{L}}_k = \textbf{P}^-_k \textbf{C}^T_k (\textbf{C}_k \textbf{P}^-_k \textbf{C}^T_k + \textbf{H}_k \textbf{Q}_k \textbf{H}^T_k + \textbf{R}_k)^{-1} $
+\end{center}
+\vspace{0.5cm}
+2, Update state vector:
+\vspace{0.5cm}
+\begin{center}
+$ \hat{\textbf{x}}^+_k = \hat{\textbf{x}}^-_k + \hat{\textbf{L}}_k (\textbf{y}_k - \textbf{C}_k \hat{\textbf{x}}^-_k - \textbf{D}_k \textbf{u}_k) $
+\end{center}
+\vspace{0.5cm}
+3, Update state error covariance matrix:
+\vspace{0.5cm}
+\begin{center}
+$ \textbf{P}^+_k = (\textbf{E} - \hat{\textbf{L}}_k \textbf{C}_k ) \textbf{P}^-_k $
+\end{center}
+\vspace{0.5cm}
+4, Extrapolate state vector:
+\vspace{0.5cm}
+\begin{center}
+$ \hat{\textbf{x}}^-_{k+1} = \boldsymbol{\Phi}_k \textbf{x}^+_k + \boldsymbol{\Gamma}_k \textbf{u}_k $
+\end{center}
+\vspace{0.5cm}
+5, Extrapolate state error covariance matrix:
+\vspace{0.5cm}
+\begin{center}
+$ \textbf{P}^-_{k+1} = \boldsymbol{\Phi}_k \textbf{P}^+_k \boldsymbol{\Phi}^T_k + \textbf{G}_k \textbf{Q}_k \textbf{G}^T_k $
+\end{center}
+
+\vspace{0.5cm}
+
+Steps 2 and 3 are the "a posteriori" estimations, which were used in all of the figures in the thesis unless stated otherwise.
+
+\subsubsection{Custom adaptive Kalman Filter}
+
+Our model in this form doesn't accurately describe the real motion of our robot, since the joystick input signal is a boxcar function and doesn't take take into account that acceleration and turn speed has a ramp-up time and doesn't instantaneously reach it's top speed.
+
+In order to combat this, we increase the uncertainty of our system noise supplied by the joystick input for a short period of time to rely more on the measurment results.
+
+We intruduce a ratio vector $\textbf{r}_k$ that describes our system noise covariance matrix $\textbf{Q}_k$ in relation to the measuremnt noise covariance matrix $\textbf{R}_k$:
+\begin{align*}
+ \textbf{Q}_k              & =  \textbf{r}_k \textbf{R}_k &
+ \begin{bmatrix}
+  (\sigma^{\vartheta_k}_k)^2 & 0                     \\
+  0                          & (\sigma^{\eta_k}_k)^2 \\
+ \end{bmatrix} & =  \begin{bmatrix}
+  r_{\vartheta\zeta} & 0      \\
+  0      & r_{\eta\chi} \\
+ \end{bmatrix}
+ \begin{bmatrix}
+  (\sigma^{\zeta_k}_k)^2 & 0                     \\
+  0                      & (\sigma^{\chi_k}_k)^2 \\
+ \end{bmatrix}
+\end{align*}\label{eq:ratio}
+
+To respond in real time to the input jumps from our joystick we used moving weighted windows to detect them and use them later on to determine a new ratio.
+
+A moving exponentially weighted window was already implemented in the python package pandas, which is one of the most popular data analysis library packages. The following equations were taken from its documentation\footnotemark:
+
+\footnotetext{https://pandas.pydata.org/pandas-docs/stable/user\_guide/computation.html}
+
+\vspace{0.5cm}
+
+\begin{center}
+
+$ \textbf{w}_i = (1 - \alpha)^i $
+
+\vspace{0.5cm}
+$ \textbf{y}_k = \dfrac{\sum_{i=0}^{k} \textbf{w}_i \textbf{x}_{i-k}}{ \sum_{i=0}^{k} \textbf{w}_i} $
+
+\end{center}
+"ADD PICTURE"
+\vspace{0.5cm}
+
+A moving mirrored sigmoid weighted window was implemented due its form. It should extend our uncertainty period compared to the exponentially weighted one and more accurately reflect the transition back to the original process noise.
+
+\vspace{0.5cm}
+
+\begin{center}
+
+$ \textbf{w}_k = \dfrac{ 1 }{ 1 + e^{\alpha \textbf{x}_k} } $ \\
+
+\vspace{0.5cm}
+
+$ \textbf{y}_k = \dfrac{\textbf{x}_k \textbf{w}_k}{ \sum_{i=1}^{N} \textbf{w}_i } $
+
+\end{center}
+"ADD PICTURE"
+\vspace{0.5cm}
+
+The moving weighted windows are used for the $\textbf{u}_k$ input and an arithmetical mean of the window output $ \textbf{y}_k $ is calculated:
+\begin{align*}
+    \bar{\textbf{w}}_k &= \bar{\textbf{y}}_k(\textbf{u}_k) &
+\begin{bmatrix}
+  \bar{w}_{\vartheta}                 \\
+  \bar{w}_{\eta} \\
+ \end{bmatrix} &=
+ \begin{bmatrix}
+   \bar{y}_{\vartheta}(\vartheta)                  \\
+   \bar{y}_{\eta}(\eta) \\
+ \end{bmatrix}
+\end{align*}
+"MAYBE EXTEND FORMULA TO INCLUDE EXACT ARITHMETICAL MEAN CALCULATION"
+
+To modify our ratio matrix $\textbf{r}_k$, we multiply it with a coefficient matrix $\textbf{c}_k$:
+\begin{align*}
+    \textbf{r}_{k} &= \textbf{c}_k \textbf{r}_{k-1}
+\end{align*}
+
+The intent of the $\textbf{c}_k$ matrix is that it sets an element $r$ of the ratio matrix $\textbf{r}_{k}$ to $r \in [r, r + r \times M \times 10\%]$. $M$ is the adaptive order and is simply used to set the peak of the new ratio in 10\% steps. In case of $M = 0$ the ratio doesn't change.
+\begin{align*}
+    \textbf{M}_{k} &=
+    \begin{bmatrix}
+   \frac{M_{\vartheta\zeta}}{10}   & 0              \\
+   0 & \frac{M_{\eta\chi}}{10} \\
+ \end{bmatrix}
+\end{align*}
+
+
+\noindent
+The following steps have been used to calculate a new ratio:
+\vspace{0.5cm}
+
+\noindent
+1, Calculate the difference of $\bar{\textbf{w}}$ in the last and current step:
+
+\begin{align*}
+\Delta \bar{\textbf{w}}_k = \bar{\textbf{w}}_k - \bar{\textbf{w}}_{k-1}
+\end{align*}
+
+\noindent
+2, Check for a new peak $\Delta \bar{w}_k \in \Delta \bar{\textbf{w}}_k$ during the whole filter operation and save it as $ \frac{1}{\Delta \bar{w}_k} \in \Delta \hat{\bar{\textbf{w}}}_k^{-1}$. The -1 index is purely symbolic.
+
+\vspace{1cm}
+\noindent
+3, Calculate the coefficient matrix $ \textbf{c}_k $:
+
+\begin{align*}
+\textbf{c}_k = \textbf{M}_k \Delta \hat{\bar{\textbf{w}}}_k^{-1} \Delta\hat{\bar{\textbf{w}}}_k^T + 1^{2 \times 2}
+\end{align*}
+
+\noindent
+4, Update the ratio matrix:
+
+\begin{align*}
+\textbf{r}_{k} = \textbf{c}_k\textbf{r}_{k-1}
+\end{align*}
+
+\noindent
+5, Update the system noise covariance matrix $\textbf{Q}_k$:
+
+\begin{align*}
+\textbf{Q}_k = \textbf{r}_k \textbf{R}_k
+\end{align*}
+
+"ADD SOME EXAMPLE PLOTS AND EXPLAIN WHAT IS HAPPENING"
+\end{document}
