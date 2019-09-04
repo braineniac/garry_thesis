@@ -266,7 +266,7 @@ Steps 2 and 3 are the "a posteriori" estimations, which were used in all of the 
 
 \subsubsection{Custom adaptive Kalman Filter}
 
-Our model of the Kalman Filter doesn't accurately describe the real motion of our robot, since the joystick input signal has sudden jumps and due to robot inertia there is a delay before it reaches that top speed.
+Our model of the Kalman Filter doesn't accurately describe the real motion of our robot, since the joystick input signal has sudden jumps and due to robot inertia there is a delay before it reaches the set speed.
 
 In order to combat this, we increase the process noise by increasing our noise covariance matrix during this delay.
 
@@ -350,6 +350,178 @@ Where:
 \end{bmatrix}
 \end{align*}
 
-and $M_1, M_2 \in \Re$ are constants, $\textbf{q}_k^{\vartheta_k}, \textbf{q}_k^{\eta_k}$ are the queues corresponding to the input vector $\Delta \textbf{u}_k$.
+and $M_1, M_2 \in \Re$ are constants for scaling the peak, $\textbf{q}_k^{\vartheta_k}, \textbf{q}_k^{\eta_k}$ are the queues corresponding to the elements of the input vector $\Delta \textbf{u}_k$.
+
+In order to test our filters adaptive feature, we set up a simulation of the system input and output vectors seen in Figure \ref{fig:sim_line_io}. It simulates the robot going forward in a straight line once then stopping.
+
+\vspace{0.5cm}
+
+\begin{figure}[H]
+\begin{flushleft}
+  \begin{tikzpicture}
+    \begin{axis}[
+      yticklabel style={
+        /pgf/number format/fixed,
+        /pgf/number format/precision=5
+      },
+      width=12cm,
+      height=5cm,
+      xtick distance=0.5,
+      ytick distance=0.05,
+      xlabel={Time $[s]$},
+      ylabel={$ \textbf{u}^\vartheta_k$ $[m/s]$},
+      grid=both,
+      grid style={
+        line width=.1pt,
+        draw=gray!10},
+        major grid style={
+          line width=.2pt,
+          draw=gray!50
+        },
+      ]
+      \addplot+[color=blue, mark=none,line width=1pt,mark size=1pt] table {plots/sim_line_u0.csv};
+    \end{axis}
+  \end{tikzpicture}
+\end{flushleft}
+
+\begin{flushleft}
+  \begin{tikzpicture}
+    \begin{axis}[
+      yticklabel style={
+        /pgf/number format/fixed,
+        /pgf/number format/precision=5
+      },
+      width=12cm,
+      height=5cm,
+      xtick distance=0.5,
+      ytick distance=3,
+      xlabel={Time $[s]$},
+      ylabel={$ \textbf{y}^\zeta_k$ $[m/s^2] $},
+      grid=both,
+      grid style={
+        line width=.1pt,
+        draw=gray!10},
+        major grid style={
+          line width=.2pt,
+          draw=gray!50
+        },
+      ]
+      \addplot+[color=blue, mark=none,line width=1pt,mark size=1pt] table {plots/sim_line_y0.csv};
+    \end{axis}
+  \end{tikzpicture}
+\end{flushleft}
+\caption{$ \textbf{u}_k $ and $ \textbf{y}_k $ simulation}\label{fig:sim_line_io}
+\end{figure}
+
+\vspace{0.5cm}
+
+We then run the comparison between our Kalman Filter with and without the adaptive feature and look at our changes in our v state and the process noise covariance matrix $\textbf{Q}_k$.
+
+\vspace{0.5cm}
+
+\begin{figure}[H]
+\begin{flushleft}
+  \begin{tikzpicture}
+    \begin{axis}[
+      yticklabel style={
+        /pgf/number format/fixed,
+        /pgf/number format/precision=5
+      },
+      width=12cm,
+      height=5cm,
+      xtick distance=0.5,
+      ytick distance=0.00002,
+      xlabel={Time $[s]$},
+      ylabel={$ \textbf{Q}^\vartheta_k $},
+      legend pos=north west,
+      grid=both,
+      grid style={
+        line width=.1pt,
+        draw=gray!10},
+        major grid style={
+          line width=.2pt,
+          draw=gray!50
+        },
+      ]
+      \addplot+[color=red, mark=none,line width=1pt,mark size=1pt] table {plots/sim_line_adaptive_Q0.csv};
+    \end{axis}
+  \end{tikzpicture}
+\end{flushleft}
+\caption{$ \textbf{Q}_k $ during the adaptive Kalman Filter simulation}\label{fig:sim_Q0}
+\end{figure}
+
+\vspace{0.5cm}
+
+The $\textbf{Q}^\vartheta_k$ plot in Figure \ref{fig:sim_Q0} resembles our mirrored sigmoid function from Figure \ref{fig:sigwin}. In this case the window was set to a length of 10.
+
+\vspace{0.5cm}
+
+\begin{figure}[H]
+ \begin{flushleft}
+  \begin{tikzpicture}
+   \begin{axis}[
+     yticklabel style={
+       /pgf/number format/fixed,
+       /pgf/number format/precision=5
+      },
+     width=12cm,
+     height=5cm,
+     xtick distance=0.5,
+     ytick distance=0.2,
+     xlabel={Time $[s]$},
+     ylabel={x state [m]},
+     legend pos=north west,
+     grid=both,
+     grid style={
+       line width=.1pt,
+       draw=gray!10},
+     major grid style={
+       line width=.2pt,
+       draw=gray!50
+      },
+    ]
+    \addplot+[color=blue, mark=none,line width=1pt,mark size=1pt, dashed] table {plots/sim_line_x0.csv};
+    \addlegendentry{disabled}
+    \addplot+[color=red, mark=none,line width=1pt,mark size=1pt] table {plots/sim_line_adaptive_x0.csv};
+    \addlegendentry{enabled}
+   \end{axis}
+  \end{tikzpicture}
+ \end{flushleft}
+ \begin{flushleft}
+  \begin{tikzpicture}
+   \begin{axis}[
+     yticklabel style={
+       /pgf/number format/fixed,
+       /pgf/number format/precision=5
+      },
+     width=12cm,
+     height=5cm,
+     xtick distance=0.5,
+     ytick distance=0.1,
+     xlabel={Time $[s]$},
+     ylabel={v state [m/s]},
+     legend pos=north west,
+     grid=both,
+     grid style={
+       line width=.1pt,
+       draw=gray!10},
+     major grid style={
+       line width=.2pt,
+       draw=gray!50
+      },
+    ]
+    \addplot+[color=blue, mark=none,line width=1pt,mark size=1pt, dashed] table {plots/sim_line_x2.csv};
+    \addlegendentry{disabled}
+    \addplot+[color=red, mark=none,line width=1pt,mark size=1pt] table {plots/sim_line_adaptive_x2.csv};
+    \addlegendentry{enabled}
+   \end{axis}
+  \end{tikzpicture}
+ \end{flushleft}
+ \caption{Evaluating Kalman Filter's adaptive feature on the x and v state}\label{fig:sim_v}
+\end{figure}
+
+\vspace{0.5cm}
+
+We can see in Figure \ref{fig:sim_v} that the adaptive feature of our Kalman Filter takes acceleration more into account during the jumps in the $\textbf{u}^\vartheta_k$. Due to this phase being so short, it barely has an effect on the x state. We will explore its effects on longer runs in the Experiments chapter.
 
 \end{document}
