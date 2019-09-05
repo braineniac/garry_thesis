@@ -1,0 +1,263 @@
+\documentclass[class=article, crop=false]{standalone}
+%\usepackage[subpreambles=true]{standalone}
+\usepackage{import}
+\input{../packages}
+\begin{document}
+\pgfplotsset{width=14cm,compat=1.9}
+\section{Alpha tuning}\label{sec:alpha_tune}
+
+Since our system is two dimensional and the x and y state depends highly not just on the $\alpha$, but the $\beta$ parameter in our input coupling matrix $\boldsymbol{\Gamma}_k$ and process noise input coupling matrix $\textbf{G}_k$, we set the input $u_k^\eta$ and $y_k^\chi$ zero. This way we make the x and y state independant of $\beta$ and can fine tune $\alpha$ without its influence.
+
+\subsection{Reference}
+
+In our first experiment we set different $\alpha$ values and examine its influence on the x and v state. We do this with a set ratio $\varrho^{\vartheta\zeta} = 0.005$.
+
+\vspace{0.5cm}
+
+\begin{figure}[H]
+\begin{flushleft}
+  \begin{tikzpicture}
+    \begin{axis}[
+      yticklabel style={
+        /pgf/number format/fixed,
+        /pgf/number format/precision=5
+      },
+      xmin=0,
+      xmax=22,
+      width=12cm,
+      height=5cm,
+      xtick distance=2,
+      ytick distance=0.1,
+      xlabel={Time $[s]$},
+      ylabel={$ u^\vartheta_k$ $[m/s]$},
+      grid=both,
+      grid style={
+        line width=.1pt,
+        draw=gray!10},
+        major grid style={
+          line width=.2pt,
+          draw=gray!50
+        },
+      ]
+      \addplot+[color=blue, mark=none,line width=1pt,mark size=1pt] table {plots/alphas_0_u0.csv};
+    \end{axis}
+  \end{tikzpicture}
+\end{flushleft}
+
+\begin{flushleft}
+  \begin{tikzpicture}
+    \begin{axis}[
+      yticklabel style={
+        /pgf/number format/fixed,
+        /pgf/number format/precision=5
+      },
+      width=12cm,
+      height=5cm,
+      xmin=0,
+      xmax=22,
+      xtick distance=2,
+      ytick distance=4,
+      xlabel={Time $[s]$},
+      ylabel={$ y^\zeta_k$ $[m/s^2] $},
+      grid=both,
+      grid style={
+        line width=.1pt,
+        draw=gray!10},
+        major grid style={
+          line width=.2pt,
+          draw=gray!50
+        },
+      ]
+      \addplot+[color=blue, mark=none,line width=1pt,mark size=1pt] table {plots/alphas_0_y0.csv};
+    \end{axis}
+  \end{tikzpicture}
+\end{flushleft}
+\caption{$ \textbf{u}_k $ and $ \textbf{y}_k $ of the experiment}\label{fig:alphas_io}
+\end{figure}
+
+\vspace{0.5cm}
+
+\begin{figure}[H]
+ \begin{flushleft}
+  \begin{tikzpicture}
+   \begin{axis}[
+     yticklabel style={
+       /pgf/number format/fixed,
+       /pgf/number format/precision=5
+      },
+     width=12cm,
+     height=5cm,
+     xmin=-4,
+     xmax=22,
+     xtick distance=2,
+     ytick distance=1,
+     xlabel={Time $[s]$},
+     ylabel={x state [m]},
+     legend pos=north west,
+     grid=both,
+     grid style={
+       line width=.1pt,
+       draw=gray!10},
+     major grid style={
+       line width=.2pt,
+       draw=gray!50
+      },
+      domain=0:22,
+    ]
+    \addplot+[color=teal, mark=none,line width=1pt,mark size=1pt] table {plots/alphas_4_x0.csv};
+    \addlegendentry{2.4}
+    \addplot+[color=violet, mark=none,line width=1pt,mark size=1pt] table {plots/alphas_3_x0.csv};
+    \addlegendentry{2.2}
+    \addplot+[color=black, mark=none,line width=1pt,mark size=1pt] table {plots/alphas_2_x0.csv};
+    \addlegendentry{2.0}
+    \addplot+[color=red, mark=none,line width=1pt,mark size=1pt] table {plots/alphas_1_x0.csv};
+    \addlegendentry{1.8}
+    \addplot+[color=blue, mark=none,line width=1pt,mark size=1pt] table {plots/alphas_0_x0.csv};
+    \addlegendentry{1.6}
+    \addplot+[color=gray, mark=none,line width=1pt,mark size=1pt, samples=2, dashed] {5.0};
+   \end{axis}
+  \end{tikzpicture}
+ \end{flushleft}
+ \begin{flushleft}
+  \begin{tikzpicture}
+   \begin{axis}[
+     yticklabel style={
+       /pgf/number format/fixed,
+       /pgf/number format/precision=5
+      },
+     width=12cm,
+     height=5cm,
+     xmin=-4,
+     xmax=22,
+     xtick distance=2,
+     ytick distance=0.2,
+     xlabel={Time $[s]$},
+     ylabel={v state [m/s]},
+     legend pos=north west,
+     grid=both,
+     grid style={
+       line width=.1pt,
+       draw=gray!10},
+     major grid style={
+       line width=.2pt,
+       draw=gray!50
+      },
+    ]
+    \addplot+[color=teal, mark=none,line width=1pt,mark size=1pt] table {plots/alphas_4_x2.csv};
+    \addlegendentry{2.4}
+    \addplot+[color=violet, mark=none,line width=1pt,mark size=1pt] table {plots/alphas_3_x2.csv};
+    \addlegendentry{2.2}
+    \addplot+[color=black, mark=none,line width=1pt,mark size=1pt] table {plots/alphas_2_x2.csv};
+    \addlegendentry{2.0}
+    \addplot+[color=red, mark=none,line width=1pt,mark size=1pt] table {plots/alphas_1_x2.csv};
+    \addlegendentry{1.8}
+    \addplot+[color=blue, mark=none,line width=1pt,mark size=1pt] table {plots/alphas_0_x2.csv};
+    \addlegendentry{1.6}
+   \end{axis}
+  \end{tikzpicture}
+ \end{flushleft}
+ \caption{Different $\alpha$-s influence on the x and v state}\label{fig:alphas}
+\end{figure}
+
+\vspace{0.5cm}
+
+We can see that the system output $ y^\zeta_k$ measured by our IMU's accelerometer is very noisy during movement. This is due to our motor's vibrations which is still significant even though we tried several methods to reduce it.
+
+The dashed gray line in Figure \ref{fig:alphas} that the distance travelled by the robot in this experiment was 5 meters. The closest x plot to this distance was the red plot with $\alpha = 1.8$.
+
+Now that we have set our $\alpha$, we will conduct different experiments and compare the results with this reference.
+
+\subsection{Testing}
+
+Since we stop multiple times in our reference experiment, we will examine how our system holds up when we go straight the same distance with less stops. This might show us if the stops bear an impact on our x state when we repeat a smiliar experiment.
+
+\begin{figure}[H]
+ \begin{flushleft}
+  \begin{tikzpicture}
+   \begin{axis}[
+     yticklabel style={
+       /pgf/number format/fixed,
+       /pgf/number format/precision=5
+      },
+     width=12cm,
+     height=5cm,
+     xmin=-1,
+     xmax=22,
+     xtick distance=2,
+     ytick distance=1,
+     xlabel={Time $[s]$},
+     ylabel={x state [m]},
+     legend pos=north west,
+     grid=both,
+     grid style={
+       line width=.1pt,
+       draw=gray!10},
+     major grid style={
+       line width=.2pt,
+       draw=gray!50
+      },
+      domain=0:22,
+    ]
+    \addplot+[color=blue, mark=none,line width=1pt,mark size=1pt] table {plots/alphas_1_x0.csv};
+    \addlegendentry{reference}
+    \addplot+[color=red, mark=none,line width=1pt,mark size=1pt] table {plots/alphas_single_0_x0.csv};
+    \addlegendentry{few stops}
+    \addplot+[color=gray, mark=none,line width=1pt,mark size=1pt, samples=2, dashed] {5.0};
+   \end{axis}
+  \end{tikzpicture}
+ \end{flushleft}
+ \caption{Repeated reference experiment with less stops}\label{fig:fewstops}
+\end{figure}
+
+\vspace{0.5cm}
+
+We see in Figure \ref{fig:fewstops} that the amount of stops barely changes the travelled distance.
+
+Now let's see a different experiment, where we travel twice the distance from the reference and see if our system can estimate it to around 10 meters.
+
+\vspace{0.5cm}
+
+\begin{figure}[H]
+ \begin{flushleft}
+  \begin{tikzpicture}
+   \begin{axis}[
+     yticklabel style={
+       /pgf/number format/fixed,
+       /pgf/number format/precision=5
+      },
+     width=12cm,
+     height=5cm,
+     xmin=-1,
+     xmax=22,
+     xtick distance=2,
+     ytick distance=2,
+     xlabel={Time $[s]$},
+     ylabel={x state [m]},
+     legend pos=north west,
+     grid=both,
+     grid style={
+       line width=.1pt,
+       draw=gray!10},
+     major grid style={
+       line width=.2pt,
+       draw=gray!50
+      },
+      domain=0:22,
+    ]
+    \addplot+[color=blue, mark=none,line width=1pt,mark size=1pt] table {plots/alphas_1_x0.csv};
+    \addlegendentry{reference}
+    \addplot+[color=red, mark=none,line width=1pt,mark size=1pt] table {plots/alphas_multi_0_x0.csv};
+    \addlegendentry{10 meters}
+    \addplot+[color=gray, mark=none,line width=1pt,mark size=1pt, samples=2, dashed] {5.0};
+    \addplot+[color=gray, mark=none,line width=1pt,mark size=1pt, samples=2, dashed] {10.0};
+   \end{axis}
+  \end{tikzpicture}
+ \end{flushleft}
+ \caption{Reference experiment with 10m distance}\label{fig:exp_10m}
+\end{figure}
+
+\vspace{0.5cm}
+
+The 10 meter run in Figure \ref{fig:exp_10m} shows that it slightly overshoots the estimation about 1 meter.
+
+\end{document}
