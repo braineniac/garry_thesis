@@ -35,7 +35,7 @@
           draw=gray!50
         },
       ]
-      \addplot+[color=blue, mark=none,line width=1pt,mark size=1pt] table {plots/betas_2_u1.csv};
+      \addplot+[color=blue, mark=none,line width=1pt,mark size=1pt] table {plots/beta_0_u1.csv};
     \end{axis}
   \end{tikzpicture}
 \end{flushleft}
@@ -64,7 +64,7 @@
           draw=gray!50
         },
       ]
-      \addplot+[color=blue, mark=none,line width=1pt,mark size=1pt] table {plots/betas_2_y1.csv};
+      \addplot+[color=blue, mark=none,line width=1pt,mark size=1pt] table {plots/beta_0_y1.csv};
     \end{axis}
   \end{tikzpicture}
 \end{flushleft}
@@ -244,6 +244,7 @@
 
 \subsection{Testing}
 
+\subsubsection{Kalman Filter}
 
 \begin{center}
 \begin{figure}[H]
@@ -273,9 +274,9 @@
        draw=gray!50
       },
     ]
-    \addplot+[color=red, mark=none,line width=1pt,mark size=1pt, dashed] table {plots/betas_2_x3.csv};
+    \addplot+[color=red, mark=none,line width=1pt,mark size=1pt, dashed] table {plots/beta_0_x3.csv};
     \addlegendentry{reference}
-    \addplot+[color=blue, mark=none,line width=1pt,mark size=1pt] table {plots/betas_single_0_x3.csv};
+    \addplot+[color=blue, mark=none,line width=1pt,mark size=1pt] table {plots/beta_single_0_x3.csv};
     \addlegendentry{few stops}
    \end{axis}
   \end{tikzpicture}
@@ -306,14 +307,14 @@
        draw=gray!50
       },
     ]
-    \addplot+[color=red,dashed, mark=none,line width=1pt,mark size=1pt] table {plots/betas_2_x4.csv};
+    \addplot+[color=red,dashed, mark=none,line width=1pt,mark size=1pt] table {plots/beta_0_x4.csv};
     \addlegendentry{reference}
-    \addplot+[color=blue, mark=none,line width=1pt,mark size=1pt] table {plots/betas_single_0_x4.csv};
+    \addplot+[color=blue, mark=none,line width=1pt,mark size=1pt] table {plots/beta_single_0_x4.csv};
     \addlegendentry{few stops}
    \end{axis}
   \end{tikzpicture}
  \end{flushleft}
- \caption{Repeated beta tuning reference experiment with less stops}\label{fig:betasfewstops}
+ \caption{Repeated beta tuning reference experiment with less stops}\label{fig:betasingle}
 \end{figure}
 \end{center}
 
@@ -345,9 +346,9 @@
        draw=gray!50
       },
     ]
-    \addplot+[color=red, dashed, mark=none,line width=1pt,mark size=1pt] table {plots/betas_2_x3.csv};
+    \addplot+[color=red, dashed, mark=none,line width=1pt,mark size=1pt] table {plots/beta_0_x3.csv};
     \addlegendentry{reference}
-    \addplot+[color=blue, mark=none,line width=1pt,mark size=1pt] table {plots/betas_multi_0_x3.csv};
+    \addplot+[color=blue, mark=none,line width=1pt,mark size=1pt] table {plots/beta_multi_0_x3.csv};
     \addlegendentry{10 turns}
    \end{axis}
   \end{tikzpicture}
@@ -378,14 +379,450 @@
        draw=gray!50
       },
     ]
-    \addplot+[color=red, dashed, mark=none,line width=1pt,mark size=1pt] table {plots/betas_2_x4.csv};
+    \addplot+[color=red, dashed, mark=none,line width=1pt,mark size=1pt] table {plots/beta_0_x4.csv};
     \addlegendentry{reference}
-    \addplot+[color=blue, mark=none,line width=1pt,mark size=1pt] table {plots/betas_multi_0_x4.csv};
+    \addplot+[color=blue, mark=none,line width=1pt,mark size=1pt] table {plots/beta_multi_0_x4.csv};
     \addlegendentry{10 turns}
    \end{axis}
   \end{tikzpicture}
  \end{flushleft}
- \caption{Repeated beta tuning reference experiment with less stops}\label{fig:10turns}
+ \caption{Repeated beta tuning reference experiment with less stops}\label{fig:betamulti}
+\end{figure}
+\end{center}
+
+\subsubsection{Adaptive Kalman Filter}
+
+\begin{center}
+\begin{figure}[H]
+ \begin{flushleft}
+  \begin{tikzpicture}
+   \begin{axis}[
+     yticklabel style={
+       /pgf/number format/fixed,
+       /pgf/number format/precision=5
+      },
+     width=12cm,
+     height=5cm,
+     xtick distance=5,
+     ytick distance=1,
+     xmax=48,
+     xmin=-10,
+     domain=0:48,
+     xlabel={Time $[s]$},
+     ylabel={$\Psi$ state [rad]},
+     legend pos=north west,
+     grid=both,
+     grid style={
+       line width=.1pt,
+       draw=gray!10},
+     major grid style={
+       line width=.2pt,
+       draw=gray!50
+      },
+    ]
+    \addplot+[color=red, mark=none,line width=1pt,mark size=1pt, dashed] table {plots/beta_0_x3.csv};
+    \addlegendentry{reference}
+    \addplot+[color=blue, mark=none,line width=1pt,mark size=1pt] table {plots/beta_adapt_0_x3.csv};
+    \addlegendentry{adaptive}
+   \end{axis}
+  \end{tikzpicture}
+ \end{flushleft}
+ \begin{flushleft}
+  \begin{tikzpicture}
+   \begin{axis}[
+     yticklabel style={
+       /pgf/number format/fixed,
+       /pgf/number format/precision=5
+      },
+     width=12cm,
+     height=5cm,
+     xmax=48,
+     xmin=-10,
+     domain=0:48,
+     xtick distance=5,
+     ytick distance=0.5,
+     xlabel={Time $[s]$},
+     ylabel={$\dot{\Psi}$ state [rad/s]},
+     legend pos=north west,
+     grid=both,
+     grid style={
+       line width=.1pt,
+       draw=gray!10},
+     major grid style={
+       line width=.2pt,
+       draw=gray!50
+      },
+    ]
+    \addplot+[color=red,dashed, mark=none,line width=1pt,mark size=1pt] table {plots/beta_0_x4.csv};
+    \addlegendentry{reference}
+    \addplot+[color=blue, mark=none,line width=1pt,mark size=1pt] table {plots/beta_adapt_0_x4.csv};
+    \addlegendentry{adaptive}
+   \end{axis}
+  \end{tikzpicture}
+ \end{flushleft}
+ \caption{Repeated beta tuning reference experiment with less stops}\label{fig:adaptbeta}
+\end{figure}
+\end{center}
+
+\begin{center}
+\begin{figure}[H]
+ \begin{flushleft}
+  \begin{tikzpicture}
+   \begin{axis}[
+     yticklabel style={
+       /pgf/number format/fixed,
+       /pgf/number format/precision=5
+      },
+     width=12cm,
+     height=5cm,
+     xtick distance=5,
+     ytick distance=1,
+     xmax=48,
+     xmin=-10,
+     domain=0:48,
+     xlabel={Time $[s]$},
+     ylabel={$\Psi$ state [rad]},
+     legend pos=north west,
+     grid=both,
+     grid style={
+       line width=.1pt,
+       draw=gray!10},
+     major grid style={
+       line width=.2pt,
+       draw=gray!50
+      },
+    ]
+    \addplot+[color=red, mark=none,line width=1pt,mark size=1pt, dashed] table {plots/beta_single_0_x3.csv};
+    \addlegendentry{reference}
+    \addplot+[color=blue, mark=none,line width=1pt,mark size=1pt] table {plots/beta_single_adapt_0_x3.csv};
+    \addlegendentry{adaptive}
+   \end{axis}
+  \end{tikzpicture}
+ \end{flushleft}
+ \begin{flushleft}
+  \begin{tikzpicture}
+   \begin{axis}[
+     yticklabel style={
+       /pgf/number format/fixed,
+       /pgf/number format/precision=5
+      },
+     width=12cm,
+     height=5cm,
+     xmax=48,
+     xmin=-10,
+     domain=0:48,
+     xtick distance=5,
+     ytick distance=0.5,
+     xlabel={Time $[s]$},
+     ylabel={$\dot{\Psi}$ state [rad/s]},
+     legend pos=north west,
+     grid=both,
+     grid style={
+       line width=.1pt,
+       draw=gray!10},
+     major grid style={
+       line width=.2pt,
+       draw=gray!50
+      },
+    ]
+    \addplot+[color=red,dashed, mark=none,line width=1pt,mark size=1pt] table {plots/beta_single_0_x4.csv};
+    \addlegendentry{reference}
+    \addplot+[color=blue, mark=none,line width=1pt,mark size=1pt] table {plots/beta_single_adapt_0_x4.csv};
+    \addlegendentry{adaptive}
+   \end{axis}
+  \end{tikzpicture}
+ \end{flushleft}
+ \caption{Repeated beta tuning reference experiment with less stops}\label{fig:adaptbetasingle}
+\end{figure}
+\end{center}
+
+\begin{center}
+\begin{figure}[H]
+ \begin{flushleft}
+  \begin{tikzpicture}
+   \begin{axis}[
+     yticklabel style={
+       /pgf/number format/fixed,
+       /pgf/number format/precision=5
+      },
+     width=12cm,
+     height=5cm,
+     xtick distance=5,
+     ytick distance=1,
+     xmin=-10,
+     xmax=48,
+     domain=0:48,
+     xlabel={Time $[s]$},
+     ylabel={$\Psi$ state [rad]},
+     legend pos=north west,
+     grid=both,
+     grid style={
+       line width=.1pt,
+       draw=gray!10},
+     major grid style={
+       line width=.2pt,
+       draw=gray!50
+      },
+    ]
+    \addplot+[color=red, dashed, mark=none,line width=1pt,mark size=1pt] table {plots/beta_multi_0_x3.csv};
+    \addlegendentry{reference}
+    \addplot+[color=blue, mark=none,line width=1pt,mark size=1pt] table {plots/beta_multi_adapt_0_x3.csv};
+    \addlegendentry{adaptive}
+   \end{axis}
+  \end{tikzpicture}
+ \end{flushleft}
+ \begin{flushleft}
+  \begin{tikzpicture}
+   \begin{axis}[
+     yticklabel style={
+       /pgf/number format/fixed,
+       /pgf/number format/precision=5
+      },
+     width=12cm,
+     height=5cm,
+     xtick distance=5,
+     ytick distance=0.5,
+     xmin=-10,
+     xmax=48,
+     domain=0:48,
+     xlabel={Time $[s]$},
+     ylabel={$\dot{\Psi}$ state [rad/s]},
+     legend pos=north west,
+     grid=both,
+     grid style={
+       line width=.1pt,
+       draw=gray!10},
+     major grid style={
+       line width=.2pt,
+       draw=gray!50
+      },
+    ]
+    \addplot+[color=red, dashed, mark=none,line width=1pt,mark size=1pt] table {plots/beta_multi_0_x4.csv};
+    \addlegendentry{reference}
+    \addplot+[color=blue, mark=none,line width=1pt,mark size=1pt] table {plots/beta_multi_adapt_0_x4.csv};
+    \addlegendentry{adaptive}
+   \end{axis}
+  \end{tikzpicture}
+ \end{flushleft}
+ \caption{Repeated beta tuning reference experiment with less stops}\label{fig:adaptbetamulti}
+\end{figure}
+\end{center}
+
+\subsubsection{Extended Kalman Filter(EKF)}
+
+\begin{center}
+\begin{figure}[H]
+ \begin{flushleft}
+  \begin{tikzpicture}
+   \begin{axis}[
+     yticklabel style={
+       /pgf/number format/fixed,
+       /pgf/number format/precision=5
+      },
+     width=12cm,
+     height=5cm,
+     xtick distance=5,
+     ytick distance=1,
+     xmax=48,
+     xmin=-10,
+     domain=0:48,
+     xlabel={Time $[s]$},
+     ylabel={$\Psi$ state [rad]},
+     legend pos=north west,
+     grid=both,
+     grid style={
+       line width=.1pt,
+       draw=gray!10},
+     major grid style={
+       line width=.2pt,
+       draw=gray!50
+      },
+    ]
+    \addplot+[color=red, mark=none,line width=1pt,mark size=1pt, dashed] table {plots/beta_adapt_0_x3.csv};
+    \addlegendentry{adaptive}
+    \addplot+[color=blue, mark=none,line width=1pt,mark size=1pt] table {plots/beta_ekf_0_x3.csv};
+    \addlegendentry{EKF}
+   \end{axis}
+  \end{tikzpicture}
+ \end{flushleft}
+ \begin{flushleft}
+  \begin{tikzpicture}
+   \begin{axis}[
+     yticklabel style={
+       /pgf/number format/fixed,
+       /pgf/number format/precision=5
+      },
+     width=12cm,
+     height=5cm,
+     xmax=48,
+     xmin=-10,
+     domain=0:48,
+     xtick distance=5,
+     ytick distance=0.5,
+     xlabel={Time $[s]$},
+     ylabel={$\dot{\Psi}$ state [rad/s]},
+     legend pos=north west,
+     grid=both,
+     grid style={
+       line width=.1pt,
+       draw=gray!10},
+     major grid style={
+       line width=.2pt,
+       draw=gray!50
+      },
+    ]
+    \addplot+[color=red,dashed, mark=none,line width=1pt,mark size=1pt] table {plots/beta_adapt_0_x4.csv};
+    \addlegendentry{adaptive}
+    \addplot+[color=blue, mark=none,line width=1pt,mark size=1pt] table {plots/beta_ekf_0_x4.csv};
+    \addlegendentry{EKF}
+   \end{axis}
+  \end{tikzpicture}
+ \end{flushleft}
+ \caption{Repeated beta tuning reference experiment with less stops}\label{fig:ekfbeta}
+\end{figure}
+\end{center}
+
+\begin{center}
+\begin{figure}[H]
+ \begin{flushleft}
+  \begin{tikzpicture}
+   \begin{axis}[
+     yticklabel style={
+       /pgf/number format/fixed,
+       /pgf/number format/precision=5
+      },
+     width=12cm,
+     height=5cm,
+     xtick distance=5,
+     ytick distance=1,
+     xmin=-10,
+     xmax=48,
+     domain=0:48,
+     xlabel={Time $[s]$},
+     ylabel={$\Psi$ state [rad]},
+     legend pos=north west,
+     grid=both,
+     grid style={
+       line width=.1pt,
+       draw=gray!10},
+     major grid style={
+       line width=.2pt,
+       draw=gray!50
+      },
+    ]
+    \addplot+[color=red, dashed, mark=none,line width=1pt,mark size=1pt] table {plots/beta_multi_adapt_0_x3.csv};
+    \addlegendentry{adaptive}
+    \addplot+[color=blue, mark=none,line width=1pt,mark size=1pt] table {plots/beta_multi_ekf_0_x3.csv};
+    \addlegendentry{EKF}
+   \end{axis}
+  \end{tikzpicture}
+ \end{flushleft}
+ \begin{flushleft}
+  \begin{tikzpicture}
+   \begin{axis}[
+     yticklabel style={
+       /pgf/number format/fixed,
+       /pgf/number format/precision=5
+      },
+     width=12cm,
+     height=5cm,
+     xtick distance=5,
+     ytick distance=0.5,
+     xmin=-10,
+     xmax=48,
+     domain=0:48,
+     xlabel={Time $[s]$},
+     ylabel={$\dot{\Psi}$ state [rad/s]},
+     legend pos=north west,
+     grid=both,
+     grid style={
+       line width=.1pt,
+       draw=gray!10},
+     major grid style={
+       line width=.2pt,
+       draw=gray!50
+      },
+    ]
+    \addplot+[color=red, dashed, mark=none,line width=1pt,mark size=1pt] table {plots/beta_multi_adapt_0_x4.csv};
+    \addlegendentry{adaptive}
+    \addplot+[color=blue, mark=none,line width=1pt,mark size=1pt] table {plots/beta_multi_ekf_0_x4.csv};
+    \addlegendentry{EKF}
+   \end{axis}
+  \end{tikzpicture}
+ \end{flushleft}
+ \caption{Repeated beta tuning reference experiment with less stops}\label{fig:ekfbetamulti}
+\end{figure}
+\end{center}
+
+\begin{center}
+\begin{figure}[H]
+ \begin{flushleft}
+  \begin{tikzpicture}
+   \begin{axis}[
+     yticklabel style={
+       /pgf/number format/fixed,
+       /pgf/number format/precision=5
+      },
+     width=12cm,
+     height=5cm,
+     xtick distance=5,
+     ytick distance=1,
+     xmin=-10,
+     xmax=48,
+     domain=0:48,
+     xlabel={Time $[s]$},
+     ylabel={$\Psi$ state [rad]},
+     legend pos=north west,
+     grid=both,
+     grid style={
+       line width=.1pt,
+       draw=gray!10},
+     major grid style={
+       line width=.2pt,
+       draw=gray!50
+      },
+    ]
+    \addplot+[color=red, dashed, mark=none,line width=1pt,mark size=1pt] table {plots/beta_single_adapt_0_x3.csv};
+    \addlegendentry{adaptive}
+    \addplot+[color=blue, mark=none,line width=1pt,mark size=1pt] table {plots/beta_single_ekf_0_x3.csv};
+    \addlegendentry{EKF}
+   \end{axis}
+  \end{tikzpicture}
+ \end{flushleft}
+ \begin{flushleft}
+  \begin{tikzpicture}
+   \begin{axis}[
+     yticklabel style={
+       /pgf/number format/fixed,
+       /pgf/number format/precision=5
+      },
+     width=12cm,
+     height=5cm,
+     xtick distance=5,
+     ytick distance=0.5,
+     xmin=-10,
+     xmax=48,
+     domain=0:48,
+     xlabel={Time $[s]$},
+     ylabel={$\dot{\Psi}$ state [rad/s]},
+     legend pos=north west,
+     grid=both,
+     grid style={
+       line width=.1pt,
+       draw=gray!10},
+     major grid style={
+       line width=.2pt,
+       draw=gray!50
+      },
+    ]
+    \addplot+[color=red, dashed, mark=none,line width=1pt,mark size=1pt] table {plots/beta_single_adapt_0_x4.csv};
+    \addlegendentry{adaptive}
+    \addplot+[color=blue, mark=none,line width=1pt,mark size=1pt] table {plots/beta_single_ekf_0_x4.csv};
+    \addlegendentry{EKF}
+   \end{axis}
+  \end{tikzpicture}
+ \end{flushleft}
+ \caption{Repeated beta tuning reference experiment with less stops}\label{fig:ekfbetasingle}
 \end{figure}
 \end{center}
 

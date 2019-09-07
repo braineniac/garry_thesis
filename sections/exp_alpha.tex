@@ -39,7 +39,7 @@ In our first experiment we set different $\alpha$ values and examine its influen
           draw=gray!50
         },
       ]
-      \addplot+[color=blue, mark=none,line width=1pt,mark size=1pt] table {plots/alphas_0_u0.csv};
+      \addplot+[color=blue, mark=none,line width=1pt,mark size=1pt] table {plots/alpha_0_u0.csv};
     \end{axis}
   \end{tikzpicture}
 \end{flushleft}
@@ -68,7 +68,7 @@ In our first experiment we set different $\alpha$ values and examine its influen
           draw=gray!50
         },
       ]
-      \addplot+[color=blue, mark=none,line width=1pt,mark size=1pt] table {plots/alphas_0_y0.csv};
+      \addplot+[color=blue, mark=none,line width=1pt,mark size=1pt] table {plots/alpha_0_y0.csv};
     \end{axis}
   \end{tikzpicture}
 \end{flushleft}
@@ -169,6 +169,8 @@ Now that we have set our $\alpha$, we will conduct different experiments and com
 
 \subsection{Testing}
 
+\subsubsection{Kalman Filter}
+
 Since we stop multiple times in our reference experiment, we will examine how our system holds up when we go straight the same distance with less stops. This might show us if the stops bear an impact on our x state when we repeat a smiliar experiment.
 
 \begin{figure}[H]
@@ -198,15 +200,15 @@ Since we stop multiple times in our reference experiment, we will examine how ou
       },
       domain=0:22,
     ]
-    \addplot+[color=blue, mark=none,line width=1pt,mark size=1pt] table {plots/alphas_1_x0.csv};
+    \addplot+[color=red, dashed, mark=none,line width=1pt,mark size=1pt] table {plots/alpha_0_x0.csv};
     \addlegendentry{reference}
-    \addplot+[color=red, mark=none,line width=1pt,mark size=1pt] table {plots/alphas_single_0_x0.csv};
+    \addplot+[color=blue, mark=none,line width=1pt,mark size=1pt] table {plots/alpha_single_0_x0.csv};
     \addlegendentry{few stops}
     \addplot+[color=gray, mark=none,line width=1pt,mark size=1pt, samples=2, dashed] {5.0};
    \end{axis}
   \end{tikzpicture}
  \end{flushleft}
- \caption{Repeated reference experiment with less stops}\label{fig:fewstops}
+ \caption{Repeated reference experiment with less stops}\label{fig:alphasingle}
 \end{figure}
 
 \vspace{0.5cm}
@@ -244,20 +246,263 @@ Now let's see a different experiment, where we travel twice the distance from th
       },
       domain=0:22,
     ]
-    \addplot+[color=blue, mark=none,line width=1pt,mark size=1pt] table {plots/alphas_1_x0.csv};
+    \addplot+[color=red, dashed, mark=none,line width=1pt,mark size=1pt] table {plots/alpha_0_x0.csv};
     \addlegendentry{reference}
-    \addplot+[color=red, mark=none,line width=1pt,mark size=1pt] table {plots/alphas_multi_0_x0.csv};
+    \addplot+[color=blue, mark=none,line width=1pt,mark size=1pt] table {plots/alpha_multi_0_x0.csv};
     \addlegendentry{10 meters}
     \addplot+[color=gray, mark=none,line width=1pt,mark size=1pt, samples=2, dashed] {5.0};
     \addplot+[color=gray, mark=none,line width=1pt,mark size=1pt, samples=2, dashed] {10.0};
    \end{axis}
   \end{tikzpicture}
  \end{flushleft}
- \caption{Reference experiment with 10m distance}\label{fig:exp_10m}
+ \caption{Reference experiment with 10m distance}\label{fig:alphamulti}
 \end{figure}
 
 \vspace{0.5cm}
 
 The 10 meter run in Figure \ref{fig:exp_10m} shows that it slightly overshoots the estimation about 1 meter.
+
+\subsubsection{Adaptive Kalman Filter}
+
+\begin{figure}[H]
+ \begin{flushleft}
+  \begin{tikzpicture}
+   \begin{axis}[
+     yticklabel style={
+       /pgf/number format/fixed,
+       /pgf/number format/precision=5
+      },
+     width=12cm,
+     height=5cm,
+     xmin=-1,
+     xmax=22,
+     xtick distance=2,
+     ytick distance=1,
+     xlabel={Time $[s]$},
+     ylabel={x state [m]},
+     legend pos=north west,
+     grid=both,
+     grid style={
+       line width=.1pt,
+       draw=gray!10},
+     major grid style={
+       line width=.2pt,
+       draw=gray!50
+      },
+      domain=0:22,
+    ]
+    \addplot+[color=red, dashed, mark=none,line width=1pt,mark size=1pt] table {plots/alpha_0_x0.csv};
+    \addlegendentry{reference}
+    \addplot+[color=blue, mark=none,line width=1pt,mark size=1pt] table {plots/alpha_adapt_0_x0.csv};
+    \addlegendentry{adaptive}
+    \addplot+[color=gray, mark=none,line width=1pt,mark size=1pt, samples=2, dashed] {5.0};
+   \end{axis}
+  \end{tikzpicture}
+ \end{flushleft}
+ \caption{Repeated reference experiment with adaptive Kalman Filter}\label{fig:adaptalpha}
+\end{figure}
+
+\begin{figure}[H]
+ \begin{flushleft}
+  \begin{tikzpicture}
+   \begin{axis}[
+     yticklabel style={
+       /pgf/number format/fixed,
+       /pgf/number format/precision=5
+      },
+     width=12cm,
+     height=5cm,
+     xmin=-1,
+     xmax=22,
+     xtick distance=2,
+     ytick distance=1,
+     xlabel={Time $[s]$},
+     ylabel={x state [m]},
+     legend pos=north west,
+     grid=both,
+     grid style={
+       line width=.1pt,
+       draw=gray!10},
+     major grid style={
+       line width=.2pt,
+       draw=gray!50
+      },
+      domain=0:22,
+    ]
+    \addplot+[color=red,dashed, mark=none,line width=1pt,mark size=1pt] table {plots/alpha_single_0_x0.csv};
+    \addlegendentry{reference}
+    \addplot+[color=blue, mark=none,line width=1pt,mark size=1pt] table {plots/alpha_single_adapt_0_x0.csv};
+    \addlegendentry{adaptive}
+    \addplot+[color=gray, mark=none,line width=1pt,mark size=1pt, samples=2, dashed] {5.0};
+   \end{axis}
+  \end{tikzpicture}
+ \end{flushleft}
+ \caption{Repeated less stops stops experiment with adaptive Kalman Filter}\label{fig:adaptalphasingle}
+\end{figure}
+
+\vspace{0.5cm}
+
+\vspace{0.5cm}
+
+\begin{figure}[H]
+ \begin{flushleft}
+  \begin{tikzpicture}
+   \begin{axis}[
+     yticklabel style={
+       /pgf/number format/fixed,
+       /pgf/number format/precision=5
+      },
+     width=12cm,
+     height=5cm,
+     xmin=-1,
+     xmax=22,
+     xtick distance=2,
+     ytick distance=2,
+     xlabel={Time $[s]$},
+     ylabel={x state [m]},
+     legend pos=north west,
+     grid=both,
+     grid style={
+       line width=.1pt,
+       draw=gray!10},
+     major grid style={
+       line width=.2pt,
+       draw=gray!50
+      },
+      domain=0:22,
+    ]
+    \addplot+[color=red, dashed, mark=none,line width=1pt,mark size=1pt] table {plots/alpha_multi_0_x0.csv};
+    \addlegendentry{reference}
+    \addplot+[color=blue, mark=none,line width=1pt,mark size=1pt] table {plots/alpha_multi_adapt_0_x0.csv};
+    \addlegendentry{adaptive}
+    \addplot+[color=gray, mark=none,line width=1pt,mark size=1pt, samples=2, dashed] {5.0};
+    \addplot+[color=gray, mark=none,line width=1pt,mark size=1pt, samples=2, dashed] {10.0};
+   \end{axis}
+  \end{tikzpicture}
+ \end{flushleft}
+ \caption{Reference 10m distance experiment with adaptive Kalman Filter}\label{fig:adaptalphamulti}
+\end{figure}
+
+\subsubsection{Extended Kalman Filter}
+
+
+\begin{figure}[H]
+ \begin{flushleft}
+  \begin{tikzpicture}
+   \begin{axis}[
+     yticklabel style={
+       /pgf/number format/fixed,
+       /pgf/number format/precision=5
+      },
+     width=12cm,
+     height=5cm,
+     xmin=-1,
+     xmax=22,
+     xtick distance=2,
+     ytick distance=1,
+     xlabel={Time $[s]$},
+     ylabel={x state [m]},
+     legend pos=north west,
+     grid=both,
+     grid style={
+       line width=.1pt,
+       draw=gray!10},
+     major grid style={
+       line width=.2pt,
+       draw=gray!50
+      },
+      domain=0:22,
+    ]
+    \addplot+[color=red, dashed, mark=none,line width=1pt,mark size=1pt] table {plots/alpha_adapt_0_x0.csv};
+    \addlegendentry{adaptive}
+    \addplot+[color=blue, mark=none,line width=1pt,mark size=1pt] table {plots/alpha_ekf_0_x0.csv};
+    \addlegendentry{EKF}
+    \addplot+[color=gray, mark=none,line width=1pt,mark size=1pt, samples=2, dashed] {5.0};
+   \end{axis}
+  \end{tikzpicture}
+ \end{flushleft}
+ \caption{Repeated reference experiment with Extended Kalman Filter}\label{fig:ekfalpha}
+\end{figure}
+
+\begin{figure}[H]
+ \begin{flushleft}
+  \begin{tikzpicture}
+   \begin{axis}[
+     yticklabel style={
+       /pgf/number format/fixed,
+       /pgf/number format/precision=5
+      },
+     width=12cm,
+     height=5cm,
+     xmin=-1,
+     xmax=22,
+     xtick distance=2,
+     ytick distance=1,
+     xlabel={Time $[s]$},
+     ylabel={x state [m]},
+     legend pos=north west,
+     grid=both,
+     grid style={
+       line width=.1pt,
+       draw=gray!10},
+     major grid style={
+       line width=.2pt,
+       draw=gray!50
+      },
+      domain=0:22,
+    ]
+    \addplot+[color=red,dashed, mark=none,line width=1pt,mark size=1pt] table {plots/alpha_single_adapt_0_x0.csv};
+    \addlegendentry{adaptive}
+    \addplot+[color=blue, mark=none,line width=1pt,mark size=1pt] table {plots/alpha_single_ekf_0_x0.csv};
+    \addlegendentry{EKF}
+    \addplot+[color=gray, mark=none,line width=1pt,mark size=1pt, samples=2, dashed] {5.0};
+   \end{axis}
+  \end{tikzpicture}
+ \end{flushleft}
+ \caption{Repeated less stops reference experiment with Extended Kalman Filter}\label{fig:ekfalphasingle}
+\end{figure}
+
+\vspace{0.5cm}
+
+\vspace{0.5cm}
+
+\begin{figure}[H]
+ \begin{flushleft}
+  \begin{tikzpicture}
+   \begin{axis}[
+     yticklabel style={
+       /pgf/number format/fixed,
+       /pgf/number format/precision=5
+      },
+     width=12cm,
+     height=5cm,
+     xmin=-1,
+     xmax=22,
+     xtick distance=2,
+     ytick distance=2,
+     xlabel={Time $[s]$},
+     ylabel={x state [m]},
+     legend pos=north west,
+     grid=both,
+     grid style={
+       line width=.1pt,
+       draw=gray!10},
+     major grid style={
+       line width=.2pt,
+       draw=gray!50
+      },
+      domain=0:22,
+    ]
+    \addplot+[color=red, dashed, mark=none,line width=1pt,mark size=1pt] table {plots/alpha_multi_adapt_0_x0.csv};
+    \addlegendentry{adaptive}
+    \addplot+[color=blue, mark=none,line width=1pt,mark size=1pt] table {plots/alpha_multi_ekf_0_x0.csv};
+    \addlegendentry{EKF}
+    \addplot+[color=gray, mark=none,line width=1pt,mark size=1pt, samples=2, dashed] {5.0};
+    \addplot+[color=gray, mark=none,line width=1pt,mark size=1pt, samples=2, dashed] {10.0};
+   \end{axis}
+  \end{tikzpicture}
+ \end{flushleft}
+ \caption{Reference 10m distance experiment with Extended Kalman Filter}\label{fig:ekfalphamulti}
+\end{figure}
 
 \end{document}
