@@ -1,0 +1,392 @@
+\documentclass[class=article, crop=false]{standalone}
+%\usepackage[subpreambles=true]{standalone}
+\usepackage{import}
+\input{../packages}
+\begin{document}
+\pgfplotsset{width=14cm,compat=1.9}
+\section{Beta tuning}\label{sec:alpha_tune}
+
+\subsection{Reference}
+
+\vspace{0.5cm}
+
+\begin{figure}[H]
+\begin{flushleft}
+  \begin{tikzpicture}
+    \begin{axis}[
+      yticklabel style={
+        /pgf/number format/fixed,
+        /pgf/number format/precision=5
+      },
+      xmin=0,
+      xmax=46,
+      width=12cm,
+      height=5cm,
+      xtick distance=5,
+      ytick distance=0.04,
+      xlabel={Time $[s]$},
+      ylabel={$ u^\eta_k$ $[m/s]$},
+      grid=both,
+      grid style={
+        line width=.1pt,
+        draw=gray!10},
+        major grid style={
+          line width=.2pt,
+          draw=gray!50
+        },
+      ]
+      \addplot+[color=blue, mark=none,line width=1pt,mark size=1pt] table {plots/betas_2_u1.csv};
+    \end{axis}
+  \end{tikzpicture}
+\end{flushleft}
+
+\begin{flushleft}
+  \begin{tikzpicture}
+    \begin{axis}[
+      yticklabel style={
+        /pgf/number format/fixed,
+        /pgf/number format/precision=5
+      },
+      width=12cm,
+      height=5cm,
+      xmin=0,
+      xmax=46,
+      xtick distance=5,
+      ytick distance=0.5,
+      xlabel={Time $[s]$},
+      ylabel={$ y^\chi_k$ $[m/s^2] $},
+      grid=both,
+      grid style={
+        line width=.1pt,
+        draw=gray!10},
+        major grid style={
+          line width=.2pt,
+          draw=gray!50
+        },
+      ]
+      \addplot+[color=blue, mark=none,line width=1pt,mark size=1pt] table {plots/betas_2_y1.csv};
+    \end{axis}
+  \end{tikzpicture}
+\end{flushleft}
+\caption{$ \textbf{u}_k $ and $ \textbf{y}_k $ of the beta tuning reference experiment}\label{fig:betas_io}
+\end{figure}
+
+\vspace{0.5cm}
+
+\begin{figure}[H]
+ \begin{flushleft}
+  \begin{tikzpicture}
+   \begin{axis}[
+     yticklabel style={
+       /pgf/number format/fixed,
+       /pgf/number format/precision=5
+      },
+     width=12cm,
+     height=5cm,
+     xmin=-5,
+     xmax=46,
+     domain=0:46,
+     xtick distance=5,
+     ytick distance=1,
+     xlabel={Time $[s]$},
+     ylabel={$\Psi $ state [rad]},
+     legend pos=north west,
+     grid=both,
+     grid style={
+       line width=.1pt,
+       draw=gray!10},
+     major grid style={
+       line width=.2pt,
+       draw=gray!50
+      },
+      domain=0:46,
+    ]
+    \addplot+[color=teal, mark=none,line width=1pt,mark size=1pt] table {plots/betas_4_x3.csv};
+    \addlegendentry{6.6}
+    \addplot+[color=violet, mark=none,line width=1pt,mark size=1pt] table {plots/betas_3_x3.csv};
+    \addlegendentry{7.0}
+    \addplot+[color=black, mark=none,line width=1pt,mark size=1pt] table {plots/betas_2_x3.csv};
+    \addlegendentry{7.4}
+    \addplot+[color=red, mark=none,line width=1pt,mark size=1pt] table {plots/betas_1_x3.csv};
+    \addlegendentry{7.8}
+    \addplot+[color=blue, mark=none,line width=1pt,mark size=1pt] table {plots/betas_0_x3.csv};
+    \addlegendentry{8.2}
+    \addplot+[color=gray, mark=none,line width=1pt,mark size=1pt, samples=2, dashed] {0.0};
+   \end{axis}
+  \end{tikzpicture}
+ \end{flushleft}
+ \begin{flushleft}
+  \begin{tikzpicture}
+   \begin{axis}[
+     yticklabel style={
+       /pgf/number format/fixed,
+       /pgf/number format/precision=5
+      },
+     width=12cm,
+     height=5cm,
+     xtick distance=5,
+     ytick distance=0.5,
+     xmax=46,
+     xmin=-5,
+     domain=0:46,
+     xlabel={Time $[s]$},
+     ylabel={$\dot{\Psi}$ state [rad/s]},
+     legend pos=north west,
+     grid=both,
+     grid style={
+       line width=.1pt,
+       draw=gray!10},
+     major grid style={
+       line width=.2pt,
+       draw=gray!50
+      },
+    ]
+    \addplot+[color=teal, mark=none,line width=1pt,mark size=1pt] table {plots/betas_4_x4.csv};
+    \addlegendentry{6.6}
+    \addplot+[color=violet, mark=none,line width=1pt,mark size=1pt] table {plots/betas_3_x4.csv};
+    \addlegendentry{7.0}
+    \addplot+[color=black, mark=none,line width=1pt,mark size=1pt] table {plots/betas_2_x4.csv};
+    \addlegendentry{7.4}
+    \addplot+[color=red, mark=none,line width=1pt,mark size=1pt] table {plots/betas_1_x4.csv};
+    \addlegendentry{7.8}
+    \addplot+[color=blue, mark=none,line width=1pt,mark size=1pt] table {plots/betas_0_x4.csv};
+    \addlegendentry{8.2}
+   \end{axis}
+  \end{tikzpicture}
+ \end{flushleft}
+ \caption{Different $\beta$-s influence on the $\Psi$ and $\dot{\Psi}$ state}\label{fig:betas}
+\end{figure}
+
+\vspace{0.5cm}
+
+\begin{figure}[H]
+ \begin{flushleft}
+  \begin{tikzpicture}
+   \begin{axis}[
+     yticklabel style={
+       /pgf/number format/fixed,
+       /pgf/number format/precision=5
+      },
+     width=12cm,
+     height=5cm,
+     xtick distance=5,
+     ytick distance=1,
+     xmax=46,
+     xmin=-5,
+     domain=0:46,
+     xlabel={Time $[s]$},
+     ylabel={$\Psi$ state [rad]},
+     legend pos=north west,
+     grid=both,
+     grid style={
+       line width=.1pt,
+       draw=gray!10},
+     major grid style={
+       line width=.2pt,
+       draw=gray!50
+      },
+    ]
+    \addplot+[color=teal, mark=none,line width=1pt,mark size=1pt] table {plots/r2_ratios_4_x3.csv};
+    \addlegendentry{0.01}
+    \addplot+[color=violet, mark=none,line width=1pt,mark size=1pt] table {plots/r2_ratios_3_x3.csv};
+    \addlegendentry{0.1}
+    \addplot+[color=black, mark=none,line width=1pt,mark size=1pt] table {plots/r2_ratios_2_x3.csv};
+    \addlegendentry{1}
+    \addplot+[color=red, mark=none,line width=1pt,mark size=1pt] table {plots/r2_ratios_1_x3.csv};
+    \addlegendentry{10}
+    \addplot+[color=blue, mark=none,line width=1pt,mark size=1pt] table {plots/r2_ratios_0_x3.csv};
+    \addlegendentry{100}
+    \addplot+[color=gray, mark=none,line width=1pt,mark size=1pt, samples=2, dashed] {0.0};
+   \end{axis}
+  \end{tikzpicture}
+ \end{flushleft}
+ \begin{flushleft}
+  \begin{tikzpicture}
+   \begin{axis}[
+     yticklabel style={
+       /pgf/number format/fixed,
+       /pgf/number format/precision=5
+      },
+     width=12cm,
+     height=5cm,
+     xmax=46,
+     xmin=-5,
+     domain=0:46,
+     xtick distance=5,
+     ytick distance=0.5,
+     xlabel={Time $[s]$},
+     ylabel={$\dot{\Psi}$ state [rad/s]},
+     legend pos=north west,
+     grid=both,
+     grid style={
+       line width=.1pt,
+       draw=gray!10},
+     major grid style={
+       line width=.2pt,
+       draw=gray!50
+      },
+    ]
+    \addplot+[color=teal, mark=none,line width=1pt,mark size=1pt] table {plots/r2_ratios_4_x4.csv};
+    \addlegendentry{0.01}
+    \addplot+[color=violet, mark=none,line width=1pt,mark size=1pt] table {plots/r2_ratios_3_x4.csv};
+    \addlegendentry{0.1}
+    \addplot+[color=black, mark=none,line width=1pt,mark size=1pt] table {plots/r2_ratios_2_x4.csv};
+    \addlegendentry{1}
+    \addplot+[color=red, mark=none,line width=1pt,mark size=1pt] table {plots/r2_ratios_1_x4.csv};
+    \addlegendentry{10}
+    \addplot+[color=blue, mark=none,line width=1pt,mark size=1pt] table {plots/r2_ratios_0_x4.csv};
+    \addlegendentry{100}
+   \end{axis}
+  \end{tikzpicture}
+ \end{flushleft}
+ \caption{Different $\varrho_{\eta\chi}$-s influence on the $\Psi$ and $\dot{\Psi} state$}\label{fig:betaratios}
+\end{figure}
+
+\subsection{Testing}
+
+
+\begin{center}
+\begin{figure}[H]
+ \begin{flushleft}
+  \begin{tikzpicture}
+   \begin{axis}[
+     yticklabel style={
+       /pgf/number format/fixed,
+       /pgf/number format/precision=5
+      },
+     width=12cm,
+     height=5cm,
+     xtick distance=5,
+     ytick distance=1,
+     xmax=48,
+     xmin=-10,
+     domain=0:48,
+     xlabel={Time $[s]$},
+     ylabel={$\Psi$ state [rad]},
+     legend pos=north west,
+     grid=both,
+     grid style={
+       line width=.1pt,
+       draw=gray!10},
+     major grid style={
+       line width=.2pt,
+       draw=gray!50
+      },
+    ]
+    \addplot+[color=red, mark=none,line width=1pt,mark size=1pt, dashed] table {plots/betas_2_x3.csv};
+    \addlegendentry{reference}
+    \addplot+[color=blue, mark=none,line width=1pt,mark size=1pt] table {plots/betas_single_0_x3.csv};
+    \addlegendentry{few stops}
+   \end{axis}
+  \end{tikzpicture}
+ \end{flushleft}
+ \begin{flushleft}
+  \begin{tikzpicture}
+   \begin{axis}[
+     yticklabel style={
+       /pgf/number format/fixed,
+       /pgf/number format/precision=5
+      },
+     width=12cm,
+     height=5cm,
+     xmax=48,
+     xmin=-10,
+     domain=0:48,
+     xtick distance=5,
+     ytick distance=0.5,
+     xlabel={Time $[s]$},
+     ylabel={$\dot{\Psi}$ state [rad/s]},
+     legend pos=north west,
+     grid=both,
+     grid style={
+       line width=.1pt,
+       draw=gray!10},
+     major grid style={
+       line width=.2pt,
+       draw=gray!50
+      },
+    ]
+    \addplot+[color=red,dashed, mark=none,line width=1pt,mark size=1pt] table {plots/betas_2_x4.csv};
+    \addlegendentry{reference}
+    \addplot+[color=blue, mark=none,line width=1pt,mark size=1pt] table {plots/betas_single_0_x4.csv};
+    \addlegendentry{few stops}
+   \end{axis}
+  \end{tikzpicture}
+ \end{flushleft}
+ \caption{Repeated beta tuning reference experiment with less stops}\label{fig:betasfewstops}
+\end{figure}
+\end{center}
+
+\begin{center}
+\begin{figure}[H]
+ \begin{flushleft}
+  \begin{tikzpicture}
+   \begin{axis}[
+     yticklabel style={
+       /pgf/number format/fixed,
+       /pgf/number format/precision=5
+      },
+     width=12cm,
+     height=5cm,
+     xtick distance=5,
+     ytick distance=1,
+     xmin=-10,
+     xmax=48,
+     domain=0:48,
+     xlabel={Time $[s]$},
+     ylabel={$\Psi$ state [rad]},
+     legend pos=north west,
+     grid=both,
+     grid style={
+       line width=.1pt,
+       draw=gray!10},
+     major grid style={
+       line width=.2pt,
+       draw=gray!50
+      },
+    ]
+    \addplot+[color=red, dashed, mark=none,line width=1pt,mark size=1pt] table {plots/betas_2_x3.csv};
+    \addlegendentry{reference}
+    \addplot+[color=blue, mark=none,line width=1pt,mark size=1pt] table {plots/betas_multi_0_x3.csv};
+    \addlegendentry{10 turns}
+   \end{axis}
+  \end{tikzpicture}
+ \end{flushleft}
+ \begin{flushleft}
+  \begin{tikzpicture}
+   \begin{axis}[
+     yticklabel style={
+       /pgf/number format/fixed,
+       /pgf/number format/precision=5
+      },
+     width=12cm,
+     height=5cm,
+     xtick distance=5,
+     ytick distance=0.5,
+     xmin=-10,
+     xmax=48,
+     domain=0:48,
+     xlabel={Time $[s]$},
+     ylabel={$\dot{\Psi}$ state [rad/s]},
+     legend pos=north west,
+     grid=both,
+     grid style={
+       line width=.1pt,
+       draw=gray!10},
+     major grid style={
+       line width=.2pt,
+       draw=gray!50
+      },
+    ]
+    \addplot+[color=red, dashed, mark=none,line width=1pt,mark size=1pt] table {plots/betas_2_x4.csv};
+    \addlegendentry{reference}
+    \addplot+[color=blue, mark=none,line width=1pt,mark size=1pt] table {plots/betas_multi_0_x4.csv};
+    \addlegendentry{10 turns}
+   \end{axis}
+  \end{tikzpicture}
+ \end{flushleft}
+ \caption{Repeated beta tuning reference experiment with less stops}\label{fig:10turns}
+\end{figure}
+\end{center}
+
+\end{document}
