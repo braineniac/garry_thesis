@@ -7,6 +7,10 @@
 *.gz
 *.fls
 *latexmk
+*.dep
+*.dpth
+*.md5
+*.auxlock
 
 .kile/*
 

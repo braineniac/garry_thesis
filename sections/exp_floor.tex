@@ -1,11 +1,46 @@
 \documentclass[class=article, crop=false]{standalone}
 %\usepackage[subpreambles=true]{standalone}
 \usepackage{import}
-\input{../packages}
+%\input{../packages}
 \begin{document}
 \pgfplotsset{width=14cm,compat=1.9}
 \section{Floor Mapping}\label{sec:floor}
 
 
+\begin{center}
+\begin{figure}[H]
+ \begin{flushleft}
+  \begin{tikzpicture}
+   \begin{axis}[
+     yticklabel style={
+       /pgf/number format/fixed,
+       /pgf/number format/precision=5
+      },
+     width=12cm,
+     height=12cm,
+     xtick distance = 2.5,
+     ytick distance = 2.5,
+     xlabel={x state [m]},
+     ylabel={y state [m]},
+     legend pos=north west,
+     grid=both,
+     grid style={
+       line width=.1pt,
+       draw=gray!10},
+     major grid style={
+       line width=.2pt,
+       draw=gray!50
+      },
+    ]
+    \addplot+[color=red, mark=none,line width=1pt,mark size=1pt, dashed] table {plots/floor_adapt_0_x0x1.csv};
+    \addlegendentry{adaptive}
+    \addplot+[color=blue, mark=none,line width=1pt,mark size=1pt] table {plots/floor_ekf_0_x0x1.csv};
+    \addlegendentry{EKF}
+   \end{axis}
+  \end{tikzpicture}
+ \end{flushleft}
+ \caption{Floor experiment}\label{fig:floorxy}
+\end{figure}
+\end{center}
 
 \end{document}

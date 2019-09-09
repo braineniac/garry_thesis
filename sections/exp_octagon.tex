@@ -1,11 +1,144 @@
 \documentclass[class=article, crop=false]{standalone}
 %\usepackage[subpreambles=true]{standalone}
 \usepackage{import}
-\input{../packages}
+%\input{../packages}
 \begin{document}
 \pgfplotsset{width=14cm,compat=1.9}
 \section{Octagon}\label{sec:octagon}
 
+\begin{center}
+\begin{figure}[H]
+ \begin{flushleft}
+  \begin{tikzpicture}
+   \begin{axis}[
+     yticklabel style={
+       /pgf/number format/fixed,
+       /pgf/number format/precision=5
+      },
+     width=12cm,
+     height=12cm,
+     xlabel={x state [m]},
+     ylabel={y state [m]},
+     xtick distance= 0.5,
+     ytick distance=0.5,
+     legend pos=north west,
+     grid=both,
+     grid style={
+       line width=.1pt,
+       draw=gray!10},
+     major grid style={
+       line width=.2pt,
+       draw=gray!50
+      },
+    ]
+    \addplot+[color=red, mark=none,line width=1pt,mark size=1pt, dashed] table {plots/octagon_adapt_0_x0x1.csv};
+    \addlegendentry{adaptive}
+    \addplot+[color=blue, mark=none,line width=1pt,mark size=1pt] table {plots/octagon_ekf_0_x0x1.csv};
+    \addlegendentry{EKF}
+   \end{axis}
+  \end{tikzpicture}
+ \end{flushleft}
+ \caption{Repeated beta tuning reference experiment with less stops}\label{fig:octagonxy}
+\end{figure}
+\end{center}
+
+\begin{center}
+\begin{figure}[H]
+ \begin{flushleft}
+  \begin{tikzpicture}
+   \begin{axis}[
+     yticklabel style={
+       /pgf/number format/fixed,
+       /pgf/number format/precision=5
+      },
+     width=12cm,
+     height=5cm,
+     xmax=350,
+     domain=0:350,
+     xlabel={Time $[s]$},
+     ylabel={x state [m]},
+     legend pos=north west,
+     grid=both,
+     grid style={
+       line width=.1pt,
+       draw=gray!10},
+     major grid style={
+       line width=.2pt,
+       draw=gray!50
+      },
+    ]
+    \addplot+[color=red, mark=none,line width=1pt,mark size=1pt, dashed] table {plots/octagon_adapt_0_x0.csv};
+    \addlegendentry{adaptive}
+    \addplot+[color=blue, mark=none,line width=1pt,mark size=1pt] table {plots/octagon_ekf_0_x0.csv};
+    \addlegendentry{EKF}
+    \addplot+[color=gray, mark=none,line width=1pt,mark size=1pt, samples=2, dashed] {0.0};
+   \end{axis}
+  \end{tikzpicture}
+ \end{flushleft}
+ \begin{flushleft}
+  \begin{tikzpicture}
+   \begin{axis}[
+     yticklabel style={
+       /pgf/number format/fixed,
+       /pgf/number format/precision=5
+      },
+     width=12cm,
+     height=5cm,
+     xmax=350,
+     domain=0:350,
+     xlabel={Time $[s]$},
+     ylabel={y state [m]},
+     legend pos=north west,
+     grid=both,
+     grid style={
+       line width=.1pt,
+       draw=gray!10},
+     major grid style={
+       line width=.2pt,
+       draw=gray!50
+      },
+    ]
+    \addplot+[color=red,dashed, mark=none,line width=1pt,mark size=1pt] table {plots/octagon_adapt_0_x1.csv};
+    \addlegendentry{adaptive}
+    \addplot+[color=blue, mark=none,line width=1pt,mark size=1pt] table {plots/octagon_ekf_0_x1.csv};
+    \addlegendentry{EKF}
+    \addplot+[color=gray, mark=none,line width=1pt,mark size=1pt, samples=2, dashed] {0.0};
+   \end{axis}
+  \end{tikzpicture}
+ \end{flushleft}
+\begin{flushleft}
+  \begin{tikzpicture}
+   \begin{axis}[
+     yticklabel style={
+       /pgf/number format/fixed,
+       /pgf/number format/precision=5
+      },
+     width=12cm,
+     height=5cm,
+     ytick distance=1,
+     xmax = 350,
+     xlabel={Time $[s]$},
+     ylabel={$\Psi$ state [rad]},
+     legend pos=north west,
+     grid=both,
+     grid style={
+       line width=.1pt,
+       draw=gray!10},
+     major grid style={
+       line width=.2pt,
+       draw=gray!50
+      },
+    ]
+    \addplot+[color=red, mark=none,line width=1pt,mark size=1pt, dashed] table {plots/octagon_adapt_0_x3.csv};
+    \addlegendentry{adaptive}
+    \addplot+[color=blue, mark=none,line width=1pt,mark size=1pt] table {plots/octagon_ekf_0_x3.csv};
+    \addlegendentry{EKF}
+   \end{axis}
+  \end{tikzpicture}
+ \end{flushleft}
+ \caption{Repeated beta tuning reference experiment with less stops}\label{fig:octagon}
+\end{figure}
+\end{center}
 
 
 \end{document}

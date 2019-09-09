@@ -1,21 +1,20 @@
-\documentclass[class=article, crop=false]{standalone}
+\documentclass[class=report, crop=false]{standalone}
 %\usepackage[subpreambles=true]{standalone}
 \usepackage{import}
+\input{../packages}
 
 \begin{document}
 
-\chapter{Experiments}\label{cha:exp}
+%\chapter{Experiments}
 
 In our experiments with the platform, we first have to tune in our parameters, then evaluate the tuned system described in Section \ref{subsec:customkalman} in different scenarios to see how it performs.
 
 \import{sections/}{exp_alpha}
 
-%\ref{subsec:customkalman}.
+\import{sections/}{exp_beta}
 
-%\import{sections/}{adapt}
+\import{sections/}{exp_octagon}
 
-%\import{sections/}{simpleVsEKF}
-
-%\import{sections/}{circles}
+\import{sections/}{exp_floor}
 
 \end{document}

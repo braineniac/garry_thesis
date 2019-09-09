@@ -21,6 +21,13 @@
 \setlength{\parskip}{0.5em}
 \usepackage{indentfirst}
 \pgfplotsset{yticklabel style={text width=2em,align=right}}
+\usepgfplotslibrary{external}
+\usepackage{tikz}
+\usepackage{shellesc}
+\usetikzlibrary{external}
+\tikzexternalize[shell escape=-enable-write18]
+\tikzset{external/system call={lualatex \tikzexternalcheckshellescape -halt-on-error -interaction=batchmode -jobname "\image" "\texsource"}}
+
 
 % \usepackage{pgfplots}
 % \usetikzlibrary{pgfplots.groupplots}
@@ -40,4 +47,4 @@
 %
 %
 %
-% \tikzsetexternalprefix{graphics/pgfplots/} % Ordner muss ev. zuerst haendisch erstellt werden
+\tikzsetexternalprefix{graphics/} % Ordner muss ev. zuerst haendisch erstellt werden
