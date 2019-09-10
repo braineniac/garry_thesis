@@ -9,7 +9,7 @@
 We set up an experiment where we can observe drifts and test the accuracy of our system. We taped down 8 straight equidistant lines with 1.5m distance from the middle and marked the 1.5 meter mark on the tape. This way if we drive our robot from point to point, the path will be an octagonal shape where we can see drifts in accuracy over longer periods if we do multiple loops through the same path. We can see a part of this setup in Figure \ref{fig:octagonexp}.
 
 \begin{figure}[H]
-\includegraphics[width=12cm, height=7cm]{images/octagon.png}
+\includegraphics[width=12cm, height=7cm]{images/octagon.jpg}
 \caption{Octagon experiment setup}
 \end{figure}\label{fig:octagonexp}
 
@@ -68,8 +68,9 @@ We will run the recorded data with our adaptive Kalman Filter and Extended Kalma
       },
      width=12cm,
      height=5cm,
-     xmax=350,
-     domain=0:350,
+     xmax=550,
+     domain=0:550,
+     ytick distance = 0.5,
      xlabel={Time $[s]$},
      ylabel={x state [m]},
      legend pos=north west,
@@ -99,8 +100,9 @@ We will run the recorded data with our adaptive Kalman Filter and Extended Kalma
       },
      width=12cm,
      height=5cm,
-     xmax=350,
-     domain=0:350,
+     xmax=550,
+     ytick distance = 0.5,
+     domain=0:550,
      xlabel={Time $[s]$},
      ylabel={y state [m]},
      legend pos=north west,
@@ -131,7 +133,7 @@ We will run the recorded data with our adaptive Kalman Filter and Extended Kalma
      width=12cm,
      height=5cm,
      ytick distance=1,
-     xmax = 350,
+     xmax = 550,
      xlabel={Time $[s]$},
      ylabel={$\Psi$ state [rad]},
      legend pos=north west,

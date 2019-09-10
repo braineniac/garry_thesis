@@ -14,9 +14,9 @@ When tuning our $\beta$ parameter, we have to be concious also about our $\varrh
 
 Due to the physical setup of our robot, there is a strong non-linear correlation between our input signal and the turn speed. Once the input signal is high, the motors turn one wheel in forward and the other one in the opposite direction that would ideally create a constant turn speed.
 
-But since this turn speed is relatively high, we turn in short bursts to turn the robot in the direction we want. The motors need an acceleration period before they reach their tops speed and because of the short input bursts, the turn speed is non-linear, which means that we can't "trust" our $\u^\eta$ and should rely mostly on our gyroscope measurement $y^\chi$ on the IMU.
+But since this turn speed is relatively high, we turn in short bursts to turn the robot in the direction we want. The motors need an acceleration period before they reach their tops speed and because of the short input bursts, the turn speed is non-linear, which means that we can't "trust" our $u^\eta$ and should rely mostly on our gyroscope measurement $y^\chi$ on the IMU.
 
-To achieve the best accuracy, we have to tune in two parameters. $\varrho^{\eta\chi}$ should be relatively high and our $\beta$ should scale our $\u^\eta$ into the a similar value as $y^\chi$, but the the $\Psi$ and $\dot{\Psi}$ should be largely independant of $\beta$.
+To achieve the best accuracy, we have to tune in two parameters. $\varrho^{\eta\chi}$ should be relatively high and our $\beta$ should scale our $u^\eta$ into the a similar value as $y^\chi$, but the the $\Psi$ and $\dot{\Psi}$ should be largely independant of $\beta$.
 
 \vspace{0.5cm}
 

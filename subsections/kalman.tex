@@ -1,7 +1,8 @@
-\documentclass[class=article, crop=false]{standalone}
+\documentclass[class=report, crop=false]{standalone}
 %\usepackage[subpreambles=true]{standalone}
 \usepackage{import}
 \input{../packages}
+
 \begin{document}
 
 \subsection{Custom adaptive Kalman filter}\label{subsec:customkalman}
@@ -366,7 +367,6 @@ In order to test our filters adaptive feature, we set up a simulation of the sys
       },
       width=12cm,
       height=5cm,
-      xtick distance=0.5,
       ytick distance=0.05,
       xlabel={Time $[s]$},
       ylabel={$ \textbf{u}^\vartheta_k$ $[m/s]$},
@@ -379,7 +379,7 @@ In order to test our filters adaptive feature, we set up a simulation of the sys
           draw=gray!50
         },
       ]
-      \addplot+[color=blue, mark=none,line width=1pt,mark size=1pt] table {plots/sim_line_u0.csv};
+      \addplot+[color=blue, mark=none,line width=1pt,mark size=1pt] table {plots/sim_line_0_u0.csv};
     \end{axis}
   \end{tikzpicture}
 \end{flushleft}
@@ -393,7 +393,6 @@ In order to test our filters adaptive feature, we set up a simulation of the sys
       },
       width=12cm,
       height=5cm,
-      xtick distance=0.5,
       ytick distance=3,
       xlabel={Time $[s]$},
       ylabel={$ \textbf{y}^\zeta_k$ $[m/s^2] $},
@@ -406,7 +405,7 @@ In order to test our filters adaptive feature, we set up a simulation of the sys
           draw=gray!50
         },
       ]
-      \addplot+[color=blue, mark=none,line width=1pt,mark size=1pt] table {plots/sim_line_y0.csv};
+      \addplot+[color=blue, mark=none,line width=1pt,mark size=1pt] table {plots/sim_line_0_y0.csv};
     \end{axis}
   \end{tikzpicture}
 \end{flushleft}
@@ -429,7 +428,6 @@ We then run the comparison between our Kalman Filter with and without the adapti
       },
       width=12cm,
       height=5cm,
-      xtick distance=0.5,
       ytick distance=0.00002,
       xlabel={Time $[s]$},
       ylabel={$ \textbf{Q}^\vartheta_k $},
@@ -443,7 +441,7 @@ We then run the comparison between our Kalman Filter with and without the adapti
           draw=gray!50
         },
       ]
-      \addplot+[color=red, mark=none,line width=1pt,mark size=1pt] table {plots/sim_line_adaptive_Q0.csv};
+      \addplot+[color=red, mark=none,line width=1pt,mark size=1pt] table {plots/sim_line_adaptive_0_Q0.csv};
     \end{axis}
   \end{tikzpicture}
 \end{flushleft}
@@ -466,7 +464,6 @@ The $\textbf{Q}^\vartheta_k$ plot in Figure \ref{fig:sim_Q0} resembles our mirro
       },
      width=12cm,
      height=5cm,
-     xtick distance=0.5,
      ytick distance=0.2,
      xlabel={Time $[s]$},
      ylabel={x state [m]},
@@ -480,9 +477,9 @@ The $\textbf{Q}^\vartheta_k$ plot in Figure \ref{fig:sim_Q0} resembles our mirro
        draw=gray!50
       },
     ]
-    \addplot+[color=blue, mark=none,line width=1pt,mark size=1pt, dashed] table {plots/sim_line_x0.csv};
+    \addplot+[color=blue, mark=none,line width=1pt,mark size=1pt, dashed] table {plots/sim_line_0_x0.csv};
     \addlegendentry{disabled}
-    \addplot+[color=red, mark=none,line width=1pt,mark size=1pt] table {plots/sim_line_adaptive_x0.csv};
+    \addplot+[color=red, mark=none,line width=1pt,mark size=1pt] table {plots/sim_line_adaptive_0_x0.csv};
     \addlegendentry{enabled}
    \end{axis}
   \end{tikzpicture}
@@ -496,7 +493,6 @@ The $\textbf{Q}^\vartheta_k$ plot in Figure \ref{fig:sim_Q0} resembles our mirro
       },
      width=12cm,
      height=5cm,
-     xtick distance=0.5,
      ytick distance=0.1,
      xlabel={Time $[s]$},
      ylabel={v state [m/s]},
@@ -510,9 +506,9 @@ The $\textbf{Q}^\vartheta_k$ plot in Figure \ref{fig:sim_Q0} resembles our mirro
        draw=gray!50
       },
     ]
-    \addplot+[color=blue, mark=none,line width=1pt,mark size=1pt, dashed] table {plots/sim_line_x2.csv};
+    \addplot+[color=blue, mark=none,line width=1pt,mark size=1pt, dashed] table {plots/sim_line_0_x2.csv};
     \addlegendentry{disabled}
-    \addplot+[color=red, mark=none,line width=1pt,mark size=1pt] table {plots/sim_line_adaptive_x2.csv};
+    \addplot+[color=red, mark=none,line width=1pt,mark size=1pt] table {plots/sim_line_adaptive_0_x2.csv};
     \addlegendentry{enabled}
    \end{axis}
   \end{tikzpicture}
