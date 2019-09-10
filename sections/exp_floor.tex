@@ -6,6 +6,9 @@
 \pgfplotsset{width=14cm,compat=1.9}
 \section{Floor Mapping}\label{sec:floor}
 
+For our last experiment, we used the same setup as in Section \ref{sec:octagon} to see if our conclusions hold up in a more realistic test: mapping the floor of a corridor.
+
+It is about 33 meters in length and 10 meters wide. We also drove through a small 10mx2m part on the left side. There were also some glass doors that had to be manuevered around.
 
 \begin{center}
 \begin{figure}[H]
@@ -42,5 +45,7 @@
  \caption{Floor experiment}\label{fig:floorxy}
 \end{figure}
 \end{center}
+
+Figure \ref{fig:floorxy} clearly shows that EKF maps the floor way more accurately. We can still detect the floor shape with our adaptive Kalman Filter, because the inaccuracies come from our turns. Our accuracy with EKF is in the 1m radius from our original starting point.
 
 \end{document}
