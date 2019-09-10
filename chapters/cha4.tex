@@ -1,13 +1,19 @@
 \documentclass[class=report, crop=false]{standalone}
 %\usepackage[subpreambles=true]{standalone}
 \usepackage{import}
-\input{../packages}
+%\input{../packages}
 
 \begin{document}
 
-%\chapter{Experiments}
+\chapter{Experiments}
 
-In our experiments with the platform, we first have to tune in our parameters, then evaluate the tuned system described in Section \ref{subsec:customkalman} in different scenarios to see how it performs.
+In our experiments with the platform we show how we tuned some of the parameters described in Section \ref{sec:kalman} and see how our adaptive Kalman Filter performs compared to the de facto standard non-linear Kalman Filter, the Extended Kalman Filter.
+
+During the parameter tuning experiments, we first pick a reference experiment on which we base the tuning of our parameter, then we test it in different but also similar scenarios to see how well it describes our real world trajectory.
+
+After choosing a parameter value we run the same experiment with the Extended Kalman Filter(EKF) to see how switching the Kalman Filter effects the trajectory with the same parameters. We used the ROS package robot\_localization with the ekf\_localization\_node. We inserted a node between the sensor nodes and EKF to scale our input vector $\textbf{u}_k$ with $\alpha$ and $\beta$, and set the covariances of our sensors.
+
+All of the experiments were performed by recording the sensor data on the robot while performing the experiment. Then we transformed the sensor data to the same reference point and ran the Kalman Filters offline. This process was automated to ensure paramater consistency during each run, but could also be easily run online on the robot.
 
 \import{sections/}{exp_alpha}
 
