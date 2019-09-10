@@ -11,7 +11,7 @@ In our experiments with the platform we show how we tuned some of the parameters
 
 During the parameter tuning experiments, we first pick a reference experiment on which we base the tuning of our parameter, then we test it in different but also similar scenarios to see how well it describes our real world trajectory.
 
-After choosing a parameter value we run the same experiment with the Extended Kalman Filter(EKF) to see how switching the Kalman Filter effects the trajectory with the same parameters. We used the ROS package robot\_localization with the ekf\_localization\_node. We inserted a node between the sensor nodes and EKF to scale our input vector $\textbf{u}_k$ with $\alpha$ and $\beta$, and set the covariances of our sensors.
+After choosing a parameter value we run the same experiment with the Extended Kalman Filter(EKF) to see how switching the Kalman Filter effects the trajectory with the same parameters. We used the ROS package robot\_localization with the ekf\_localization\_node. We inserted a node between the sensor nodes and EKF to scale our input vector $\textbf{u}_k$ with $\alpha$ and $\beta$, and set the covariances of our sensors. The node ran with a rate of 10Hz to properly use the sensor data.
 
 All of the experiments were performed by recording the sensor data on the robot while performing the experiment. Then we transformed the sensor data to the same reference point and ran the Kalman Filters offline. This process was automated to ensure paramater consistency during each run, but could also be easily run online on the robot.
 

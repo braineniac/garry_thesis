@@ -4,9 +4,19 @@
 %\input{../packages}
 \begin{document}
 \pgfplotsset{width=14cm,compat=1.9}
-\section{Beta tuning}\label{sec:alpha_tune}
+\section{Beta tuning}\label{sec:betatune}
+
+We already set our $\alpha$ parameter in the \ref{sec:alphatune}, so we use that for our next experiments. But since we only track the $\Psi$ and $\dot{\Psi}$ states, the $\alpha$ parameter doesn't influence the results.
 
 \subsection{Reference}
+
+When tuning our $\beta$ parameter, we have to be concious also about our $\varrho^{\eta\chi}$, since physical dimension of our input and are the same. This means that the "trust" we place on the input directly effects our $\dot{\Psi}$ state.
+
+Due to the physical setup of our robot, there is a strong non-linear correlation between our input signal and the turn speed. Once the input signal is high, the motors turn one wheel in forward and the other one in the opposite direction that would ideally create a constant turn speed.
+
+But since this turn speed is relatively high, we turn in short bursts to turn the robot in the direction we want. The motors need an acceleration period before they reach their tops speed and because of the short input bursts, the turn speed is non-linear, which means that we can't "trust" our $\u^\eta$ and should rely mostly on our gyroscope measurement $y^\chi$ on the IMU.
+
+To achieve the best accuracy, we have to tune in two parameters. $\varrho^{\eta\chi}$ should be relatively high and our $\beta$ should scale our $\u^\eta$ into the a similar value as $y^\chi$, but the the $\Psi$ and $\dot{\Psi}$ should be largely independant of $\beta$.
 
 \vspace{0.5cm}
 
@@ -154,10 +164,11 @@
    \end{axis}
   \end{tikzpicture}
  \end{flushleft}
- \caption{Different $\beta$-s influence on the $\Psi$ and $\dot{\Psi}$ state}\label{fig:betas}
+ \caption{Different $\beta$-s influence on the $\Psi$ and $\dot{\Psi}$ state in the beta tuning reference experiment}\label{fig:betas}
 \end{figure}
 
 \vspace{0.5cm}
+
 
 \begin{figure}[H]
  \begin{flushleft}
@@ -242,9 +253,13 @@
  \caption{Different $\varrho_{\eta\chi}$-s influence on the $\Psi$ and $\dot{\Psi} state$}\label{fig:betaratios}
 \end{figure}
 
-\subsection{Testing}
+\vspace{0.5cm}
 
-\subsubsection{Kalman Filter}
+This is what we see in Figure \ref{fig:betas} in our 5 turns reference experiment. We set the ratio to $\varrho^{\eta\chi} = 100$, so even bigger changes in beta have almost no impact on the $\Psi$ and $\dot{\Psi}$. In Figure \ref{fig:betaratios} we can observe what happens if the ratio changes. We sticked to $\varrho^{\eta\chi} = 100$ to have better accuracy and $\beta = 7.4$.
+
+\subsection{Testing}\label{subsec:betatesting}
+
+We do a similar testing approach as in Section \ref{subsec:alphatesting} and do an experiment where we turn 5 times without stopping and where we turn 10 times.
 
 \begin{center}
 \begin{figure}[H]
@@ -314,9 +329,11 @@
    \end{axis}
   \end{tikzpicture}
  \end{flushleft}
- \caption{Repeated beta tuning reference experiment with less stops}\label{fig:betasingle}
+ \caption{Beta tuning reference experiment with no stops using a Kalman Filter}\label{fig:betasingle}
 \end{figure}
 \end{center}
+
+\vspace{0.5cm}
 
 \begin{center}
 \begin{figure}[H]
@@ -386,11 +403,11 @@
    \end{axis}
   \end{tikzpicture}
  \end{flushleft}
- \caption{Repeated beta tuning reference experiment with less stops}\label{fig:betamulti}
+ \caption{Beta tuning reference experiment with 10 turns using a Kalman Filter}\label{fig:betamulti}
 \end{figure}
 \end{center}
 
-\subsubsection{Adaptive Kalman Filter}
+Now let's repeat the experiments with the adaptive Kalman Filter.
 
 \begin{center}
 \begin{figure}[H]
@@ -460,7 +477,7 @@
    \end{axis}
   \end{tikzpicture}
  \end{flushleft}
- \caption{Repeated beta tuning reference experiment with less stops}\label{fig:adaptbeta}
+ \caption{Beta tuning reference experiment using the adaptive Kalman Filter}\label{fig:adaptbeta}
 \end{figure}
 \end{center}
 
@@ -532,7 +549,7 @@
    \end{axis}
   \end{tikzpicture}
  \end{flushleft}
- \caption{Repeated beta tuning reference experiment with less stops}\label{fig:adaptbetasingle}
+ \caption{Beta tuning reference experiment with no stops using the adaptive Kalman Filter}\label{fig:adaptbetasingle}
 \end{figure}
 \end{center}
 
@@ -604,11 +621,13 @@
    \end{axis}
   \end{tikzpicture}
  \end{flushleft}
- \caption{Repeated beta tuning reference experiment with less stops}\label{fig:adaptbetamulti}
+ \caption{Beta tuning reference experiment with 10 turns using the adaptive Kalman Filter}\label{fig:adaptbetamulti}
 \end{figure}
 \end{center}
 
-\subsubsection{Extended Kalman Filter(EKF)}
+We can see from Figures \ref{fig:adaptbeta}, \ref{fig:adaptbetasingle} and \ref{fig:adaptbetamulti} that the adaptive Kalman Filter barely effects the state estimations.
+
+Next, let's run the same experiments with the Extended Kalman Filter.
 
 \begin{center}
 \begin{figure}[H]
@@ -678,81 +697,11 @@
    \end{axis}
   \end{tikzpicture}
  \end{flushleft}
- \caption{Repeated beta tuning reference experiment with less stops}\label{fig:ekfbeta}
+ \caption{Beta tuning reference experiment using the Extended Kalman Filter}\label{fig:ekfbeta}
 \end{figure}
 \end{center}
 
-\begin{center}
-\begin{figure}[H]
- \begin{flushleft}
-  \begin{tikzpicture}
-   \begin{axis}[
-     yticklabel style={
-       /pgf/number format/fixed,
-       /pgf/number format/precision=5
-      },
-     width=12cm,
-     height=5cm,
-     xtick distance=5,
-     ytick distance=1,
-     xmin=-10,
-     xmax=48,
-     domain=0:48,
-     xlabel={Time $[s]$},
-     ylabel={$\Psi$ state [rad]},
-     legend pos=north west,
-     grid=both,
-     grid style={
-       line width=.1pt,
-       draw=gray!10},
-     major grid style={
-       line width=.2pt,
-       draw=gray!50
-      },
-    ]
-    \addplot+[color=red, dashed, mark=none,line width=1pt,mark size=1pt] table {plots/beta_multi_adapt_0_x3.csv};
-    \addlegendentry{adaptive}
-    \addplot+[color=blue, mark=none,line width=1pt,mark size=1pt] table {plots/beta_multi_ekf_0_x3.csv};
-    \addlegendentry{EKF}
-   \end{axis}
-  \end{tikzpicture}
- \end{flushleft}
- \begin{flushleft}
-  \begin{tikzpicture}
-   \begin{axis}[
-     yticklabel style={
-       /pgf/number format/fixed,
-       /pgf/number format/precision=5
-      },
-     width=12cm,
-     height=5cm,
-     xtick distance=5,
-     ytick distance=0.5,
-     xmin=-10,
-     xmax=48,
-     domain=0:48,
-     xlabel={Time $[s]$},
-     ylabel={$\dot{\Psi}$ state [rad/s]},
-     legend pos=north west,
-     grid=both,
-     grid style={
-       line width=.1pt,
-       draw=gray!10},
-     major grid style={
-       line width=.2pt,
-       draw=gray!50
-      },
-    ]
-    \addplot+[color=red, dashed, mark=none,line width=1pt,mark size=1pt] table {plots/beta_multi_adapt_0_x4.csv};
-    \addlegendentry{adaptive}
-    \addplot+[color=blue, mark=none,line width=1pt,mark size=1pt] table {plots/beta_multi_ekf_0_x4.csv};
-    \addlegendentry{EKF}
-   \end{axis}
-  \end{tikzpicture}
- \end{flushleft}
- \caption{Repeated beta tuning reference experiment with less stops}\label{fig:ekfbetamulti}
-\end{figure}
-\end{center}
+\vspace{0.5cm}
 
 \begin{center}
 \begin{figure}[H]
@@ -822,8 +771,84 @@
    \end{axis}
   \end{tikzpicture}
  \end{flushleft}
- \caption{Repeated beta tuning reference experiment with less stops}\label{fig:ekfbetasingle}
+ \caption{Beta tuning reference experiment with no stops using the Extended Kalman Filter}\label{fig:ekfbetasingle}
 \end{figure}
 \end{center}
+
+\vspace{0.5cm}
+
+\begin{center}
+\begin{figure}[H]
+ \begin{flushleft}
+  \begin{tikzpicture}
+   \begin{axis}[
+     yticklabel style={
+       /pgf/number format/fixed,
+       /pgf/number format/precision=5
+      },
+     width=12cm,
+     height=5cm,
+     xtick distance=5,
+     ytick distance=1,
+     xmin=-10,
+     xmax=48,
+     domain=0:48,
+     xlabel={Time $[s]$},
+     ylabel={$\Psi$ state [rad]},
+     legend pos=north west,
+     grid=both,
+     grid style={
+       line width=.1pt,
+       draw=gray!10},
+     major grid style={
+       line width=.2pt,
+       draw=gray!50
+      },
+    ]
+    \addplot+[color=red, dashed, mark=none,line width=1pt,mark size=1pt] table {plots/beta_multi_adapt_0_x3.csv};
+    \addlegendentry{adaptive}
+    \addplot+[color=blue, mark=none,line width=1pt,mark size=1pt] table {plots/beta_multi_ekf_0_x3.csv};
+    \addlegendentry{EKF}
+   \end{axis}
+  \end{tikzpicture}
+ \end{flushleft}
+ \begin{flushleft}
+  \begin{tikzpicture}
+   \begin{axis}[
+     yticklabel style={
+       /pgf/number format/fixed,
+       /pgf/number format/precision=5
+      },
+     width=12cm,
+     height=5cm,
+     xtick distance=5,
+     ytick distance=0.5,
+     xmin=-10,
+     xmax=48,
+     domain=0:48,
+     xlabel={Time $[s]$},
+     ylabel={$\dot{\Psi}$ state [rad/s]},
+     legend pos=north west,
+     grid=both,
+     grid style={
+       line width=.1pt,
+       draw=gray!10},
+     major grid style={
+       line width=.2pt,
+       draw=gray!50
+      },
+    ]
+    \addplot+[color=red, dashed, mark=none,line width=1pt,mark size=1pt] table {plots/beta_multi_adapt_0_x4.csv};
+    \addlegendentry{adaptive}
+    \addplot+[color=blue, mark=none,line width=1pt,mark size=1pt] table {plots/beta_multi_ekf_0_x4.csv};
+    \addlegendentry{EKF}
+   \end{axis}
+  \end{tikzpicture}
+ \end{flushleft}
+ \caption{Beta tuning reference experiment with no stops using the Extended Kalman Filter}\label{fig:ekfbetamulti}
+\end{figure}
+\end{center}
+
+We can observe from the EKF experiments in Figures \ref{fig:ekfbeta}, \ref{fig:ekfbetasingle} and \ref{fig:ekfbetamulti} that there are some differences in the state estimations. We will have to do different tests to determine if the accuracy is actually better than with our adaptive Kalman Filter.
 
 \end{document}
