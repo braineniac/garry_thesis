@@ -6,9 +6,11 @@
 \pgfplotsset{width=14cm,compat=1.9}
 \section{Floor Mapping}\label{sec:floor}
 
-For our last experiment, we used the same setup as in Section \ref{sec:octagon} to see if our conclusions hold up in a more realistic test: mapping the floor of a corridor.
+In this experiment we do a more realistic test to see differences in our adaptive Kalaman Filter and EKF.
 
-It is about 33 meters in length and 10 meters wide. We also drove through a small 10mx2m part on the left side. There were also some glass doors that had to be manuevered around.
+We drive around in a corridor about 33 meters in length and 2.5 meters wide. We also drove through a small 10 meters long and 2.5 meters wide side corridor on the left side. There were also some glass doors that we manuevered around.
+
+First let's try see our trajectory with the settings from Section \ref{subsec:betatesting}.
 
 \begin{center}
 \begin{figure}[H]
@@ -21,8 +23,8 @@ It is about 33 meters in length and 10 meters wide. We also drove through a smal
       },
      width=12cm,
      height=12cm,
-     xtick distance = 2.5,
-     ytick distance = 2.5,
+     xtick distance = 3,
+     ytick distance = 3,
      xlabel={x state [m]},
      ylabel={y state [m]},
      legend pos=north west,
@@ -46,6 +48,84 @@ It is about 33 meters in length and 10 meters wide. We also drove through a smal
 \end{figure}
 \end{center}
 
-Figure \ref{fig:floorxy} clearly shows that EKF maps the floor way more accurately. We can still detect the floor shape with our adaptive Kalman Filter, because the inaccuracies come from our turns. Our accuracy with EKF is in the 1m radius from our original starting point.
+Figure \ref{fig:floorxy} clearly shows that EKF maps the floor way more accurately. We can still detect the floor shape with our adaptive Kalman Filter, because the inaccuracies come from our turns. Our accuracy with EKF is in the 1m radius from our original starting point without any loops closing methods.
+
+It seems that EKF uses the $u_\eta$ input to some degree to make the estimation more accurate. Let's see what happens if we change $\varrho^{\eta\chi}$.
+
+
+\begin{center}
+\begin{figure}[H]
+ \begin{flushleft}
+  \begin{tikzpicture}
+   \begin{axis}[
+     yticklabel style={
+       /pgf/number format/fixed,
+       /pgf/number format/precision=5
+      },
+     width=12cm,
+     height=12cm,
+     xtick distance = 3,
+     ytick distance = 3,
+     xlabel={x state [m]},
+     ylabel={y state [m]},
+     legend pos=north west,
+     grid=both,
+     grid style={
+       line width=.1pt,
+       draw=gray!10},
+     major grid style={
+       line width=.2pt,
+       draw=gray!50
+      },
+    ]
+    \addplot+[color=red, mark=none,line width=1pt,mark size=1pt, dashed] table {plots/floor_adapt_100_x0x1.csv};
+    \addlegendentry{adaptive}
+    \addplot+[color=blue, mark=none,line width=1pt,mark size=1pt] table {plots/floor_ekf_100_x0x1.csv};
+    \addlegendentry{EKF}
+   \end{axis}
+  \end{tikzpicture}
+ \end{flushleft}
+ \caption{Floor experiment with $\varrho^{\eta\chi} = 100$r}\label{fig:floor100}
+\end{figure}
+\end{center}
+
+
+\begin{center}
+\begin{figure}[H]
+ \begin{flushleft}
+  \begin{tikzpicture}
+   \begin{axis}[
+     yticklabel style={
+       /pgf/number format/fixed,
+       /pgf/number format/precision=5
+      },
+     width=12cm,
+     height=12cm,
+     xtick distance = 3,
+     ytick distance = 3,
+     xlabel={x state [m]},
+     ylabel={y state [m]},
+     legend pos=north west,
+     grid=both,
+     grid style={
+       line width=.1pt,
+       draw=gray!10},
+     major grid style={
+       line width=.2pt,
+       draw=gray!50
+      },
+    ]
+    \addplot+[color=red, mark=none,line width=1pt,mark size=1pt, dashed] table {plots/floor_adapt_1_x0x1.csv};
+    \addlegendentry{adaptive}
+    \addplot+[color=blue, mark=none,line width=1pt,mark size=1pt] table {plots/floor_ekf_1_x0x1.csv};
+    \addlegendentry{EKF}
+   \end{axis}
+  \end{tikzpicture}
+ \end{flushleft}
+ \caption{Floor experiment with $\varrho^{\eta\chi} = 1$}\label{fig:floor1}
+\end{figure}
+\end{center}
+
+We see that in Figures \ref{fig:floor100} and \ref{fig:floor1} that EKF is much more sensitive to changes in $\varrho^{\eta\chi}$ and a value of around $\varrho^{\eta\chi} = 10$ is a good balance between rejecting and including the $u_\eta$ input.
 
 \end{document}

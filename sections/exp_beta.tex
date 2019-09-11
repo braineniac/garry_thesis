@@ -10,13 +10,15 @@ We already set our $\alpha$ parameter in the \ref{sec:alphatune}, so we use that
 
 \subsection{Reference}
 
-When tuning our $\beta$ parameter, we have to be concious also about our $\varrho^{\eta\chi}$, since physical dimension of our input and are the same. This means that the "trust" we place on the input directly effects our $\dot{\Psi}$ state.
+When tuning our $\beta$ parameter, we have to be concious also about our $\varrho^{\eta\chi}$, since the physical dimension of our $u_\eta $ input and $y_\chi$ output are the same. This means that the "trust" we place on one of them directly effects our $\dot{\Psi}$ state.
 
 Due to the physical setup of our robot, there is a strong non-linear correlation between our input signal and the turn speed. Once the input signal is high, the motors turn one wheel in forward and the other one in the opposite direction that would ideally create a constant turn speed.
 
-But since this turn speed is relatively high, we turn in short bursts to turn the robot in the direction we want. The motors need an acceleration period before they reach their tops speed and because of the short input bursts, the turn speed is non-linear, which means that we can't "trust" our $u^\eta$ and should rely mostly on our gyroscope measurement $y^\chi$ on the IMU.
+But since the motors move only after a certain threshold, where they overcome sticktion, this turn speed is relatively high, we turn in short bursts. The motors need an acceleration period before they reach their tops speed and because of the short input bursts, the turn speed is non-linear, which means that we can't "trust" our $u^\eta$ and should rely mostly on our gyroscope measurement $y^\chi$ on the IMU.
 
 To achieve the best accuracy, we have to tune in two parameters. $\varrho^{\eta\chi}$ should be relatively high and our $\beta$ should scale our $u^\eta$ into the a similar value as $y^\chi$, but the the $\Psi$ and $\dot{\Psi}$ should be largely independant of $\beta$.
+
+In our reference experiment we turn 5 times and see if with our set $\beta$ and $\varrho_{\eta\chi}$ the turns are there in the $\Psi$ state.
 
 \vspace{0.5cm}
 
@@ -164,11 +166,10 @@ To achieve the best accuracy, we have to tune in two parameters. $\varrho^{\eta\
    \end{axis}
   \end{tikzpicture}
  \end{flushleft}
- \caption{Different $\beta$-s influence on the $\Psi$ and $\dot{\Psi}$ state in the beta tuning reference experiment}\label{fig:betas}
+ \caption{Different $\beta$-s influence on the $\Psi$ and $\dot{\Psi}$ state in the reference experiment}\label{fig:betas}
 \end{figure}
 
 \vspace{0.5cm}
-
 
 \begin{figure}[H]
  \begin{flushleft}
@@ -197,17 +198,16 @@ To achieve the best accuracy, we have to tune in two parameters. $\varrho^{\eta\
        draw=gray!50
       },
     ]
-    \addplot+[color=teal, mark=none,line width=1pt,mark size=1pt] table {plots/r2_ratios_4_x3.csv};
+    \addplot+[color=teal, mark=none,line width=1pt,mark size=1pt] table {plots/r2_ratios_0_x3.csv};
     \addlegendentry{0.01}
-    \addplot+[color=violet, mark=none,line width=1pt,mark size=1pt] table {plots/r2_ratios_3_x3.csv};
+    \addplot+[color=violet, mark=none,line width=1pt,mark size=1pt] table {plots/r2_ratios_1_x3.csv};
     \addlegendentry{0.1}
     \addplot+[color=black, mark=none,line width=1pt,mark size=1pt] table {plots/r2_ratios_2_x3.csv};
     \addlegendentry{1}
-    \addplot+[color=red, mark=none,line width=1pt,mark size=1pt] table {plots/r2_ratios_1_x3.csv};
+    \addplot+[color=red, mark=none,line width=1pt,mark size=1pt] table {plots/r2_ratios_3_x3.csv};
     \addlegendentry{10}
-    \addplot+[color=blue, mark=none,line width=1pt,mark size=1pt] table {plots/r2_ratios_0_x3.csv};
+    \addplot+[color=blue, mark=none,line width=1pt,mark size=1pt] table {plots/r2_ratios_4_x3.csv};
     \addlegendentry{100}
-    \addplot+[color=gray, mark=none,line width=1pt,mark size=1pt, samples=2, dashed] {0.0};
    \end{axis}
   \end{tikzpicture}
  \end{flushleft}
@@ -237,25 +237,25 @@ To achieve the best accuracy, we have to tune in two parameters. $\varrho^{\eta\
        draw=gray!50
       },
     ]
-    \addplot+[color=teal, mark=none,line width=1pt,mark size=1pt] table {plots/r2_ratios_4_x4.csv};
+    \addplot+[color=teal, mark=none,line width=1pt,mark size=1pt] table {plots/r2_ratios_0_x4.csv};
     \addlegendentry{0.01}
-    \addplot+[color=violet, mark=none,line width=1pt,mark size=1pt] table {plots/r2_ratios_3_x4.csv};
+    \addplot+[color=violet, mark=none,line width=1pt,mark size=1pt] table {plots/r2_ratios_1_x4.csv};
     \addlegendentry{0.1}
     \addplot+[color=black, mark=none,line width=1pt,mark size=1pt] table {plots/r2_ratios_2_x4.csv};
     \addlegendentry{1}
-    \addplot+[color=red, mark=none,line width=1pt,mark size=1pt] table {plots/r2_ratios_1_x4.csv};
+    \addplot+[color=red, mark=none,line width=1pt,mark size=1pt] table {plots/r2_ratios_3_x4.csv};
     \addlegendentry{10}
-    \addplot+[color=blue, mark=none,line width=1pt,mark size=1pt] table {plots/r2_ratios_0_x4.csv};
+    \addplot+[color=blue, mark=none,line width=1pt,mark size=1pt] table {plots/r2_ratios_4_x4.csv};
     \addlegendentry{100}
    \end{axis}
   \end{tikzpicture}
  \end{flushleft}
- \caption{Different $\varrho_{\eta\chi}$-s influence on the $\Psi$ and $\dot{\Psi} state$}\label{fig:betaratios}
+ \caption{Different $\varrho_{\eta\chi}$-s influence on the $\Psi$ and $\dot{\Psi}$ state in the reference experiment}\label{fig:betaratios}
 \end{figure}
 
 \vspace{0.5cm}
 
-This is what we see in Figure \ref{fig:betas} in our 5 turns reference experiment. We set the ratio to $\varrho^{\eta\chi} = 100$, so even bigger changes in beta have almost no impact on the $\Psi$ and $\dot{\Psi}$. In Figure \ref{fig:betaratios} we can observe what happens if the ratio changes. We sticked to $\varrho^{\eta\chi} = 100$ to have better accuracy and $\beta = 7.4$.
+This is what we see in Figure \ref{fig:betas} in our 5 turns reference experiment. We set the ratio to $\varrho^{\eta\chi} = 10$, so even bigger changes in beta have almost no impact on the $\Psi$ and $\dot{\Psi}$. In Figure \ref{fig:betaratios} we can observe what happens if the ratio changes. We sticked to $\beta = 7.4$ during the rest of the experiments.
 
 \subsection{Testing}\label{subsec:betatesting}
 
@@ -329,7 +329,7 @@ We do a similar testing approach as in Section \ref{subsec:alphatesting} and do 
    \end{axis}
   \end{tikzpicture}
  \end{flushleft}
- \caption{Beta tuning reference experiment with no stops using a Kalman Filter}\label{fig:betasingle}
+ \caption{Turning 5 times with no stops compared to reference using a Kalman Filter}\label{fig:betasingle}
 \end{figure}
 \end{center}
 
@@ -403,7 +403,7 @@ We do a similar testing approach as in Section \ref{subsec:alphatesting} and do 
    \end{axis}
   \end{tikzpicture}
  \end{flushleft}
- \caption{Beta tuning reference experiment with 10 turns using a Kalman Filter}\label{fig:betamulti}
+ \caption{Turning 10 times compared to reference using a Kalman Filter}\label{fig:betamulti}
 \end{figure}
 \end{center}
 
@@ -477,7 +477,7 @@ Now let's repeat the experiments with the adaptive Kalman Filter.
    \end{axis}
   \end{tikzpicture}
  \end{flushleft}
- \caption{Beta tuning reference experiment using the adaptive Kalman Filter}\label{fig:adaptbeta}
+ \caption{Reference experiment using the adaptive Kalman Filter}\label{fig:adaptbeta}
 \end{figure}
 \end{center}
 
@@ -549,7 +549,7 @@ Now let's repeat the experiments with the adaptive Kalman Filter.
    \end{axis}
   \end{tikzpicture}
  \end{flushleft}
- \caption{Beta tuning reference experiment with no stops using the adaptive Kalman Filter}\label{fig:adaptbetasingle}
+ \caption{Turning 5 times with no stops using the adaptive Kalman Filter}\label{fig:adaptbetasingle}
 \end{figure}
 \end{center}
 
@@ -621,7 +621,7 @@ Now let's repeat the experiments with the adaptive Kalman Filter.
    \end{axis}
   \end{tikzpicture}
  \end{flushleft}
- \caption{Beta tuning reference experiment with 10 turns using the adaptive Kalman Filter}\label{fig:adaptbetamulti}
+ \caption{Turning 10 times using the adaptive Kalman Filter}\label{fig:adaptbetamulti}
 \end{figure}
 \end{center}
 
@@ -697,7 +697,7 @@ Next, let's run the same experiments with the Extended Kalman Filter.
    \end{axis}
   \end{tikzpicture}
  \end{flushleft}
- \caption{Beta tuning reference experiment using the Extended Kalman Filter}\label{fig:ekfbeta}
+ \caption{Reference experiment using the Extended Kalman Filter}\label{fig:ekfbeta}
 \end{figure}
 \end{center}
 
@@ -771,7 +771,7 @@ Next, let's run the same experiments with the Extended Kalman Filter.
    \end{axis}
   \end{tikzpicture}
  \end{flushleft}
- \caption{Beta tuning reference experiment with no stops using the Extended Kalman Filter}\label{fig:ekfbetasingle}
+ \caption{Turning 5 times with no stops using the Extended Kalman Filter}\label{fig:ekfbetasingle}
 \end{figure}
 \end{center}
 
@@ -845,10 +845,10 @@ Next, let's run the same experiments with the Extended Kalman Filter.
    \end{axis}
   \end{tikzpicture}
  \end{flushleft}
- \caption{Beta tuning reference experiment with no stops using the Extended Kalman Filter}\label{fig:ekfbetamulti}
+ \caption{Turning 10 times with no stops using the Extended Kalman Filter}\label{fig:ekfbetamulti}
 \end{figure}
 \end{center}
 
-We can observe from the EKF experiments in Figures \ref{fig:ekfbeta}, \ref{fig:ekfbetasingle} and \ref{fig:ekfbetamulti} that there are some differences in the state estimations. We will have to do different tests to determine if the accuracy is actually better than with our adaptive Kalman Filter.
+We can observe from the EKF experiments in Figures \ref{fig:ekfbeta}, \ref{fig:ekfbetasingle} and \ref{fig:ekfbetamulti} that there are some differences in the state estimations. We will have to do different tests to determine if the accuracy is actually better than with our adaptive Kalman Filter or not.
 
 \end{document}

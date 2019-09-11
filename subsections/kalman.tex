@@ -1,11 +1,11 @@
-\documentclass[class=report, crop=false]{standalone}
+\documentclass[class=article, crop=false]{standalone}
 %\usepackage[subpreambles=true]{standalone}
 \usepackage{import}
 \input{../packages}
 
 \begin{document}
 
-\subsection{Custom adaptive Kalman filter}\label{subsec:customkalman}
+\subsection{Custom Kalman filter}\label{subsec:customkalman}
 State estimation is an important part of any mobile robot. Its accuracy can be refined by multiple sensors. In order to deal with sensor noise and other inaccuracies during our position estimation, we used a linear quadratic estimator known as the Kalman Filter.
 
 It is widely used in control theory and control systems engineering. Its applications include aircraft, spacecraft, ships and robot motion planning.
@@ -39,8 +39,8 @@ The following system model seen in \eqref{eq:generickalman} is a generic model o
 \end{gathered}\label{eq:generickalman}
 \end{equation}
 
-The system consists of a state vector $ \textbf{x}_k  \in  \Re^n $, an input vector $ \textbf{u}_k \in \Re^p $, an output(measurement) vector $ \textbf{y}_k \in \Re^q $, a process noise vector $ \textbf{w}_k \in \Re^r $, a measurement noise vector $ \textbf{v}_k \in \Re^q $ and a time variant dynamic coefficient matrix $ \boldsymbol{\Phi}_k \in \Re^{n \times n}$,
-an input coupling matrix $ \boldsymbol{\Gamma}_k \in \Re^{n \times p}$, a process noise input coupling matrix $ \boldsymbol{G}_k \in \Re^{n \times r} $, a measurement sensitivity matrix $ \boldsymbol{C}_k \in \Re^{q \times n} $, a measurement output coupling matrix $ \boldsymbol{D}_k \in \Re^{q \times p}$ and a process noise output coupling matrix $ \textbf{H}_k \in \Re^{q \times r} $.
+The system consists of a state vector $ \textbf{x}_k  \in  \mathbb{R}^n $, an input vector $ \textbf{u}_k \in \mathbb{R}^p $, an output(measurement) vector $ \textbf{y}_k \in \mathbb{R}^q $, a process noise vector $ \textbf{w}_k \in \mathbb{R}^r $, a measurement noise vector $ \textbf{v}_k \in \mathbb{R}^q $ and a time variant dynamic coefficient matrix $ \boldsymbol{\Phi}_k \in \mathbb{R}^{n \times n}$,
+an input coupling matrix $ \boldsymbol{\Gamma}_k \in \mathbb{R}^{n \times p}$, a process noise input coupling matrix $ \boldsymbol{G}_k \in \mathbb{R}^{n \times r} $, a measurement sensitivity matrix $ \boldsymbol{C}_k \in \mathbb{R}^{q \times n} $, a measurement output coupling matrix $ \boldsymbol{D}_k \in \mathbb{R}^{q \times p}$ and a process noise output coupling matrix $ \textbf{H}_k \in \mathbb{R}^{q \times r} $.
 
 \noindent
 The following assumptions about the system were made:
@@ -52,7 +52,7 @@ The following assumptions about the system were made:
     E(\textbf{v}_k \textbf{v}_j^T) &= \textbf{Q}_k \delta_{kj} & \textbf{Q}_k &\ge \textbf{0} & E(\textbf{v}_k) &= \textbf{0} \\
     E(\textbf{w}_k \textbf{v}_j^T) &= \textbf{0} & \textbf{H}_k  \textbf{Q}_k \textbf{H}_k^T &> \textbf{0}\\
 \end{align*}\label{eq:assumption1}
-Where $ \textbf{Q}_k \in \Re^{r \times r} $ is the process noise covariance matrix and $ \textbf{R}_k \in \Re^{q \times q} $ is the measurement noise covariance matrix and $ \delta_{kj} $ the Kroneckersymbol, which is $ \delta_{kj} = 1$ for $ k = j $ and $ \delta_{kj} = 0$ for $ k \neq j $.
+Where $ \textbf{Q}_k \in \mathbb{R}^{r \times r} $ is the process noise covariance matrix and $ \textbf{R}_k \in \mathbb{R}^{q \times q} $ is the measurement noise covariance matrix and $ \delta_{kj} $ the Kroneckersymbol, which is $ \delta_{kj} = 1$ for $ k = j $ and $ \delta_{kj} = 0$ for $ k \neq j $.
 
 \vspace{0.5cm}
 \noindent
@@ -151,8 +151,8 @@ Putting together all of the previous equations into the form \eqref{eq:genericka
      \hat{\dot{\Psi}}_{k+1}^- \\
     \end{bmatrix} &=
     \begin{bmatrix}
-     1 & 0 & \Delta t sin(\hat{\Psi}_{k}^+) & 0 & 0 \\
-     0 & 1 & \Delta t cos(\hat{\Psi}_{k}^+) & 0 & 0\\
+     1 & 0 & \Delta t cos(\hat{\Psi}_{k}^+) & 0 & 0 \\
+     0 & 1 & \Delta t sin(\hat{\Psi}_{k}^+) & 0 & 0\\
      0 & 0 & 0                              & 0 & 0\\
      0 & 0 & 0                              & 1 & \Delta t\\
      0 & 0 & 0                              & 0 & 0
@@ -293,7 +293,7 @@ We implmented a mirrored sigmoid curve using the logistic function in our moving
 
 We calculate the $w_k$ weights of a moving weighted window of length $N$ as:
 \begin{align*}
- \textbf{x}_k & = \left\{ x:x = \dfrac{n}{N}, n \in (0,N) \right\}   \\
+ \textbf{x}_k & = \left\{ x:x = \dfrac{n}{N}, n \in (0,N), n \in \mathbb{N} \right\}   \\
  \textbf{w}_k & = \dfrac{ 1 }{ 1 + e^{\alpha ( \textbf{x}_k - \frac{1}{2})} }
 \end{align*}
 
@@ -312,10 +312,10 @@ We calculate the $w_k$ weights of a moving weighted window of length $N$ as:
        /pgf/number format/fixed,
        /pgf/number format/precision=5
       },
-     width=10cm,
-     height=10cm,
-     xtick distance=0.1,
-     ytick distance=0.1,
+     width=7cm,
+     height=7cm,
+     xtick distance=0.2,
+     ytick distance=0.2,
      xlabel={$x_k$},
      ylabel={$w_k$},
      grid=both,
@@ -338,7 +338,7 @@ We calculate the $w_k$ weights of a moving weighted window of length $N$ as:
 
 To track changes in the input vector $\textbf{u}_k$, we create a fixed $N$ length queue $\textbf{q}_k$ of $\Delta \textbf{u}_k$ elements, to which we enqueue $\Delta \textbf{u}_k =  \textbf{u}_k - \textbf{u}_{k-1}$ before every iteration and dequeue the first element.
 
-In case of $\Delta \textbf{u}_k=0$ the process noise covariance matrix $\textbf{Q}_k$ shoudn't change, so we model it as:
+In case of $\textbf{q}_k=0$ the process noise covariance matrix $\textbf{Q}_k$ shouldn't change, so we model it as:
 \begin{align*}
     \textbf{Q}_k = \boldsymbol{\Upsilon}_k \textbf{R}_k (1+ \Delta \textbf{Q}_k) \\
 \end{align*}
@@ -351,9 +351,9 @@ Where:
 \end{bmatrix}
 \end{align*}
 
-and $M_1, M_2 \in \Re$ are constants for scaling the peak, $\textbf{q}_k^{\vartheta_k}, \textbf{q}_k^{\eta_k}$ are the queues corresponding to the elements of the input vector $\Delta \textbf{u}_k$.
+and $M_1, M_2 \in \mathbb{R}$ are constants for scaling the peak, $\textbf{q}_k^{\vartheta_k}, \textbf{q}_k^{\eta_k}$ are the queues corresponding to the elements of the input vector's $\Delta \textbf{u}_k$.
 
-In order to test our filters adaptive feature, we set up a simulation of the system input and output vectors seen in Figure \ref{fig:sim_line_io}. It simulates the robot going forward in a straight line once then stopping.
+In order to test our filters adaptive feature, we set up a simulation of the system input and output vectors seen in Figure \ref{fig:sim_line_io}. It simulates the robot going forward in a straight line once then stopping. The frequency was chosen to be the same as on the real robot.
 
 \vspace{0.5cm}
 
@@ -393,7 +393,7 @@ In order to test our filters adaptive feature, we set up a simulation of the sys
       },
       width=12cm,
       height=5cm,
-      ytick distance=3,
+      ytick distance=1.5,
       xlabel={Time $[s]$},
       ylabel={$ \textbf{y}^\zeta_k$ $[m/s^2] $},
       grid=both,
@@ -414,7 +414,7 @@ In order to test our filters adaptive feature, we set up a simulation of the sys
 
 \vspace{0.5cm}
 
-We then run the comparison between our Kalman Filter with and without the adaptive feature and look at our changes in our v state and the process noise covariance matrix $\textbf{Q}_k$.
+We then run the comparison between our Kalman Filter with and without the adaptive feature and look at our changes in our v state and the process noise covariance matrix $\textbf{Q}_k$. We set $M_1=100$ and a window length of 10.
 
 \vspace{0.5cm}
 
@@ -450,7 +450,7 @@ We then run the comparison between our Kalman Filter with and without the adapti
 
 \vspace{0.5cm}
 
-The $\textbf{Q}^\vartheta_k$ plot in Figure \ref{fig:sim_Q0} resembles our mirrored sigmoid function from Figure \ref{fig:sigwin}. In this case the window was set to a length of 10.
+The $\textbf{Q}^\vartheta_k$ plot in Figure \ref{fig:sim_Q0} resembles our mirrored sigmoid function from Figure \ref{fig:sigwin}.
 
 \vspace{0.5cm}
 
@@ -478,9 +478,9 @@ The $\textbf{Q}^\vartheta_k$ plot in Figure \ref{fig:sim_Q0} resembles our mirro
       },
     ]
     \addplot+[color=blue, mark=none,line width=1pt,mark size=1pt, dashed] table {plots/sim_line_0_x0.csv};
-    \addlegendentry{disabled}
+    \addlegendentry{reference}
     \addplot+[color=red, mark=none,line width=1pt,mark size=1pt] table {plots/sim_line_adaptive_0_x0.csv};
-    \addlegendentry{enabled}
+    \addlegendentry{adaptive}
    \end{axis}
   \end{tikzpicture}
  \end{flushleft}
@@ -507,9 +507,9 @@ The $\textbf{Q}^\vartheta_k$ plot in Figure \ref{fig:sim_Q0} resembles our mirro
       },
     ]
     \addplot+[color=blue, mark=none,line width=1pt,mark size=1pt, dashed] table {plots/sim_line_0_x2.csv};
-    \addlegendentry{disabled}
+    \addlegendentry{reference}
     \addplot+[color=red, mark=none,line width=1pt,mark size=1pt] table {plots/sim_line_adaptive_0_x2.csv};
-    \addlegendentry{enabled}
+    \addlegendentry{adaptive}
    \end{axis}
   \end{tikzpicture}
  \end{flushleft}
@@ -518,6 +518,6 @@ The $\textbf{Q}^\vartheta_k$ plot in Figure \ref{fig:sim_Q0} resembles our mirro
 
 \vspace{0.5cm}
 
-We can see in Figure \ref{fig:sim_v} that the adaptive feature of our Kalman Filter takes acceleration more into account during the jumps in the $\textbf{u}^\vartheta_k$. Due to this phase being so short, it barely has an effect on the x state. We will explore its effects on longer runs in the Experiments chapter.
+We can see in Figure \ref{fig:sim_v} that the adaptive feature of our Kalman Filter takes acceleration more into account during the jumps in the $\textbf{u}^\vartheta_k$.  Due to this phase being so short, it barely has an effect on the x state.The plot is relatively blocky due to low frequency for this short domain, but its puropse is to be realistic.
 
 \end{document}

@@ -6,13 +6,13 @@
 \pgfplotsset{width=14cm,compat=1.9}
 \section{Alpha tuning}\label{sec:alphatune}
 
-Since our system is two dimensional and the x and y state depends highly not just on the $\alpha$, but the $\beta$ parameter in our input coupling matrix $\boldsymbol{\Gamma}_k$ and process noise input coupling matrix $\textbf{G}_k$, we set the input $u_k^\eta$ and $y_k^\chi$ zero. This way we make the x and y state independant of $\beta$ and can fine tune $\alpha$ without its influence. This corresponds to running the robot in a straight line.
+Since our system is two dimensional and the x and y state depends highly not just on the $\alpha$, but the $\beta$ parameter in our input coupling matrix $\boldsymbol{\Gamma}_k$ and process noise input coupling matrix $\textbf{G}_k$, we set the input $u_k^\eta$ and $y_k^\chi$ zero. This way we make the x and y state independant of $\beta$ and can fine tune $\alpha$ without it effecting our results. This corresponds to driving the robot in a straight line.
 
 \subsection{Reference}
 
 In our first experiment we set different $\alpha$ values and examine its influence on the x and v state. We do this with a set ratio $\varrho^{\vartheta\zeta} = 0.005$, which we picked because it is a middle ground between correcting too much and too little of $u_k^{\vartheta}$ with $y_k^{\zeta}$.
 
-Since the input and output is not the same dimension, the correction can be done only to a certain degree, after which further $\varrho^{\vartheta\zeta}$ increase doesnt change the state.
+Since the input and output is not the same dimension, the correction can be done only to a certain degree, after which further $\varrho^{\vartheta\zeta}$ increase doesn't change the state.
 
 \vspace{0.5cm}
 
@@ -168,7 +168,7 @@ The robot's real world distance was 5 meters, which we marked with a dashed gray
 
 \subsection{Testing}\label{subsec:alphatesting}
 
-Since we stop multiple times in our reference experiment, we will examine how our system holds up when we go the same distance with less stops. This might show us if the stops bear an impact on our x state due to more frequent acceleration and deceleration.
+Since we stop multiple times in our reference experiment, we will examine how our system holds up when we go the same distance with less stops. This might show us if the stops bear an impact on our x state estimate due to more frequent acceleration and deceleration.
 
 \begin{figure}[H]
  \begin{flushleft}
@@ -205,7 +205,7 @@ Since we stop multiple times in our reference experiment, we will examine how ou
    \end{axis}
   \end{tikzpicture}
  \end{flushleft}
- \caption{Alpha tuning reference experiment with less stops using a Kalman Filter}\label{fig:alphasingle}
+ \caption{Reference experiment compared with driving 5m distance with less stops using a Kalman Filter}\label{fig:alphasingle}
 \end{figure}
 
 \vspace{0.5cm}
@@ -252,12 +252,12 @@ Now let's see a different experiment, where we travel twice the distance from th
    \end{axis}
   \end{tikzpicture}
  \end{flushleft}
- \caption{Alpha tuning reference experiment with 10 meter distance using a Kalman Filter}\label{fig:alphamulti}
+ \caption{Reference compared to driving 10m distance using a Kalman Filter}\label{fig:alphamulti}
 \end{figure}
 
 \vspace{0.5cm}
 
-The 10 meter run in Figure \ref{fig:alphamulti} shows that it overshoots the estimation about 1 meter. This may be due to non-linearity in our real motor speed and $u_k^vartheta$ at higher speeds. We can't correct this adequately with our IMU due to motor induced measurement noise.
+The 10 meter run in Figure \ref{fig:alphamulti} shows that it overshoots the estimation about 1 meter. This may be due to non-linearity in our real motor speed and $u_k^\vartheta$ at higher speeds. We can't correct this adequately with our IMU due to motor induced measurement noise.
 
 Now let's run the same experiments with the adaptive Kalman Filter to see if the added inital IMU measurements impact our estimations.
 
@@ -298,7 +298,7 @@ The adaptive Kalman Filter's window length was set to 10, which means we estimat
    \end{axis}
   \end{tikzpicture}
  \end{flushleft}
- \caption{Alpha tuning reference experiment compared with the adaptive Kalman Filter}\label{fig:adaptalpha}
+ \caption{5m reference experiment using the adaptive Kalman Filter}\label{fig:adaptalpha}
 \end{figure}
 
 \begin{figure}[H]
@@ -336,7 +336,7 @@ The adaptive Kalman Filter's window length was set to 10, which means we estimat
    \end{axis}
   \end{tikzpicture}
  \end{flushleft}
- \caption{Alpha tuning reference experiment with less stops compared with the adaptive Kalman Filter}\label{fig:adaptalphasingle}
+ \caption{5m with less stops using the adaptive Kalman Filter}\label{fig:adaptalphasingle}
 \end{figure}
 
 \vspace{0.5cm}
@@ -377,7 +377,7 @@ The adaptive Kalman Filter's window length was set to 10, which means we estimat
    \end{axis}
   \end{tikzpicture}
  \end{flushleft}
- \caption{Alpha tuning reference experiment with 10 meters compared with the adaptive Kalman Filter}\label{fig:adaptalphamulti}
+ \caption{Driving 10m using the adaptive Kalman Filter}\label{fig:adaptalphamulti}
 \end{figure}
 
 The repeated experiments seen in Figures \ref{fig:adaptalpha}, \ref{fig:adaptalphasingle} and \ref{fig:adaptalphamulti} show that the additional IMU corrections during the acceleration phase barely impact our state estimations.
@@ -419,7 +419,7 @@ Next, we repeat the experiments similarly with the Extended Kalman Filter, but w
    \end{axis}
   \end{tikzpicture}
  \end{flushleft}
- \caption{Repeated reference experiment with Extended Kalman Filter}\label{fig:ekfalpha}
+ \caption{Reference experiment using the Extended Kalman Filter}\label{fig:ekfalpha}
 \end{figure}
 
 \begin{figure}[H]
@@ -457,7 +457,7 @@ Next, we repeat the experiments similarly with the Extended Kalman Filter, but w
    \end{axis}
   \end{tikzpicture}
  \end{flushleft}
- \caption{Repeated less stops reference experiment with Extended Kalman Filter}\label{fig:ekfalphasingle}
+ \caption{Driving 5m distance with less stops experiment using the Extended Kalman Filter}\label{fig:ekfalphasingle}
 \end{figure}
 
 \vspace{0.5cm}
@@ -498,7 +498,7 @@ Next, we repeat the experiments similarly with the Extended Kalman Filter, but w
    \end{axis}
   \end{tikzpicture}
  \end{flushleft}
- \caption{Reference 10m distance experiment with Extended Kalman Filter}\label{fig:ekfalphamulti}
+ \caption{Driving 10m distance using the Extended Kalman Filter}\label{fig:ekfalphamulti}
 \end{figure}
 
 Though there are some slight differences in the state estimations, but they are largely the same, which means that without additional sensor refinement and covariance adjustment there is little to be gained by further parameter tweaking.

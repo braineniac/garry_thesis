@@ -15,7 +15,7 @@ We set up an experiment where we can observe drifts and test the accuracy of our
 
 \vspace{0.5cm}
 
-We will run the recorded data with our adaptive Kalman Filter and Extended Kalman Filter(EKF) and compare if there are any differences. We used the parameters we set in the last sections.
+We will run the recorded data with our adaptive Kalman Filter and Extended Kalman Filter(EKF) and compare if there are any differences. We used the parameters we set in the section \ref{sec:floor}.
 
 \vspace{0.5cm}
 
@@ -161,6 +161,6 @@ We will run the recorded data with our adaptive Kalman Filter and Extended Kalma
 
 The robot wasn't driven perfectly due to diffulties in turning accurately, but we can observe drifts in both axes and slightly different $\Psi$ states in Figure \ref{fig:octagon}.
 
-The small drifts between the two filters were also observed in the Subsection \ref{subsec:betatesting} and the experiment confirms that EKF can handle the non-linearities in our turns better and give a more reliable $\Psi$ state estimate.
+The small drifts between the two filters were also observed in the Subsection \ref{subsec:betatesting} and the experiment confirms that EKF can handle the non-linearities in our turns better and give a more reliable $\Psi$ state estimate given a good enough $\varrho^{\eta\chi}$.
 
 \end{document}
