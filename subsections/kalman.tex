@@ -5,7 +5,7 @@
 
 \begin{document}
 
-\subsection{Custom Kalman filter}\label{subsec:customkalman}
+\subsection{Custom Kalman Filter}\label{subsec:customkalman}
 State estimation is an important part of any mobile robot. Its accuracy can be refined by multiple sensors. In order to deal with sensor noise and other inaccuracies during our position estimation, we used a linear quadratic estimator known as the Kalman Filter.
 
 It is widely used in control theory and control systems engineering. Its applications include aircraft, spacecraft, ships and robot motion planning.
@@ -68,7 +68,7 @@ Where $ \hat{\textbf{x}}_0 $ is a guess for the initial state vector $ \textbf{x
     E(\textbf{w}_k \textbf{x}_0^T) &= \textbf{0}\\
     E(\textbf{v}_k \textbf{x}_0^T)&= \textbf{0}\\
 \end{align*}\label{eq:assumption3}
-We modelled our system with the 5-dimensional state vector:
+We modelled our system with the 7-dimensional state vector:
 
 \begin{center}
  $\textbf{x}_k =
@@ -76,15 +76,17 @@ We modelled our system with the 5-dimensional state vector:
    x_k    \\
    y_k    \\
    v_k    \\
+   a_k    \\
    \Psi_k \\
-   \dot{\Psi}_k
+   \dot{\Psi}_k\\
+   \ddot{\Psi}_k\\
   \end{bmatrix}
  $
 \end{center}
 
-where $x_k$ is the distance travelled in x, $y_k$ the distance travelled in y, $v_k$ is the robot's relative x speed, $\Psi_k$ is the yaw of the robot and $\dot{\Psi}_k$ is the yaw speed.
+where $x_k$ is the distance travelled in x, $y_k$ the distance travelled in y, $v_k$ is the robot's relative x speed, $a_k$ is the robot's relative x acceleration, $\Psi_k$ is the yaw of the robot, $\dot{\Psi}_k$ is the yaw speed and $\ddot{\Psi}_k$ the yaw acceleration.
 
-Our system input is a joystick controller, which we use to move our robot forward and backward by setting the motors to a certain speed or rotate it left or right by setting one of the motors forward and the other backward. We modelled this joystick input as:
+Our system input is a joystick controller, which we use to move our robot forward and backward by setting the voltage on the motors, which generate a force or torque that move our robot.
 \begin{center}
 $ \textbf{u}_k =
 \begin{bmatrix}
@@ -94,7 +96,29 @@ $ \textbf{u}_k =
 $
 \end{center}
 
-Where $\vartheta_k \in [-1,1]$ is our forwards and backwards signal and $\eta_k \in [-1,1]$ is our rotation signal in the right and left direction. The top speed of the motors, by setting $\vartheta_k = \pm 1$, is the constant $\alpha$ and the top turn speed at $\eta_k = \pm 1$ is the constant $\beta$.
+Where $\vartheta_k \in [-1,1]$ is our forwards and backwards signal and $\eta_k \in [-1,1]$ is our rotation signal in the right and left direction. The top force of the motors, by setting $\vartheta_k = \pm 1$, is the constant $\alpha$ and the top torque at $\eta_k = \pm 1$ is the constant $\beta$.
+
+To construct our dynamic coefficient matrix $ \boldsymbol{\Phi_k} $ and input coupling matrix $ \boldsymbol{\Gamma_k} $, we used the following equations based on Newtonian kinematics, dynamics and Euler method:
+\begin{align*}
+    x_{k+1} &= x_k + v_k cos(\Psi_k) \Delta t + \frac{1}{2} a_k cos(\Psi_k) (\Delta t)^2 \\
+    y_{k+1} &= y_k + v_k sin(\Psi_k) \Delta t + \frac{1}{2} a_k sin(\Psi_k) (\Delta t)^2 \\
+    v_{k+1} &= v_k + a_k \Delta t\\
+    m a_{k+1} &= \alpha \vartheta_k - \mu_v v_k\\
+    \Psi_{k+1} &= \Psi_k + \Delta t \dot{\Psi}_{k} + \frac{1}{2} \ddot{\Psi}_k (\Delta t)^2 \\
+    \dot{\Psi}_{k+1} &= \Psi_k + \Delta t \ddot{\Psi}_k \\
+    J \ddot{\Psi}_{k+1} &= \beta \eta_k - \mu_{\dot{\Psi}_k} \dot{\Psi}_k\\
+\end{align*}\label{eq:systemdyn}
+The coefficients $m$ is the mass of the robot and $J$ is the moment of inertia(around the z-axis).
+
+We modeled the moment of inertia $J$ as a rectanglular block with the mass $m$(same as our robot), length $a$ and width $b$:
+\begin{align*}
+    J = \frac{m}{12} (a^2 + b^2)
+\end{align*}
+We furthermore reduced the number of parameters with $\alpha = b \beta$ in which we assume that the force from the motors is in $b/2$ from the center of rotation.
+
+Our model of $J$ and $\beta$ is very simplistic and could be improved with proper modeling of parts and simulations, but since we are correcting this with our gyroscope, we can set an appropriate process noise $\textbf{Q}_k$ that reflects this modeling.
+
+We assume that the drag is approximately proportional to the appropriete speed and the $\mu_v$ and $\mu_{\dot{\Psi}_k}$ are the linear drag coefficients.
 
 Our system output $y_k$ is measured by our gyroscope and accelerometer in the IMU:
 \begin{center}
@@ -108,22 +132,11 @@ Our system output $y_k$ is measured by our gyroscope and accelerometer in the IM
 
 where $\zeta_k$ is the acceleration measured in the x direction and $\chi_k$ is the measured yaw speed.
 
-To construct our dynamic coefficient matrix $ \boldsymbol{\Phi_k} $ and input coupling matrix $ \boldsymbol{\Gamma_k} $, we used the following equations based on Newtonian motion dynamics and Euler method:
+For our measurement matrix and our measurement output coupling matrix we used the following equations:
 \begin{align*}
-    x_{k+1} &= x_k + v_k \Delta t cos(\Psi_k)\\
-    y_{k+1} &= y_k + v_k \Delta t sin(\Psi_k)\\
-    v_{k+1} &= \alpha \vartheta_k\\
-    \Psi_{k+1} &= \Psi_k + \Delta t \dot{\Psi}_{k}\\
-    \dot{\Psi}_{k+1} &= \beta \eta_k \\
-\end{align*}\label{eq:systemdyn}
-For our measurement matrix and our measurement input matrix we used the following equations, also derived from Newtonian dynamics:
-\begin{align*}
-\zeta_k &= \frac{\alpha \vartheta - v_k}{\Delta t}\\
-\chi_k &= \dot{\Psi}_{k}
+\zeta_k &= a_k\\
+\chi_k &= \dot{\Psi}_{k}\\
 \end{align*}\label{eq:outdyn}
-
-The $\zeta_k$ estimation is a forwards difference, since $\alpha \vartheta$ gives us the robot speed in the next iteration, while $v_k$ is the current velocity.
-
 Since we don't know the noise added to the system by our $\textbf{u}_k$ control input vector, we modelled it as an unknown system noise vector $\textbf{w}_k$ with a set standard deviation $\sigma$. The measurement noise vector $v_k$ was modelled similarly:
 \begin{align*}
  \textbf{w}_k & = \begin{bmatrix}
@@ -142,46 +155,32 @@ Since we don't know the noise added to the system by our $\textbf{u}_k$ control 
  \end{bmatrix} \\
 \end{align*}\label{eq:noisemodel}
 Putting together all of the previous equations into the form \eqref{eq:generickalman} we get:
-\begin{align*}
+\begin{gather*}
     \begin{bmatrix}
      \hat{x}_{k+1}^-    \\
      \hat{y}_{k+1}^-    \\
      \hat{v}_{k+1}^-    \\
+     \hat{a}_{k+1}^-    \\
      \hat{\Psi}_{k+1}^- \\
      \hat{\dot{\Psi}}_{k+1}^- \\
-    \end{bmatrix} &=
-    \begin{bmatrix}
-     1 & 0 & \Delta t cos(\hat{\Psi}_{k}^+) & 0 & 0 \\
-     0 & 1 & \Delta t sin(\hat{\Psi}_{k}^+) & 0 & 0\\
-     0 & 0 & 0                              & 0 & 0\\
-     0 & 0 & 0                              & 1 & \Delta t\\
-     0 & 0 & 0                              & 0 & 0
-    \end{bmatrix}
+     \hat{\ddot{\Psi}}_{k+1}^- \\
+    \end{bmatrix} =
+    \boldsymbol{\Phi}_k
     \begin{bmatrix}
      \hat{x}_{k}^+    \\
      \hat{y}_{k}^+    \\
      \hat{v}_{k}^+    \\
+     \hat{a}_{k}^+    \\
      \hat{\Psi}_{k}^+ \\
-     \hat{\dot{\Psi}}_{k}^+
+     \hat{\dot{\Psi}}_{k}^+\\
+     \hat{\ddot{\Psi}}_{k}^+\\
     \end{bmatrix} +
-    \begin{bmatrix}
-     0      & 0             \\
-     0      & 0             \\
-     \alpha & 0             \\
-     0      & 0 \\
-     0      & \beta \\
-    \end{bmatrix}
+    \boldsymbol{\Gamma}_k
     \begin{bmatrix}
      \vartheta_k \\
      \eta_k      \\
     \end{bmatrix} +
-    \begin{bmatrix}
-     0      & 0             \\
-     0      & 0             \\
-     \alpha & 0             \\
-     0      & 0 \\
-     0      & \beta \\
-    \end{bmatrix}
+    \textbf{G}_k
     \begin{bmatrix}
      \sigma^{\vartheta_k}_k \\
      \sigma^{\eta_k}_k      \\
@@ -189,30 +188,23 @@ Putting together all of the previous equations into the form \eqref{eq:genericka
     \begin{bmatrix}
      \zeta_k \\
      \chi_k  \\
-    \end{bmatrix} &=
-    \begin{bmatrix}
-     0 & 0 & -\frac{1}{\Delta t} & 0 & 0 \\
-     0 & 0 & 0                   & 0 & 1\\
-    \end{bmatrix}
+    \end{bmatrix} =
+    \textbf{C}_k
     \begin{bmatrix}
      \hat{x}_{k}^- \\
      \hat{y}_{k}^- \\
      \hat{v}_{k}^- \\
+     \hat{a}_{k}^- \\
      \Psi_{k}^-    \\
      \dot{\Psi}_{k}^- \\
+     \ddot{\Psi}_{k}^- \\
     \end{bmatrix} +
-    \begin{bmatrix}
-     \frac{\alpha}{\Delta t} & 0     \\
-     0                       & 0 \\
-    \end{bmatrix}
+    \textbf{D}_k
     \begin{bmatrix}
      \vartheta_k \\
      \eta_k      \\
     \end{bmatrix} +
-    \begin{bmatrix}
-     0 & 0 \\
-     0 & 0 \\
-    \end{bmatrix}
+    \textbf{H}_k
     \begin{bmatrix}
      \sigma^{\vartheta}_k \\
      \sigma^{\eta}_k      \\
@@ -221,12 +213,55 @@ Putting together all of the previous equations into the form \eqref{eq:genericka
      \sigma^{\zeta_k}_k \\
      \sigma^{\chi_k}_k  \\
     \end{bmatrix} \\
-\end{align*}\label{eqn:fullsystem}
+    \boldsymbol{\Phi}_k = \begin{bmatrix}
+     1 & 0 &  cos(\hat{\Psi}_{k}^+) \Delta t & \frac{1}{2} cos(\hat{\Psi}_{k}^+) (\Delta t)^2  & 0 & 0 & 0\\
+     0 & 1 &  sin(\hat{\Psi}_{k}^+) \Delta t & \frac{1}{2} sin(\hat{\Psi}_{k}^+) (\Delta t)^2 & 0 & 0 & 0\\
+     0 & 0 & 1                              & \Delta t & 0 & 0 & 0\\
+     0 & 0 & - \mu_{v} / m           & 0 & 0 & 0 & 0\\
+     0 & 0 & 0 & 0                          & 1 & \Delta t & \frac{1}{2} (\Delta t)^2\\
+     0 & 0 & 0 & 0 & 0 & 1 & \Delta t\\
+     0 & 0 & 0 & 0 & 0 & - \mu_{\dot{\Psi}} / J & 0\\
+    \end{bmatrix} \\
+    \boldsymbol{\Gamma}_k =
+    \begin{bmatrix}
+     0      & 0             \\
+     0      & 0             \\
+     0      & 0             \\
+     \alpha / m & 0             \\
+     0      & 0 \\
+     0      & 0             \\
+     0      & \beta / J \\
+    \end{bmatrix},
+    \textbf{G}_k = \begin{bmatrix}
+     0      & 0             \\
+     0      & 0             \\
+     0      & 0             \\
+     \alpha / m & 0             \\
+     0      & 0 \\
+     0      & 0             \\
+     0      & \beta / J \\
+    \end{bmatrix} \\
+    \textbf{C}_k =
+    \begin{bmatrix}
+     0 & 0 & 0 & 1 & 0 & 0 & 0 \\
+     0 & 0 & 0 & 0 & 0 & 1 & 0\\
+    \end{bmatrix},
+    \textbf{D}_k =
+    \begin{bmatrix}
+     0 & 0     \\
+     0 & 0 \\
+    \end{bmatrix},
+    \textbf{H}_k =
+    \begin{bmatrix}
+     0 & 0 \\
+     0 & 0 \\
+    \end{bmatrix}
+\end{gather*}\label{eqn:fullsystem}
 where the vector $\hat{\textbf{x}}_k^-$ is an "a priori" state estimation, the vector $\hat{\textbf{x}}_k^+$ is an "a posteriori" state estimation, which is an output corrected estimation of the "a priori" state, and an extrapolated $\hat{\textbf{x}}_{k+1}^+$, which then becomes the next iteration's "a priori" state.
 
-The process noise input coupling matrix $\textbf{G}_k$ is filled with zeros(except for the input dimensions) because the process noise in the current iteration was already included by the last one in the $\hat{v}_{k}^-$, therefore it should not impact our current $\hat{x}_{k+1}^-$ and $\hat{y}_{k}^+$.
+The process noise input coupling matrix $\textbf{G}_k$ is filled with zeros(except for the input dimensions) because the process noise in the current iteration was already included by the last one, therefore it should not impact the rest of our current states.
 
-The process noise output coupling matrix $\textbf{H}_k$ was filled with zeros, because the process noise $\textbf{w}_k$ shouldn't impact our measurement $\textbf{y}_k$ since it is already included in $\hat{\textbf{x}}_{k}^-$.
+The process noise output coupling matrix $\textbf{H}_k$ was filled with zeros, because the process noise $\textbf{w}_k$ shouldn't impact our measurement $\textbf{y}_k$ since it is already included in $\hat{\textbf{x}}_{k}^-$ from the last iteration.
 
 Now that our system was constructed, we set the initial state vector $\textbf{x}_0 = \textbf{0}$ and the state error estimation matrix $\textbf{P}_0 = \textbf{0}$ and executed the following steps:
 
@@ -265,11 +300,11 @@ $ \textbf{P}^-_{k+1} = \boldsymbol{\Phi}_k \textbf{P}^+_k \boldsymbol{\Phi}^T_k 
 
 Steps 2 and 3 are the "a posteriori" estimations, which were used in all of the figures in the thesis unless stated otherwise.
 
-\subsubsection{Custom adaptive Kalman Filter}
+\subsubsection{Extended Kalman Filter with adaptive process noise}
 
-Our model of the Kalman Filter doesn't accurately describe the real motion of our robot, since the joystick input signal has sudden jumps and due to robot inertia there is a delay before it reaches the set speed.
+Our model of the Kalman Filter doesn't account for the ramp-up time of the motors before they reach their desired actuation force once the voltage is applied on them.
 
-In order to combat this, we increase the process noise by increasing our noise covariance matrix during this delay.
+In order to combat this, we extended the Kalman Filter by increasing our noise covariance matrix $\textbf{Q}_k$ during this delay.
 
 We first intruduce a ratio matrix $\boldsymbol{\Upsilon}_k$ that describes our process noise covariance matrix $\textbf{Q}_k$ in relation to the measurement noise covariance matrix $\textbf{R}_k$:
 \begin{align*}
@@ -353,7 +388,7 @@ Where:
 
 and $M_1, M_2 \in \mathbb{R}$ are constants for scaling the peak, $\textbf{q}_k^{\vartheta_k}, \textbf{q}_k^{\eta_k}$ are the queues corresponding to the elements of the input vector's $\Delta \textbf{u}_k$.
 
-In order to test our filters adaptive feature, we set up a simulation of the system input and output vectors seen in Figure \ref{fig:sim_line_io}. It simulates the robot going forward in a straight line once then stopping. The frequency was chosen to be the same as on the real robot.
+In order to test our filters adaptive feature, we set up a simulation of the system input and output vectors seen in Figure \ref{fig:sim_line_io}. It simulates the robot going forward in a straight line once then stopping.
 
 \vspace{0.5cm}
 
@@ -367,7 +402,8 @@ In order to test our filters adaptive feature, we set up a simulation of the sys
       },
       width=12cm,
       height=5cm,
-      ytick distance=0.05,
+      ytick distance=0.2,
+      xtick distance = 1,
       xlabel={Time $[s]$},
       ylabel={$ \textbf{u}^\vartheta_k$ $[m/s]$},
       grid=both,
@@ -379,7 +415,7 @@ In order to test our filters adaptive feature, we set up a simulation of the sys
           draw=gray!50
         },
       ]
-      \addplot+[color=blue, mark=none,line width=1pt,mark size=1pt] table {plots/sim_line_0_u0.csv};
+      \addplot+[color=blue, mark=none,line width=1pt,mark size=1pt] table {plots/line_sim0_u0.csv};
     \end{axis}
   \end{tikzpicture}
 \end{flushleft}
@@ -393,7 +429,8 @@ In order to test our filters adaptive feature, we set up a simulation of the sys
       },
       width=12cm,
       height=5cm,
-      ytick distance=1.5,
+      ytick distance=2.5,
+      xtick distance = 1,
       xlabel={Time $[s]$},
       ylabel={$ \textbf{y}^\zeta_k$ $[m/s^2] $},
       grid=both,
@@ -405,7 +442,7 @@ In order to test our filters adaptive feature, we set up a simulation of the sys
           draw=gray!50
         },
       ]
-      \addplot+[color=blue, mark=none,line width=1pt,mark size=1pt] table {plots/sim_line_0_y0.csv};
+      \addplot+[color=blue, mark=none,line width=1pt,mark size=1pt] table {plots/line_sim0_y0.csv};
     \end{axis}
   \end{tikzpicture}
 \end{flushleft}
@@ -414,86 +451,23 @@ In order to test our filters adaptive feature, we set up a simulation of the sys
 
 \vspace{0.5cm}
 
-We then run the comparison between our Kalman Filter with and without the adaptive feature and look at our changes in our v state and the process noise covariance matrix $\textbf{Q}_k$. We set $M_1=100$ and a window length of 10.
+We then run the comparison between our Kalman Filter(KF) and Extended Kalman Filter(EKF) and look at our changes in our v state.
 
 \vspace{0.5cm}
 
-\begin{figure}[H]
-\begin{flushleft}
-  \begin{tikzpicture}
-    \begin{axis}[
-      yticklabel style={
-        /pgf/number format/fixed,
-        /pgf/number format/precision=5
-      },
-      width=12cm,
-      height=5cm,
-      ytick distance=0.00002,
-      xlabel={Time $[s]$},
-      ylabel={$ \textbf{Q}^\vartheta_k $},
-      legend pos=north west,
-      grid=both,
-      grid style={
-        line width=.1pt,
-        draw=gray!10},
-        major grid style={
-          line width=.2pt,
-          draw=gray!50
-        },
-      ]
-      \addplot+[color=red, mark=none,line width=1pt,mark size=1pt] table {plots/sim_line_adaptive_0_Q0.csv};
-    \end{axis}
-  \end{tikzpicture}
-\end{flushleft}
-\caption{$ \textbf{Q}_k $ during the adaptive Kalman Filter simulation}\label{fig:sim_Q0}
-\end{figure}
-
-\vspace{0.5cm}
-
-The $\textbf{Q}^\vartheta_k$ plot in Figure \ref{fig:sim_Q0} resembles our mirrored sigmoid function from Figure \ref{fig:sigwin}.
-
-\vspace{0.5cm}
-
-\begin{figure}[H]
- \begin{flushleft}
+\begin{figure}[h]
+ \begin{subfigure}[b]{0.5\textwidth}
   \begin{tikzpicture}
    \begin{axis}[
      yticklabel style={
        /pgf/number format/fixed,
        /pgf/number format/precision=5
       },
-     width=12cm,
-     height=5cm,
-     ytick distance=0.2,
-     xlabel={Time $[s]$},
-     ylabel={x state [m]},
-     legend pos=north west,
-     grid=both,
-     grid style={
-       line width=.1pt,
-       draw=gray!10},
-     major grid style={
-       line width=.2pt,
-       draw=gray!50
-      },
-    ]
-    \addplot+[color=blue, mark=none,line width=1pt,mark size=1pt, dashed] table {plots/sim_line_0_x0.csv};
-    \addlegendentry{reference}
-    \addplot+[color=red, mark=none,line width=1pt,mark size=1pt] table {plots/sim_line_adaptive_0_x0.csv};
-    \addlegendentry{adaptive}
-   \end{axis}
-  \end{tikzpicture}
- \end{flushleft}
- \begin{flushleft}
-  \begin{tikzpicture}
-   \begin{axis}[
-     yticklabel style={
-       /pgf/number format/fixed,
-       /pgf/number format/precision=5
-      },
-     width=12cm,
-     height=5cm,
-     ytick distance=0.1,
+      width=6cm,
+      height=7cm,
+     xmin=2.5,
+     xmax=4.0,
+     ytick distance=0.25,
      xlabel={Time $[s]$},
      ylabel={v state [m/s]},
      legend pos=north west,
@@ -506,18 +480,51 @@ The $\textbf{Q}^\vartheta_k$ plot in Figure \ref{fig:sim_Q0} resembles our mirro
        draw=gray!50
       },
     ]
-    \addplot+[color=blue, mark=none,line width=1pt,mark size=1pt, dashed] table {plots/sim_line_0_x2.csv};
-    \addlegendentry{reference}
-    \addplot+[color=red, mark=none,line width=1pt,mark size=1pt] table {plots/sim_line_adaptive_0_x2.csv};
-    \addlegendentry{adaptive}
+    \addplot+[color=blue, mark=none,line width=1pt,mark size=1pt, dashed] table {plots/line_sim0_x2.csv};
+    \addlegendentry{KF}
+    \addplot+[color=red, mark=none,line width=1pt,mark size=1pt] table {plots/line_sim1_x2.csv};
+    \addlegendentry{EKF}
    \end{axis}
   \end{tikzpicture}
- \end{flushleft}
- \caption{Evaluating Kalman Filter's adaptive feature on the x and v state}\label{fig:sim_v}
+  \caption{Rising edge}
+ \end{subfigure}
+ \begin{subfigure}[b]{0.5\textwidth}
+  \begin{tikzpicture}
+   \begin{axis}[
+     yticklabel style={
+       /pgf/number format/fixed,
+       /pgf/number format/precision=5
+      },
+      width=6cm,
+      height=7cm,
+     xmax = 8.0,
+     xmin=6.5,
+     ytick distance=0.25,
+     xlabel={Time $[s]$},
+     ylabel={v state [m/s]},
+     legend pos=north east,
+     grid=both,
+     grid style={
+       line width=.1pt,
+       draw=gray!10},
+     major grid style={
+       line width=.2pt,
+       draw=gray!50
+      },
+    ]
+    \addplot+[color=blue, mark=none,line width=1pt,mark size=1pt, dashed] table {plots/line_sim0_x2.csv};
+    \addlegendentry{KF}
+    \addplot+[color=red, mark=none,line width=1pt,mark size=1pt] table {plots/line_sim1_x2.csv};
+    \addlegendentry{EKF}
+   \end{axis}
+  \end{tikzpicture}
+  \caption{Falling edge}
+ \end{subfigure}
+ \caption{State v of the straight line simulation}\label{fig:vsim}
 \end{figure}
 
 \vspace{0.5cm}
 
-We can see in Figure \ref{fig:sim_v} that the adaptive feature of our Kalman Filter takes acceleration more into account during the jumps in the $\textbf{u}^\vartheta_k$.  Due to this phase being so short, it barely has an effect on the x state.The plot is relatively blocky due to low frequency for this short domain, but its puropse is to be realistic.
+As we can see in Figure \ref{fig:vsim}, the adaptive feature of our EKF helps to smooth out the estimation during the falling and rising edge of our joystick input.
 
 \end{document}
