@@ -1,0 +1,206 @@
+\documentclass[class=article, crop=false]{standalone}
+%\usepackage[subpreambles=true]{standalone}
+\usepackage{import}
+\input{../packages}
+\begin{document}
+\pgfplotsset{width=14cm,compat=1.9}
+\section{Parameter fitting}\label{sec:paramterfitting}
+
+We have a few paramaters that we need to set in our Kalman Filter model. In the next subsections we will tune $\mu_v$ and $\mu_{\dot{\Psi}}$ to an appropriate value with the help of a few experiments. We assume that the rest of the parameters were already set.
+
+All of the tuning and experiments are done with a very low process noise covariance $\textbf{Q}_k$ to see how our model performs in general before correcting them through measurements.
+
+\subsection{Tuning $\mu_v$}\label{subsec:tunemuv}
+
+Since our system is two dimensional and the x and y state depends highly not just on the $\alpha$ and $\mu_v$, but the $\beta$ and $\mu_{\dot{\Psi}}$ parameters, we set the input $u_k^\eta$ and $y_k^\chi$ zero.
+
+This way we ensure that small turns don't effect our tuning and can fine tune $\mu_v$ without worrying that other factors effect our x state. This corresponds to driving the robot in a straight line.
+
+For our $\mu_v$ tuning experiment we drove the robot in a distance of 5 meters with a longer section where the speed is constant. Once we got an x state estimation close enough to 5 meters with a set $\mu_v$, we varied $\mu_v$ to see how to effects the x state estimate. This can be seen in figure \ref{fig:muv}.
+
+\vspace{0.5cm}
+
+\begin{figure}[H]
+ \begin{flushleft}
+  \begin{tikzpicture}
+   \begin{axis}[
+     yticklabel style={
+       /pgf/number format/fixed,
+       /pgf/number format/precision=5
+      },
+     width=12cm,
+     height=5cm,
+     xmax=36,
+     xmin=-1,
+     xtick distance=2,
+     ytick distance=1,
+     xlabel={Time $[s]$},
+     ylabel={x state [m]},
+     legend pos=north west,
+     grid=both,
+     grid style={
+       line width=.1pt,
+       draw=gray!10},
+     major grid style={
+       line width=.2pt,
+       draw=gray!50
+      },
+      domain=0:36,
+    ]
+    \addplot+[color=teal, mark=none,line width=1pt,mark size=1pt] table {plots/micro_v_tune0_x0.csv};
+    \addlegendentry{4}
+    \addplot+[color=violet, mark=none,line width=1pt,mark size=1pt] table {plots/micro_v_tune1_x0.csv};
+    \addlegendentry{5}
+    \addplot+[color=black, mark=none,line width=1pt,mark size=1pt] table {plots/micro_v_tune2_x0.csv};
+    \addlegendentry{6}
+    \addplot+[color=red, mark=none,line width=1pt,mark size=1pt] table {plots/micro_v_tune3_x0.csv};
+    \addlegendentry{7}
+    \addplot+[color=blue, mark=none,line width=1pt,mark size=1pt] table {plots/micro_v_tune4_x0.csv};
+    \addlegendentry{8}
+    \addplot+[color=gray, mark=none,line width=1pt,mark size=1pt, samples=2, dashed] {5.0};
+   \end{axis}
+  \end{tikzpicture}
+ \caption{Different $\mu_v$ effects on the x state}\label{fig:muv}
+\end{figure}
+
+We set $\mu_v=6$ since its the closest one to 5 meters. We can also see that higher values effect the state estimation slighly less than lower ones.
+
+\subsection{Testing $\mu_v$}
+
+To test our tuned $\mu_v$ parameter, we will run the same experiment with the difference that we jerk the joystick input to drive the robot in short bursts thus not allowing it hold the constant velocity state for too long.
+
+The difference in the x state estimation will show how well our tuned $\mu_v$ paramter describes the real motion of the robot with a lot of acceleration and deceleration.
+
+\begin{figure}[H]
+ \begin{flushleft}
+  \begin{tikzpicture}
+   \begin{axis}[
+     yticklabel style={
+       /pgf/number format/fixed,
+       /pgf/number format/precision=5
+      },
+     width=12cm,
+     height=5cm,
+     xmin=-1,
+     xmax=36,
+     domain=0:36,
+     xtick distance=2,
+     ytick distance=1,
+     xlabel={Time $[s]$},
+     ylabel={x state [m]},
+     legend pos=north west,
+     grid=both,
+     grid style={
+       line width=.1pt,
+       draw=gray!10},
+     major grid style={
+       line width=.2pt,
+       draw=gray!50
+      },
+    ]
+    \addplot+[color=red, dashed, mark=none,line width=1pt,mark size=1pt] table {plots/micro_v_test0_x0.csv};
+    \addlegendentry{no jerking}
+    \addplot+[color=blue, mark=none,line width=1pt,mark size=1pt] table {plots/micro_v_test1_x0.csv};
+    \addlegendentry{jerking}
+    \addplot+[color=gray, mark=none,line width=1pt,mark size=1pt, samples=2, dashed] {5.0};
+   \end{axis}
+  \end{tikzpicture}
+ \end{flushleft}
+ \caption{Difference in x state while jerking the controller}\label{fig:testmicrov}
+\end{figure}
+
+\vspace{0.5cm}
+
+As we can see in figure \ref{fig:testmicrov}, our tuned $\mu_v$ describes our robot trajectory pretty well, even if the robot velocity is not constant.
+
+\subsection{Tuning $\mu_{\dot{\Psi}}$}\label{sebsec:tunemudpsi}
+
+Next we tune our $\mu_{\dot{\Psi}}$ paramater with an experiment where we turn 5 times without jerking the controller to achieve a longer constant turn speed period, very similarly as in \ref{subsec:tunemuv}.
+
+\vspace{0.5cm}
+
+\begin{figure}[H]
+  \begin{tikzpicture}
+   \begin{axis}[
+     yticklabel style={
+       /pgf/number format/fixed,
+       /pgf/number format/precision=5
+      },
+     width=12cm,
+     height=5cm,
+     xmin=-1,
+     xmax=32,
+     xtick distance=2,
+     ytick distance=1,
+     xlabel={Time $[s]$},
+     ylabel={$\Psi$ state [rad]},
+     legend pos=north west,
+     grid=both,
+     grid style={
+       line width=.1pt,
+       draw=gray!10},
+     major grid style={
+       line width=.2pt,
+       draw=gray!50
+      },
+    ]
+    \addplot+[color=teal, mark=none,line width=1pt,mark size=1pt] table {plots/micro_dpsi_tune0_x4.csv};
+    \addlegendentry{0.143}
+    \addplot+[color=violet, mark=none,line width=1pt,mark size=1pt] table {plots/micro_dpsi_tune1_x4.csv};
+    \addlegendentry{0.145}
+    \addplot+[color=black, mark=none,line width=1pt,mark size=1pt] table {plots/micro_dpsi_tune2_x4.csv};
+    \addlegendentry{0.147}
+    \addplot+[color=red, mark=none,line width=1pt,mark size=1pt] table {plots/micro_dpsi_tune3_x4.csv};
+    \addlegendentry{0.149}
+    \addplot+[color=blue, mark=none,line width=1pt,mark size=1pt] table {plots/micro_dpsi_tune4_x4.csv};
+    \addlegendentry{0.151}
+   \end{axis}
+  \end{tikzpicture}
+ \caption{Different $\mu_{\dot{\Psi}}$ effects on the $\Psi$ state}\label{fig:mupsi}
+\end{figure}
+
+We set $\mu_{\dot{\Psi}}=0.147$, since the closest one to 0 or $2 \pi$. We can see that this paramater is very sensitive to small changes.
+
+\subsection{Testing $\mu_{\dot{\Psi}}$}\label{sebsec:testmudpsi}
+
+Next we test our set $\mu_{\dot{\Psi}}$ in an experiment where we turn 5 times as well, but jerk the controller and stop frequently.
+
+\vspace{0.5cm}
+
+\begin{figure}[H]
+  \begin{tikzpicture}
+   \begin{axis}[
+     yticklabel style={
+       /pgf/number format/fixed,
+       /pgf/number format/precision=5
+      },
+     width=12cm,
+     height=5cm,
+     xmin=-1,
+     xmax=46,
+     xtick distance=2,
+     ytick distance=1,
+     xlabel={Time $[s]$},
+     ylabel={$\Psi$ state [rad]},
+     legend pos=north west,
+     grid=both,
+     grid style={
+       line width=.1pt,
+       draw=gray!10},
+     major grid style={
+       line width=.2pt,
+       draw=gray!50
+      },
+    ]
+    \addplot+[color=red, dashed, mark=none,line width=1pt,mark size=1pt] table {plots/micro_dpsi_test0_x4.csv};
+    \addlegendentry{no jerking}
+    \addplot+[color=blue, mark=none,line width=1pt,mark size=1pt] table {plots/micro_dpsi_test1_x4.csv};
+    \addlegendentry{jerking}
+   \end{axis}
+  \end{tikzpicture}
+ \caption{Different $\mu_{\dot{\Psi}}$ effects on the $\Psi$ state}\label{fig:testmupsi}
+\end{figure}
+
+As we can see from figure \ref{fig:testmupsi}, our model is not very accurate in describing the rotation of the robot. We are off about about 2 turns. We will reflect this in the process covariance $\textf{Q}_k$ and rely more on the gyroscope.
+
+\end{document}

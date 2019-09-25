@@ -7,20 +7,18 @@
 
 \chapter{Experiments}
 
-In our experiments with the platform we show the tuning process of the parameters described in Section \ref{sec:kalman} and see how our adaptive Kalman Filter performs compared to the de facto standard non-linear Kalman Filter, the Extended Kalman Filter.
+In this section we show the experiments with the platform and how we set the parameters described in Section \ref{sec:kalman} and our Kalman Filter accuracy.
 
-During the parameter tuning experiments, we first pick a reference experiment on which we base the tuning of our parameter, then we test it in different but also similar scenarios to see how well it estimates the real state of the robot.
-
-After choosing a parameter value we run the same experiment with the Extended Kalman Filter(EKF) to see how switching the Kalman Filter effects the states with the same parameters. We inserted a node between the sensor nodes and EKF to scale our input vector $\textbf{u}_k$ with $\alpha$ and $\beta$, and set the covariances of our sensors. The node ran with a rate of 10Hz to properly use the sensor data.
+After choosing a parameter during the \ref{sec:parameterfitting} we run the some experiments with our Extended Kalman Filter to see how switching the Kalman Filter effects the states with the same parameters.
 
 All of the experiments were performed by recording the sensor data on the robot while performing the experiment. Then we transformed the sensor data to the same reference point and ran the Kalman Filters offline. This process was automated to ensure paramater consistency during each run, but could also be easily run online on the robot.
 
-\import{sections/}{exp_alpha}
+%\import{sections/}{param_fitting}
 
-\import{sections/}{exp_beta}
+%\import(sections/){straight}
 
-\import{sections/}{exp_floor}
+%\import{sections/}{exp_floor}
 
-\import{sections/}{exp_octagon}
+%\import{sections/}{exp_octagon}
 
 \end{document}
