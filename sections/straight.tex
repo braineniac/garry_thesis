@@ -1,0 +1,83 @@
+\documentclass[class=article, crop=false]{standalone}
+%\usepackage[subpreambles=true]{standalone}
+\usepackage{import}
+\input{../packages}
+\begin{document}
+\pgfplotsset{width=14cm,compat=1.9}
+\section{Straight line}\label{sec:straightline}
+
+Now that we have all of our parameters set, we will try to recreate the simulation done in section \ref{subsubsec:ekf} with the $\mu_v$ tuning experiment and see if our EKF improves the x state estimation and if our rotation paramters influences it or not.
+
+\begin{figure}[H]
+ \begin{flushleft}
+  \begin{tikzpicture}
+   \begin{axis}[
+     yticklabel style={
+       /pgf/number format/fixed,
+       /pgf/number format/precision=5
+      },
+     width=12cm,
+     height=5cm,
+     xmax=16,
+     xmin=-1,
+     xtick distance=1,
+     ytick distance=1,
+     xlabel={Time $[s]$},
+     ylabel={x state [m]},
+     legend pos=north west,
+     grid=both,
+     grid style={
+       line width=.1pt,
+       draw=gray!10},
+     major grid style={
+       line width=.2pt,
+       draw=gray!50
+      },
+      domain=0:36,
+    ]
+    \addplot+[color=red, dashed,mark=none,line width=1pt,mark size=1pt] table {plots/straight_line0_x0.csv};
+    \addlegendentry{KF}
+    \addplot+[color=blue, mark=none,line width=1pt,mark size=1pt] table {plots/straight_line1_x0.csv};
+    \addlegendentry{EKF}
+   \end{axis}
+  \end{tikzpicture}
+  \begin{tikzpicture}
+   \begin{axis}[
+     yticklabel style={
+       /pgf/number format/fixed,
+       /pgf/number format/precision=5
+      },
+     width=12cm,
+     height=5cm,
+     xmin=-1,
+     xmax=16,
+     ytick distance = 0.2,
+     xtick distance=1,
+     xlabel={Time $[s]$},
+     ylabel={v state [m/s]},
+     legend pos=north west,
+     grid=both,
+     grid style={
+       line width=.1pt,
+       draw=gray!10},
+     major grid style={
+       line width=.2pt,
+       draw=gray!50
+      },
+      domain=0:36,
+    ]
+    \addplot+[color=red, dashed,mark=none,line width=1pt,mark size=1pt] table {plots/straight_line0_x2.csv};
+    \addlegendentry{KF}
+    \addplot+[color=blue, mark=none,line width=1pt,mark size=1pt] table {plots/straight_line1_x2.csv};
+    \addlegendentry{EKF}
+   \end{axis}
+  \end{tikzpicture}
+\end{flushleft}
+ \caption{Straight line experiment}\label{fig:straightline}
+\end{figure}
+
+Our x state estimation barely changes, since the additional corrections done by the acceleromater during the input jumps have insignificant impact on the x state estimation.
+
+Since the distance is still 5 meters, the influence of the rotational parameters is minimal.
+
+\end{document}
