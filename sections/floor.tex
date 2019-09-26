@@ -1,0 +1,89 @@
+\documentclass[class=article, crop=false]{standalone}
+%\usepackage[subpreambles=true]{standalone}
+\usepackage{import}
+\input{../packages}
+\begin{document}
+\pgfplotsset{width=14cm,compat=1.9}
+\section{Floor Mapping}\label{sec:floor}
+
+In this experiment we do a more realistic test to see differences in our Kalman Filter and EKF.
+
+We drive around in a corridor about 33 meters in length and 2.5 meters wide. We also drove through a small 10 meters long and 2.5 meters wide side corridor on the left side. There were also some glass doors that we manuevered around.
+
+\begin{center}
+\begin{figure}[H]
+ \begin{flushleft}
+  \begin{tikzpicture}
+   \begin{axis}[
+     yticklabel style={
+       /pgf/number format/fixed,
+       /pgf/number format/precision=5
+      },
+     width=12cm,
+     height=12cm,
+     xtick distance = 3,
+     ytick distance = 3,
+     xlabel={x state [m]},
+     ylabel={y state [m]},
+     legend pos=north west,
+     grid=both,
+     grid style={
+       line width=.1pt,
+       draw=gray!10},
+     major grid style={
+       line width=.2pt,
+       draw=gray!50
+      },
+    ]
+    \addplot+[color=red, mark=none,line width=1pt,mark size=1pt, dashed] table {plots/floor0_x0x1.csv};
+    \addlegendentry{KF}
+    \addplot+[color=blue, mark=none,line width=1pt,mark size=1pt] table {plots/floor1_x0x1.csv};
+    \addlegendentry{EKF}
+   \end{axis}
+  \end{tikzpicture}
+ \end{flushleft}
+ \caption{Floor experiment trajectories}\label{fig:floorxy}
+\end{figure}
+\end{center}
+
+Figure \ref{fig:floorxy} shows that our filters can't estimate small turns accurately, but we can still see the floor shape. The error seems to consistent since when we return to our starting point, we are not so far off with the Kalman Filter. Its in a distance of less than 1 meter. EKF is more off for the same reason as in \ref{sec:octagon}.
+
+\begin{center}
+\begin{figure}[H]
+ \begin{flushleft}
+  \begin{tikzpicture}
+   \begin{axis}[
+     yticklabel style={
+       /pgf/number format/fixed,
+       /pgf/number format/precision=5
+      },
+     width=12cm,
+     height=12cm,
+     xtick distance = 3,
+     ytick distance = 3,
+     xlabel={x state [m]},
+     ylabel={y state [m]},
+     legend pos=north west,
+     grid=both,
+     grid style={
+       line width=.1pt,
+       draw=gray!10},
+     major grid style={
+       line width=.2pt,
+       draw=gray!50
+      },
+    ]
+    \addplot+[color=red, mark=none,line width=1pt,mark size=1pt, dashed] table {plots/floor0_x0x1.csv};
+    \addlegendentry{KF}
+    \addplot+[color=blue, mark=none,line width=1pt,mark size=1pt] table {plots/floor2_x0x1.csv};
+    \addlegendentry{mistuned KF}
+   \end{axis}
+  \end{tikzpicture}
+ \end{flushleft}
+ \caption{Mistuned floor experiment}\label{fig:floormistuned}
+\end{figure}
+\end{center}
+
+We mistuned our filter in figure \ref{fig:floormistuned} the same way as in the octagon experiment. The 90 degree turns in the floor corners are pretty accurate, but the overall shape is almost unrecognisable.
+
+\end{document}
