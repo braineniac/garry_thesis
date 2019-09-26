@@ -1,0 +1,112 @@
+\documentclass[class=article, crop=false]{standalone}
+%\usepackage[subpreambles=true]{standalone}
+\usepackage{import}
+\input{../packages}
+\begin{document}
+\pgfplotsset{width=14cm,compat=1.9}
+\section{Octagon}\label{sec:octagon}
+
+We set up an experiment where we can observe drifts and test the accuracy of our system. We taped down 8 straight equidistant lines with 1.5m distance from the middle and marked the 1.5 meter mark on the tape. This way if we drive our robot from point to point, the path will be an octagonal shape where we can see drifts in accuracy over longer periods if we do multiple loops through the same path. We can see a part of this in Figure \ref{fig:octagonexp}.
+
+\vspace{0.5cm}
+
+\begin{figure}[H]
+\includegraphics[width=12cm, height=7cm]{images/octagon.jpg}
+\caption{Octagon experiment setup}
+\end{figure}\label{fig:octagonexp}
+
+\vspace{0.5cm}
+
+\begin{center}
+\begin{figure}[H]
+ \begin{flushleft}
+  \begin{tikzpicture}
+   \begin{axis}[
+     yticklabel style={
+       /pgf/number format/fixed,
+       /pgf/number format/precision=5
+      },
+     width=12cm,
+     height=12cm,
+     xmin=-2.5, xmax=2.5,
+     ymin=-3.5, ymax=1.5,
+     xlabel={x state [m]},
+     ylabel={y state [m]},
+     xtick distance= 0.5,
+     ytick distance=0.5,
+     legend pos=north west,
+     grid=both,
+     grid style={
+       line width=.1pt,
+       draw=gray!10},
+     major grid style={
+       line width=.2pt,
+       draw=gray!50
+      },
+    ]
+    \addplot+[color=red, mark=none,line width=1pt,mark size=1pt, dashed] table {plots/octagon0_x0x1.csv};
+    \addlegendentry{KF}
+    \addplot+[color=blue, mark=none,line width=1pt,mark size=1pt] table {plots/octagon1_x0x1.csv};
+    \addlegendentry{EKF}
+    \filldraw [fill=black, draw=white, thick] (axis cs:0,0) circle [radius=4pt] node[anchor=north] {Start};
+    \filldraw [fill=blue, draw=white, thick] (axis cs:3.900866408655341844e-01, 7.026190321121479343e-01) circle [radius=4pt] node[anchor=north] {End};
+    \filldraw [fill=red, draw=white, thick] (axis cs:-1.281200888097691615e-01, 2.669405901909106538e-01) circle [radius=4pt] node[anchor=north] {End};
+   \end{axis}
+  \end{tikzpicture}
+ \end{flushleft}
+ \caption{Octagon experiment trajectories}\label{fig:octagonxy}
+\end{figure}
+\end{center}
+
+\vspace{0.5cm}
+
+The robot wasn't driven perfectly due to diffulties in turning accurately, but we can observe drifts due to accumulating errors in the $\Psi$ state. This error gets bigger with EKF due to higher reliance on the gyroscope. A steady balance between model and measurement seems to yield better results with a well set $\varrho_{\eta\chi}$ ratio.
+
+\vspace{0.5cm}
+
+\begin{center}
+\begin{figure}[H]
+ \begin{flushleft}
+  \begin{tikzpicture}
+   \begin{axis}[
+     yticklabel style={
+       /pgf/number format/fixed,
+       /pgf/number format/precision=5
+      },
+     width=12cm,
+     height=12cm,
+     xmin=-3.0, xmax=2.0,
+     ymin=-3.5, ymax=1.5,
+     xlabel={x state [m]},
+     ylabel={y state [m]},
+     xtick distance= 0.5,
+     ytick distance=0.5,
+     legend pos=north west,
+     grid=both,
+     grid style={
+       line width=.1pt,
+       draw=gray!10},
+     major grid style={
+       line width=.2pt,
+       draw=gray!50
+      },
+    ]
+    \addplot+[color=red, mark=none,line width=1pt,mark size=1pt, dashed] table {plots/octagon0_x0x1.csv};
+    \filldraw [fill=red, draw=white, thick] (axis cs:-1.281200888097691615e-01, 2.669405901909106538e-01) circle [radius=4pt] node[anchor=north] {End};
+    \addlegendentry{KF}
+    \addplot+[color=blue, mark=none,line width=1pt,mark size=1pt] table {plots/octagon2_x0x1.csv};
+    \filldraw [fill=blue, draw=white, thick] (axis cs:-2.482088395220235277e+00, -1.902036347847060105e+00) circle [radius=4pt] node[anchor=north] {End};
+    \addlegendentry{mistuned KF}
+    \filldraw [fill=black, draw=white, thick] (axis cs:0,0) circle [radius=4pt] node[anchor=north] {Start};
+   \end{axis}
+  \end{tikzpicture}
+ \end{flushleft}
+ \caption{Octagon experiment trajectories}\label{fig:octagonmistuned}
+\end{figure}
+\end{center}
+
+\vspace{0.5cm}
+
+In figure \ref{gif:octagonmistuned} we see what happens if we rely too much on the mathematical model. We mistuned the ratio $\varrho_{\eta\chi}$ by 50\%.
+
+\end{document}
