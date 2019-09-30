@@ -6,15 +6,14 @@
 
 \chapter{Outlook}\label{cha:outlook}
 
-The gyroscope's drift seen in Section \ref{sec:circles} could be accounted for in a loop closing method if the path is relatively short or continuously correct it with a magnetometer.
+For more accurate turns the platform could be equipped with a wheel encoder  coupled with a more accurate rotation model. The gyroscope could also be corrected with a magnetometer.
 
-The underlying electrical structure could be improved for reliability and ease of use similar to the Turtlebot 3 Burger described in Section \ref{sec:turtlebot3burger}. Either a custom PCB or an Arduino Shield designed for the platform would make it easier to upgrade and maintain it.
+The underlying electrical structure could be improved by designing a custom Arduino Shield for reliability and monitoring. Additional voltage rails would make installing new modules a breeze.
 
-The platform could be also equipped with a wealth of enviroment sensors similar to the Wolfbot mentioned in \ref{sec:wolfbot}. Replacing the wheels with omnidirectional ones would also give it more manueverablility or replacing the motors and using a real wheel encoder.
+The platform could be also equipped with a wealth of environment sensors similar to the Wolfbot mentioned in \ref{sec:wolfbot}. Replacing the wheels with omnidirectional ones would also give it better maneuverability.
 
-The platform is well suited for not very demanding visual SLAM methods using the available cameras, for such research the Jetbot mentioned in Section \ref{sec:jetbot} is better suited for it due to better access to the GPU. An upgrade to the newly released Raspberry Pi 4 would be well justified, because of greatly updated specifications, especially GPU, and support for OpenGL ES 3\footnotemark.
+The platform is not as well suited for more demanding visual SLAM methods using the available cameras like the Jetbot mentioned in Section \ref{sec:jetbot} or the newly released Raspberry Pi 4 due to better access to the GPU. The Raspberry Pi 4 would be an easy upgrade and would enable support for OpenGL ES 3\footnotemark.
 
 \footnotetext{https://opensource.com/article/19/6/raspberry-pi-4}
-
 
 \end{document}

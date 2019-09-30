@@ -4,9 +4,9 @@
 %\input{../packages}
 \begin{document}
 
-\section{Parameter fitting}\label{sec:paramterfitting}
+\section{Parameter fitting}\label{sec:paramfitting}
 
-We have a few paramaters that we need to set in our Kalman Filter model. In the next subsections we will tune $\mu_v$ and $\mu_{\dot{\Psi}}$ to an appropriate value with the help of a few experiments. We assume that the rest of the parameters were already set.
+We have a few parameters that we need to set in our Kalman Filter model. In the next subsections we will tune $\mu_v$ and $\mu_{\dot{\Psi}}$ to an appropriate value with the help of a few experiments. We assume that the rest of the parameters were already set.
 
 All of the tuning and experiments are done with a very low process noise covariance $\textbf{Q}_k$ to see how our model performs in general before correcting them through measurements.
 
@@ -70,7 +70,7 @@ We set $\mu_v=6$ since its the closest one to 5 meters. We can also see that hig
 
 To test our tuned $\mu_v$ parameter, we will run the same experiment with the difference that we jerk the joystick input to drive the robot in short bursts thus not allowing it hold the constant velocity state for too long.
 
-The difference in the x state estimation will show how well our tuned $\mu_v$ paramter describes the real motion of the robot with a lot of acceleration and deceleration.
+The difference in the x state estimation will show how well our tuned $\mu_v$ parameter describes the real motion of the robot with a lot of acceleration and deceleration.
 
 \begin{figure}[H]
  \begin{flushleft}
@@ -116,7 +116,7 @@ As we can see in figure \ref{fig:testmicrov}, our tuned $\mu_v$ describes our ro
 
 \subsection{Tuning $\mu_{\dot{\Psi}}$}\label{sebsec:tunemudpsi}
 
-Next we tune our $\mu_{\dot{\Psi}}$ paramater with an experiment where we turn 5 times without jerking the controller to achieve a longer constant turn speed period, very similarly as in \ref{subsec:tunemuv}.
+Next we tune our $\mu_{\dot{\Psi}}$ parameter with an experiment where we turn 5 times without jerking the controller to achieve a longer constant turn speed period, very similarly as in \ref{subsec:tunemuv}.
 
 \vspace{0.5cm}
 
@@ -179,7 +179,7 @@ Next we test our set $\mu_{\dot{\Psi}}$ in an experiment where we turn 5 times a
     height=5cm,
     xmin=-1,
     xmax=46,
-    xtick distance=2,
+    xtick distance=3,
     ytick distance=1,
     xlabel={Time $[s]$},
     ylabel={$\Psi$ state [rad]},

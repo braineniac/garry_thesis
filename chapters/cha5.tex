@@ -6,11 +6,12 @@
 
 \chapter{Conclusion}\label{cha:conclusion}
 
-In this thesis we introduced a platform built out of remains of a toy robot and equipped it with components that make it a cost effective solution for research. Its current odometrical capabilities are based on a fake wheel encoder that is triggered by a Gamepad and the Razor IMU.
+In the thesis we introduced a platform built out of remains of a toy robot and equipped it with components that make it a cost effective solution for research.
 
-From the experiments we conducted in Sections \ref{sec:adapt} and \ref{sec:simplevsekf} we can conclude that odometry based on our fake wheel encoder is not well refined by our accelerometer since our robot is light and reaches its top velocity in a too short amount of time for including the acceleration in our model.
+We have implemented custom Kalman Filters for odometry using joystick signals as a control input and IMU sensors as an output.
 
-The experiment done in Section \ref{sec:circles} shows that the gyroscope drift causes the position to shift in a certain direction and should be continuously corrected by another sensor.
+From the conducted experiments we learned that small errors in the rotation accumulate easily and cause deformation of the overall trajectory.
 
+We have also learned that correcting robot velocity with an accelerometer might lead to higher accuracy, but due to the short acceleration period and noise from the motors, a more expensive high frequency one should be used with some kind of dampening for the motor vibrations for best results.
 
 \end{document}

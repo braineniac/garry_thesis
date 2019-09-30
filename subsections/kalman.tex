@@ -14,7 +14,7 @@ It is widely used in control theory and control systems engineering. Its applica
 
 The Kalman Filter is a recursive digital filter that uses the system's dynamic model with uncertainties and noisy sensor measurements to estimate the system state while minimizing errors.
 
-It uses a relative weight called the Kalman gain that is used with the current state estimation and sensor measurements. Its purpose is to "trust" values more that have a smaller uncertainty and thus give a more reliable estimation. It achieves that by the using covariances of the measurements and known, also to some extent unkown, noise that effect the states.
+It uses a relative weight called the Kalman gain that is used with the current state estimation and sensor measurements. Its purpose is to "trust" values more that have a smaller uncertainty and thus give a more reliable estimation. It achieves that by the using covariances of the measurements and known, also to some extent unknown, noise that effect the states.
 
 The following system model seen in \eqref{eq:generickalman} is a generic model of the Kalman Filter we used. It is based on a lecture script from Kemmetm{\"u}ller, W and Kugi, A\cite{regelungssysteme1} that is currently used in the Automation Master degree course Control Systems 1 at TU Vienna.
 
@@ -68,7 +68,7 @@ Where $ \hat{\textbf{x}}_0 $ is a guess for the initial state vector $ \textbf{x
     E(\textbf{w}_k \textbf{x}_0^T) &= \textbf{0}\\
     E(\textbf{v}_k \textbf{x}_0^T)&= \textbf{0}\\
 \end{align*}\label{eq:assumption3}
-We modelled our system with the 7-dimensional state vector:
+We modeled our system with the 7-dimensional state vector:
 
 \begin{center}
  $\textbf{x}_k =
@@ -84,9 +84,10 @@ We modelled our system with the 7-dimensional state vector:
  $
 \end{center}
 
-where $x_k$ is the distance travelled in x, $y_k$ the distance travelled in y, $v_k$ is the robot's relative x speed, $a_k$ is the robot's relative x acceleration, $\Psi_k$ is the yaw of the robot, $\dot{\Psi}_k$ is the yaw speed and $\ddot{\Psi}_k$ the yaw acceleration.
+where $x_k$ is the distance traveled in x, $y_k$ the distance traveled in y, $v_k$ is the robot's relative x speed, $a_k$ is the robot's relative x acceleration, $\Psi_k$ is the yaw of the robot, $\dot{\Psi}_k$ is the yaw speed and $\ddot{\Psi}_k$ the yaw acceleration.
 
 Our system input is a joystick controller, which we use to move our robot forward and backward by setting the voltage on the motors, which generate a force or torque that move our robot.
+
 \begin{center}
 $ \textbf{u}_k =
 \begin{bmatrix}
@@ -99,6 +100,7 @@ $
 Where $\vartheta_k \in [-1,1]$ is our forwards and backwards signal and $\eta_k \in [-1,1]$ is our rotation signal in the right and left direction. The top force of the motors, by setting $\vartheta_k = \pm 1$, is the constant $\alpha$ and the top torque at $\eta_k = \pm 1$ is the constant $\beta$.
 
 To construct our dynamic coefficient matrix $ \boldsymbol{\Phi_k} $ and input coupling matrix $ \boldsymbol{\Gamma_k} $, we used the following equations based on Newtonian kinematics, dynamics and Euler method:
+
 \begin{align*}
     x_{k+1} &= x_k + v_k cos(\Psi_k) \Delta t + \frac{1}{2} a_k cos(\Psi_k) (\Delta t)^2 \\
     y_{k+1} &= y_k + v_k sin(\Psi_k) \Delta t + \frac{1}{2} a_k sin(\Psi_k) (\Delta t)^2 \\
@@ -110,15 +112,16 @@ To construct our dynamic coefficient matrix $ \boldsymbol{\Phi_k} $ and input co
 \end{align*}\label{eq:systemdyn}
 The coefficients $m$ is the mass of the robot and $J$ is the moment of inertia(around the z-axis).
 
-We modeled the moment of inertia $J$ as a rectanglular block with the mass $m$(same as our robot), length $a$ and width $b$:
+We modeled the moment of inertia $J$ as a rectangular block with the mass $m$(same as our robot), length $a$ and width $b$:
 \begin{align*}
     J = \frac{m}{12} (a^2 + b^2)
 \end{align*}
+
 We furthermore reduced the number of parameters with $\alpha = b \beta$ in which we assume that the force from the motors is in $b/2$ from the center of rotation.
 
 Our model of $J$ and $\beta$ is very simplistic and could be improved with proper modeling of parts and simulations, but since we are correcting this with our gyroscope, we can set an appropriate process noise $\textbf{Q}_k$ that reflects this modeling.
 
-We assume that the drag is approximately proportional to the appropriete speed and the $\mu_v$ and $\mu_{\dot{\Psi}_k}$ are the linear drag coefficients.
+We assume that the drag is approximately proportional to the appropriate speed and the $\mu_v$ and $\mu_{\dot{\Psi}_k}$ are the linear drag coefficients.
 
 Our system output $y_k$ is measured by our gyroscope and accelerometer in the IMU:
 \begin{center}
@@ -137,7 +140,8 @@ For our measurement matrix and our measurement output coupling matrix we used th
 \zeta_k &= a_k\\
 \chi_k &= \dot{\Psi}_{k}\\
 \end{align*}\label{eq:outdyn}
-Since we don't know the noise added to the system by our $\textbf{u}_k$ control input vector, we modelled it as an unknown system noise vector $\textbf{w}_k$ with a set standard deviation $\sigma$. The measurement noise vector $v_k$ was modelled similarly:
+Since we don't know the noise added to the system by our $\textbf{u}_k$ control input vector, we modeled it as an unknown system noise vector $\textbf{w}_k$ with a set standard deviation $\sigma$. The measurement noise vector $v_k$ was modeled similarly:
+
 \begin{align*}
  \textbf{w}_k & = \begin{bmatrix}
   \sigma^{\vartheta_k}_k \\
@@ -213,6 +217,11 @@ Putting together all of the previous equations into the form \eqref{eq:genericka
      \sigma^{\zeta_k}_k \\
      \sigma^{\chi_k}_k  \\
     \end{bmatrix} \\
+\end{gather*}
+
+with:
+
+\begin{gather*}
     \boldsymbol{\Phi}_k = \begin{bmatrix}
      1 & 0 &  cos(\hat{\Psi}_{k}^+) \Delta t & \frac{1}{2} cos(\hat{\Psi}_{k}^+) (\Delta t)^2  & 0 & 0 & 0\\
      0 & 1 &  sin(\hat{\Psi}_{k}^+) \Delta t & \frac{1}{2} sin(\hat{\Psi}_{k}^+) (\Delta t)^2 & 0 & 0 & 0\\
@@ -306,7 +315,7 @@ Our model of the Kalman Filter doesn't account for the ramp-up time of the motor
 
 In order to combat this, we extended the Kalman Filter by increasing our noise covariance matrix $\textbf{Q}_k$ during this delay.
 
-We first intruduce a ratio matrix $\boldsymbol{\Upsilon}_k$ that describes our process noise covariance matrix $\textbf{Q}_k$ in relation to the measurement noise covariance matrix $\textbf{R}_k$:
+We first introduce a ratio matrix $\boldsymbol{\Upsilon}_k$ that describes our process noise covariance matrix $\textbf{Q}_k$ in relation to the measurement noise covariance matrix $\textbf{R}_k$:
 \begin{align*}
  \textbf{Q}_k              & =  \boldsymbol{\Upsilon}_k \textbf{R}_k &
  \begin{bmatrix}
@@ -324,7 +333,7 @@ We first intruduce a ratio matrix $\boldsymbol{\Upsilon}_k$ that describes our p
 
 To respond to the jumps from our joystick we used a moving weighted window with a set length N.
 
-We implmented a mirrored sigmoid curve using the logistic function in our moving weighted window due its ability to hold the peak relatively high before it decreases rapidly closer to its half-life.
+We implemented a mirrored sigmoid curve using the logistic function in our moving weighted window due its ability to hold the peak relatively high before it decreases rapidly closer to its half-life.
 
 We calculate the $w_k$ weights of a moving weighted window of length $N$ as:
 \begin{align*}
@@ -390,7 +399,7 @@ and $M_1, M_2 \in \mathbb{R}$ are constants for scaling the peak, $\textbf{q}_k^
 
 \subsubsection{Simulation}\label{subsubsec:sim}
 
-In order to test our Kalman Filter, we first simulated an approximate v state of our robot where we drive it in a straight line with the help of a box bunction we used as an input.
+In order to test our Kalman Filter, we first simulated an approximate v state of our robot where we drive it in a straight line with the help of a box function we used as an input.
 
 Next we we create the differential of the v state to get the a state and add some noise to be used as a system output. This can be seen figure \ref{fig:vsim}.
 
@@ -512,11 +521,11 @@ The top speed of our robot was calculated with:
 
 \vspace{0.5cm}
 
-We use the output from figure \ref{fig:vsim} as an output of our system. If we set $\textbf{Q}_k$ to a value close to zero, we v state estimation relies on the system model completely, if we set it high, it relies almost completely on the system output. These two extemes are illustrated in figure \ref{fig:sysextreme}.
+We use the output from figure \ref{fig:vsim} as an output of our system. If we set $\textbf{Q}_k$ to a value close to zero, we v state estimation relies on the system model completely, if we set it high, it relies almost completely on the system output. These two extremes are illustrated in figure \ref{fig:sysextreme}.
 
 \vspace{0.5cm}
 
-\begin{figure}[h]
+\begin{figure}[H]
  \begin{subfigure}[b]{0.5\textwidth}
   \begin{tikzpicture}
    \begin{axis}[
@@ -592,7 +601,7 @@ We use the output from figure \ref{fig:vsim} as an output of our system. If we s
 
 Next we set $\textbf{Q}_k$ with $\varrho_{\vartheta\zeta}=0.05$, which we used in the rest of the thesis and compare our Kalman Filter and Extended Kalman Filter with the v state simulation in Figure \ref{fig:kalmansim}.
 
-\begin{figure}[h]
+\begin{figure}[H]
  \begin{subfigure}[b]{0.5\textwidth}
   \begin{tikzpicture}
    \begin{axis}[
