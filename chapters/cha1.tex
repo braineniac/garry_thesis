@@ -1,11 +1,12 @@
-\documentclass[class=article, crop=false]{standalone}
+\documentclass[class=report, crop=false]{standalone}
 \usepackage[subpreambles=true]{standalone}
 \usepackage{import}
-\input{packages}
+%\input{packages}
 
 \begin{document}
 
 \chapter{Introduction}\label{cha:introduction}
+\pagestyle{scrheadings}
 This project aims to use off the shelf components to build a rudimentary robot with basic odometrical capabilities while keeping its budget minimal. Through exploring the limits of such a construct, we can speculate what is reasonably possible to build with today's readily available maker products and off-the-shelf components that can be used as a base for an extensible platform for research and development.
 
 Due to budget contraints we didn't use a wheel encoder commonly found in similar platforms and we explore the adequacy of using an inerial measurement sensor(IMU) and a fake wheel encoder implmented in software.

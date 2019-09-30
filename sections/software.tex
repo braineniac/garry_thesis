@@ -1,4 +1,4 @@
-\documentclass[class=article, crop=false]{standalone}
+\documentclass[class=report, crop=false]{standalone}
 \usepackage[subpreambles=true]{standalone}
 \usepackage{import}
 \begin{document}
@@ -33,13 +33,13 @@ On our platform we used ROS Kinetic, because at the time of writing it has the b
 \subsection{Drivers}\label{subsec:drivers}
 The Razor IMU is connected directly to the Rasberry Pi and we used the razor\_imu\_9dof\footnotemark ROS package for reading its data. We flashed the included default firmware onto the Razor board. Further firmware tweaking for higher sensor rate doesn't yield considerable improvements and is not recommended by the software author.
 
-\footnotetext{http://wiki.ros.org/razor_imu_9dof}
+\footnotetext{http://wiki.ros.org/razor\_imu\_9dof}
 
-In our previous attempt, we developed a ROS driver\footnote{https://github.com/braineniac/rpi_mpu6050} for the MPU6050 that was connected via $ I^2C $ to the Raspberry Pi, but the underlying libraries proved to be unreliable and was completely replaced by a more stable and reliable solution, the Razor IMU.
+In our previous attempt, we developed a ROS driver\footnote{https://github.com/braineniac/rpi\_mpu6050} for the MPU6050 that was connected via $ I^2C $ to the Raspberry Pi, but the underlying libraries proved to be unreliable and was completely replaced by a more stable and reliable solution, the Razor IMU.
 
 The servos are connected to the Arduino Uno's PWM pins and can be controlled by by ROS topics /servo\_upper and /servo\_lower directly. The motors are accessible through the customary /cmd\_vel topic and are connected to the Arduino Motor Shield. A differential drive was not implemented, depending on the direction a motor turns on or off and runs forwards or backwards for about 100ms, then it stops for security reasons.
 
-As for the cameras we used the the usb\_cam\footnote{http://wiki.ros.org/usb_cam} ROS package for the Logitech Webcam and the raspicam\_node\footnote{https://github.com/UbiquityRobotics/raspicam_node} from Ubiquity Robotics to provide a ROS interface. Both cameras were calibrated with a 7x9 checkerboard.
+As for the cameras we used the the usb\_cam\footnote{http://wiki.ros.org/usb\_cam} ROS package for the Logitech Webcam and the raspicam\_node\footnote{https://github.com/UbiquityRobotics/raspicam\_node} from Ubiquity Robotics to provide a ROS interface. Both cameras were calibrated with a 7x9 checkerboard.
 
 The joystick was handled by the joy\footnotetext{http://wiki.ros.org/joy} ROS package and the input is repeated every 100ms for smooth operation of the motors by our teleop\_node\footnotetext{https://github.com/braineniac/garry-robot}.
 
@@ -49,7 +49,7 @@ The joystick was handled by the joy\footnotetext{http://wiki.ros.org/joy} ROS pa
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\import{subsections/}{stateest}
+%\import{subsections/}{stateest}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{ORB-SLAM2}\label{subsec:orbslam2}

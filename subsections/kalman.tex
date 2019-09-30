@@ -1,7 +1,7 @@
-\documentclass[class=article, crop=false]{standalone}
-%\usepackage[subpreambles=true]{standalone}
+\documentclass[class=report, crop=false]{standalone}
+\usepackage[subpreambles=true]{standalone}
 \usepackage{import}
-\input{../packages}
+%\input{../packages}
 
 \begin{document}
 
@@ -300,7 +300,7 @@ $ \textbf{P}^-_{k+1} = \boldsymbol{\Phi}_k \textbf{P}^+_k \boldsymbol{\Phi}^T_k 
 
 Steps 2 and 3 are the "a posteriori" estimations, which were used in all of the figures in the thesis unless stated otherwise.
 
-\subsubsection{Extended Kalman Filter with adaptive process noise}\label{subsubsec:ekf}
+\subsubsection{Extended Kalman Filter}\label{subsubsec:ekf}
 
 Our model of the Kalman Filter doesn't account for the ramp-up time of the motors before they reach their desired actuation force once the voltage is applied on them.
 
@@ -388,7 +388,16 @@ Where:
 
 and $M_1, M_2 \in \mathbb{R}$ are constants for scaling the peak, $\textbf{q}_k^{\vartheta_k}, \textbf{q}_k^{\eta_k}$ are the queues corresponding to the elements of the input vector's $\Delta \textbf{u}_k$.
 
-In order to test our filters adaptive feature, we set up a simulation of the system input and output vectors seen in Figure \ref{fig:sim_line_io}. It simulates the robot going forward in a straight line once then stopping.
+\subsubsection{Simulation}\label{subsubsec:sim}
+
+In order to test our Kalman Filter, we first simulated an approximate v state of our robot where we drive it in a straight line with the help of a box bunction we used as an input.
+
+Next we we create the differential of the v state to get the a state and add some noise to be used as a system output. This can be seen figure \ref{fig:vsim}.
+
+The top speed of our robot was calculated with:
+\begin{align*}
+    \hat{v} &= \dfrac{\alpha \vartheta_k}{\mu_v}
+\end{align*}
 
 \vspace{0.5cm}
 
@@ -429,6 +438,58 @@ In order to test our filters adaptive feature, we set up a simulation of the sys
       },
       width=12cm,
       height=5cm,
+      ytick distance=0.2,
+      xtick distance = 1,
+      xlabel={Time $[s]$},
+      ylabel={Simulated v state $[m/s] $},
+      grid=both,
+      grid style={
+        line width=.1pt,
+        draw=gray!10},
+        major grid style={
+          line width=.2pt,
+          draw=gray!50
+        },
+      ]
+      \addplot+[color=blue, mark=none,line width=1pt,mark size=1pt] table {plots/line_sim0_x2.csv};
+    \end{axis}
+  \end{tikzpicture}
+\end{flushleft}
+\begin{flushleft}
+  \begin{tikzpicture}
+    \begin{axis}[
+      yticklabel style={
+        /pgf/number format/fixed,
+        /pgf/number format/precision=5
+      },
+      width=12cm,
+      height=5cm,
+      ytick distance=2.5,
+      xtick distance = 1,
+      xlabel={Time $[s]$},
+      ylabel={Simulated a state $[m/s^2] $},
+      grid=both,
+      grid style={
+        line width=.1pt,
+        draw=gray!10},
+        major grid style={
+          line width=.2pt,
+          draw=gray!50
+        },
+      ]
+      \addplot+[color=blue, mark=none,line width=1pt,mark size=1pt] table {plots/line_sim0_x3.csv};
+    \end{axis}
+  \end{tikzpicture}
+\end{flushleft}
+\begin{flushleft}
+  \begin{tikzpicture}
+    \begin{axis}[
+      yticklabel style={
+        /pgf/number format/fixed,
+        /pgf/number format/precision=5
+      },
+      width=12cm,
+      height=5cm,
       ytick distance=2.5,
       xtick distance = 1,
       xlabel={Time $[s]$},
@@ -446,12 +507,12 @@ In order to test our filters adaptive feature, we set up a simulation of the sys
     \end{axis}
   \end{tikzpicture}
 \end{flushleft}
-\caption{$ \textbf{u}_k $ and $ \textbf{y}_k $ simulation}\label{fig:sim_line_io}
+\caption{System simulation}\label{fig:vsim}
 \end{figure}
 
 \vspace{0.5cm}
 
-We then run the comparison between our Kalman Filter(KF) and Extended Kalman Filter(EKF) and look at our changes in our v state.
+We use the output from figure \ref{fig:vsim} as an output of our system. If we set $\textbf{Q}_k$ to a value close to zero, we v state estimation relies on the system model completely, if we set it high, it relies almost completely on the system output. These two extemes are illustrated in figure \ref{fig:sysextreme}.
 
 \vspace{0.5cm}
 
@@ -463,9 +524,9 @@ We then run the comparison between our Kalman Filter(KF) and Extended Kalman Fil
        /pgf/number format/fixed,
        /pgf/number format/precision=5
       },
-      width=6cm,
-      height=7cm,
-     xmin=2.5,
+     width=6cm,
+     height=7cm,
+     xmin=2.0,
      xmax=4.0,
      ytick distance=0.25,
      xlabel={Time $[s]$},
@@ -480,10 +541,12 @@ We then run the comparison between our Kalman Filter(KF) and Extended Kalman Fil
        draw=gray!50
       },
     ]
-    \addplot+[color=blue, mark=none,line width=1pt,mark size=1pt, dashed] table {plots/line_sim0_x2.csv};
-    \addlegendentry{KF}
-    \addplot+[color=red, mark=none,line width=1pt,mark size=1pt] table {plots/line_sim1_x2.csv};
-    \addlegendentry{EKF}
+    \addplot+[color=black, dashed, mark=none,line width=1pt,mark size=1pt] table {plots/line_sim0_x2.csv};
+    \addlegendentry{sim v}
+    \addplot+[color=blue, mark=none,line width=1pt,mark size=1pt] table {plots/line_sim3_x2.csv};
+    \addlegendentry{low $\textbf{Q}_k$}
+    \addplot+[color=red, mark=none,line width=1pt,mark size=1pt] table {plots/line_sim4_x2.csv};
+    \addlegendentry{high $\textbf{Q}_k$}
    \end{axis}
   \end{tikzpicture}
   \caption{Rising edge}
@@ -495,9 +558,9 @@ We then run the comparison between our Kalman Filter(KF) and Extended Kalman Fil
        /pgf/number format/fixed,
        /pgf/number format/precision=5
       },
-      width=6cm,
-      height=7cm,
-     xmax = 8.0,
+     width=6cm,
+     height=7cm,
+     xmax = 8.5,
      xmin=6.5,
      ytick distance=0.25,
      xlabel={Time $[s]$},
@@ -512,19 +575,95 @@ We then run the comparison between our Kalman Filter(KF) and Extended Kalman Fil
        draw=gray!50
       },
     ]
-    \addplot+[color=blue, mark=none,line width=1pt,mark size=1pt, dashed] table {plots/line_sim0_x2.csv};
+    \addplot+[color=black, dashed, mark=none,line width=1pt,mark size=1pt] table {plots/line_sim0_x2.csv};
+    \addlegendentry{sim v}
+    \addplot+[color=blue, mark=none,line width=1pt,mark size=1pt] table {plots/line_sim3_x2.csv};
+    \addlegendentry{low $\textbf{Q}_k$}
+    \addplot+[color=red, mark=none,line width=1pt,mark size=1pt] table {plots/line_sim4_x2.csv};
+    \addlegendentry{high $\textbf{Q}_k$}
+   \end{axis}
+  \end{tikzpicture}
+  \caption{Falling edge}
+ \end{subfigure}
+ \caption{Exteme $\textbf{Q}_k$ simulation}\label{fig:sysextreme}
+\end{figure}
+
+\vspace{0.5cm}
+
+Next we set $\textbf{Q}_k$ with $\varrho_{\vartheta\zeta}=0.05$, which we used in the rest of the thesis and compare our Kalman Filter and Extended Kalman Filter with the v state simulation in Figure \ref{fig:kalmansim}.
+
+\begin{figure}[h]
+ \begin{subfigure}[b]{0.5\textwidth}
+  \begin{tikzpicture}
+   \begin{axis}[
+     yticklabel style={
+       /pgf/number format/fixed,
+       /pgf/number format/precision=5
+      },
+     width=6cm,
+     height=7cm,
+     xmin=2.0,
+     xmax=4.0,
+     ytick distance=0.25,
+     xlabel={Time $[s]$},
+     ylabel={v state [m/s]},
+     legend pos=north west,
+     grid=both,
+     grid style={
+       line width=.1pt,
+       draw=gray!10},
+     major grid style={
+       line width=.2pt,
+       draw=gray!50
+      },
+    ]
+    \addplot+[color=black, dashed, mark=none,line width=1pt,mark size=1pt] table {plots/line_sim0_x2.csv};
+    \addlegendentry{sim v}
+    \addplot+[color=blue, mark=none,line width=1pt,mark size=1pt] table {plots/line_sim1_x2.csv};
     \addlegendentry{KF}
-    \addplot+[color=red, mark=none,line width=1pt,mark size=1pt] table {plots/line_sim1_x2.csv};
+    \addplot+[color=red, mark=none,line width=1pt,mark size=1pt] table {plots/line_sim2_x2.csv};
+    \addlegendentry{EKF}
+   \end{axis}
+  \end{tikzpicture}
+  \caption{Rising edge}
+ \end{subfigure}
+ \begin{subfigure}[b]{0.5\textwidth}
+  \begin{tikzpicture}
+   \begin{axis}[
+     yticklabel style={
+       /pgf/number format/fixed,
+       /pgf/number format/precision=5
+      },
+     width=6cm,
+     height=7cm,
+     xmax = 8.5,
+     xmin=6.5,
+     ytick distance=0.25,
+     xlabel={Time $[s]$},
+     ylabel={v state [m/s]},
+     legend pos=north east,
+     grid=both,
+     grid style={
+       line width=.1pt,
+       draw=gray!10},
+     major grid style={
+       line width=.2pt,
+       draw=gray!50
+      },
+    ]
+    \addplot+[color=black, dashed, mark=none,line width=1pt,mark size=1pt] table {plots/line_sim0_x2.csv};
+    \addlegendentry{sim v}
+    \addplot+[color=blue, mark=none,line width=1pt,mark size=1pt] table {plots/line_sim1_x2.csv};
+    \addlegendentry{KF}
+    \addplot+[color=red, mark=none,line width=1pt,mark size=1pt] table {plots/line_sim2_x2.csv};
     \addlegendentry{EKF}
    \end{axis}
   \end{tikzpicture}
   \caption{Falling edge}
  \end{subfigure}
- \caption{State v of the straight line simulation}\label{fig:vsim}
+ \caption{Comparison of our KF and EKF with the simulation}\label{fig:kalmansim}
 \end{figure}
 
-\vspace{0.5cm}
-
-As we can see in Figure \ref{fig:vsim}, the adaptive feature of our EKF helps to smooth out the estimation during the falling and rising edge of our joystick input.
+In the realistic scenario in Figure \ref{fig:kalmansim} we can see that EKF approximates our simulation more closely, especially on the edges where our joystick input signal suddenly jumps.
 
 \end{document}

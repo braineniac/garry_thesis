@@ -1,7 +1,6 @@
 \documentclass[class=report, crop=false]{standalone}
-%\usepackage[subpreambles=true]{standalone}
-\usepackage{import}
-\input{../packages}
+\usepackage[subpreambles=true]{standalone}
+%\input{../packages}
 
 \begin{document}
 
@@ -13,12 +12,12 @@ After choosing a parameter during the \ref{sec:parameterfitting} we run the some
 
 All of the experiments were performed by recording the sensor data on the robot while performing the experiment. Then we transformed the sensor data to the same reference point and ran the Kalman Filters offline. This process was automated to ensure paramater consistency during each run, but could also be easily run online on the robot.
 
-%\import{sections/}{param_fitting}
+\import{sections/}{paramfitting}
 
-%\import(sections/){straight}
+\import{sections/}{line}
 
-%\import{sections/}{exp_floor}
+\import{sections/}{octagon}
 
-%\import{sections/}{exp_octagon}
+\import{sections/}{floor}
 
 \end{document}

@@ -1,9 +1,9 @@
-\documentclass[class=article, crop=false]{standalone}
-%\usepackage[subpreambles=true]{standalone}
+\documentclass[class=report, crop=false]{standalone}
+\usepackage[subpreambles=true]{standalone}
 \usepackage{import}
-\input{../packages}
+%\input{../packages}
 \begin{document}
-\pgfplotsset{width=14cm,compat=1.9}
+
 \section{Octagon}\label{sec:octagon}
 
 We set up an experiment where we can observe drifts and test the accuracy of our system. We taped down 8 straight equidistant lines with 1.5m distance from the middle and marked the 1.5 meter mark on the tape. This way if we drive our robot from point to point, the path will be an octagonal shape where we can see drifts in accuracy over longer periods if we do multiple loops through the same path. We can see a part of this in Figure \ref{fig:octagonexp}.

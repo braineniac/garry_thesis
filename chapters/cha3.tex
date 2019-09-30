@@ -1,27 +1,23 @@
-\documentclass[class=article, crop=false]{standalone}
-%\usepackage[subpreambles=true]{standalone}
+\documentclass[class=report, crop=false]{standalone}
+\usepackage[subpreambles=true]{standalone}
 \usepackage{import}
+%\input{../packages}
 \begin{document}
 
 \chapter{Approach}\label{cha:approach}
-
+\pagestyle{scrheadings}
 The rise in popularity of the maker culture, which democratizes access to STEM and other tech-rich domains, has enabled large scale production of cheap plug-and-play components which can be utilized not just for hobby projects, but also for research purposes.
 
 Our platform was designed around such products to be as low cost as reasonably possible. Our choice of parts was dictated mainly by already freely available. The missing parts were bought with a low price in mind to explore what could be possible with such design restrictions.
 
 Wheel encoders for our platform were too costly to incorporate, this is why we used a fake wheel encoder which is the motor forward signal from the joystick. We inspect the accuracy and usefullness of this signal used in conjunction with an IMU through experiments.
 
-TODO:
-- add different pic
-- white background
-- list parts
-- longer figure description
-
-\begin{figure}
+\begin{SCfigure}
   \centering
-  \includegraphics[width=8cm]{images/garry.jpg}
-  \caption{Finished platform}
-\end{figure}
+    \includegraphics[width=8cm]{images/profile_numbered}
+    \caption{\\Platform parts:\\1: Camera\\2: Motor Shield\\3: Arduino UNO\\
+    4: Raspberry Pi 3\\5: Razor IMU\\6: LiPo Batteries\\7: Chassis}
+\end{SCfigure}
 
 \import{sections/}{hardware}
 

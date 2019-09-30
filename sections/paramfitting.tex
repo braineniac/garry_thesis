@@ -1,9 +1,9 @@
-\documentclass[class=article, crop=false]{standalone}
-%\usepackage[subpreambles=true]{standalone}
+\documentclass[class=report, crop=false]{standalone}
+\usepackage[subpreambles=true]{standalone}
 \usepackage{import}
-\input{../packages}
+%\input{../packages}
 \begin{document}
-\pgfplotsset{width=14cm,compat=1.9}
+
 \section{Parameter fitting}\label{sec:paramterfitting}
 
 We have a few paramaters that we need to set in our Kalman Filter model. In the next subsections we will tune $\mu_v$ and $\mu_{\dot{\Psi}}$ to an appropriate value with the help of a few experiments. We assume that the rest of the parameters were already set.
@@ -60,6 +60,7 @@ For our $\mu_v$ tuning experiment we drove the robot in a distance of 5 meters w
     \addplot+[color=gray, mark=none,line width=1pt,mark size=1pt, samples=2, dashed] {5.0};
    \end{axis}
   \end{tikzpicture}
+\end{flushleft}
  \caption{Different $\mu_v$ effects on the x state}\label{fig:muv}
 \end{figure}
 
@@ -168,39 +169,39 @@ Next we test our set $\mu_{\dot{\Psi}}$ in an experiment where we turn 5 times a
 \vspace{0.5cm}
 
 \begin{figure}[H]
-  \begin{tikzpicture}
-   \begin{axis}[
-     yticklabel style={
-       /pgf/number format/fixed,
-       /pgf/number format/precision=5
-      },
-     width=12cm,
-     height=5cm,
-     xmin=-1,
-     xmax=46,
-     xtick distance=2,
-     ytick distance=1,
-     xlabel={Time $[s]$},
-     ylabel={$\Psi$ state [rad]},
-     legend pos=north west,
-     grid=both,
-     grid style={
-       line width=.1pt,
-       draw=gray!10},
-     major grid style={
-       line width=.2pt,
-       draw=gray!50
-      },
-    ]
-    \addplot+[color=red, dashed, mark=none,line width=1pt,mark size=1pt] table {plots/micro_dpsi_test0_x4.csv};
-    \addlegendentry{no jerking}
-    \addplot+[color=blue, mark=none,line width=1pt,mark size=1pt] table {plots/micro_dpsi_test1_x4.csv};
-    \addlegendentry{jerking}
-   \end{axis}
-  \end{tikzpicture}
+ \begin{tikzpicture}
+  \begin{axis}[
+    yticklabel style={
+      /pgf/number format/fixed,
+      /pgf/number format/precision=5
+     },
+    width=12cm,
+    height=5cm,
+    xmin=-1,
+    xmax=46,
+    xtick distance=2,
+    ytick distance=1,
+    xlabel={Time $[s]$},
+    ylabel={$\Psi$ state [rad]},
+    legend pos=north west,
+    grid=both,
+    grid style={
+      line width=.1pt,
+      draw=gray!10},
+    major grid style={
+      line width=.2pt,
+      draw=gray!50
+     },
+   ]
+   \addplot+[color=red, dashed, mark=none,line width=1pt,mark size=1pt] table {plots/micro_dpsi_test0_x4.csv};
+   \addlegendentry{no jerking}
+   \addplot+[color=blue, mark=none,line width=1pt,mark size=1pt] table {plots/micro_dpsi_test1_x4.csv};
+   \addlegendentry{jerking}
+  \end{axis}
+ \end{tikzpicture}
  \caption{Different $\mu_{\dot{\Psi}}$ effects on the $\Psi$ state}\label{fig:testmupsi}
 \end{figure}
 
-As we can see from figure \ref{fig:testmupsi}, our model is not very accurate in describing the rotation of the robot. We are off about about 2 turns. We will reflect this in the process covariance $\textf{Q}_k$ and rely more on the gyroscope.
+As we can see from figure \ref{fig:testmupsi}, our model is not very accurate in describing the rotation of the robot. We are off about about 2 turns. We will reflect this in the process covariance $\textbf{Q}_k$ and rely more on the gyroscope.
 
 \end{document}

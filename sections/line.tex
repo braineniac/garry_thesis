@@ -1,9 +1,10 @@
-\documentclass[class=article, crop=false]{standalone}
-%\usepackage[subpreambles=true]{standalone}
+\documentclass[class=report, crop=false]{standalone}
+\usepackage[subpreambles=true]{standalone}
 \usepackage{import}
-\input{../packages}
+%\input{../packages}
+
 \begin{document}
-\pgfplotsset{width=14cm,compat=1.9}
+
 \section{Straight line}\label{sec:straightline}
 
 Now that we have all of our parameters set, we will try to recreate the simulation done in section \ref{subsubsec:ekf} with the $\mu_v$ tuning experiment and see if our EKF improves the x state estimation and if our rotation paramters influences it or not.
@@ -33,7 +34,7 @@ Now that we have all of our parameters set, we will try to recreate the simulati
        line width=.2pt,
        draw=gray!50
       },
-      domain=0:36,
+     domain=0:36,
     ]
     \addplot+[color=red, dashed,mark=none,line width=1pt,mark size=1pt] table {plots/straight_line0_x0.csv};
     \addlegendentry{KF}
@@ -64,7 +65,7 @@ Now that we have all of our parameters set, we will try to recreate the simulati
        line width=.2pt,
        draw=gray!50
       },
-      domain=0:36,
+     domain=0:36,
     ]
     \addplot+[color=red, dashed,mark=none,line width=1pt,mark size=1pt] table {plots/straight_line0_x2.csv};
     \addlegendentry{KF}
@@ -72,7 +73,7 @@ Now that we have all of our parameters set, we will try to recreate the simulati
     \addlegendentry{EKF}
    \end{axis}
   \end{tikzpicture}
-\end{flushleft}
+ \end{flushleft}
  \caption{Straight line experiment}\label{fig:straightline}
 \end{figure}
 
