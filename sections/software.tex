@@ -31,7 +31,7 @@ On our platform we used ROS Kinetic, because at the time of writing it has the b
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \subsection{Drivers}\label{subsec:drivers}
-The Razor IMU is connected directly to the Rasberry Pi and we used the razor\_imu\_9dof\footnotemark ROS package for reading its data. We flashed the included default firmware onto the Razor board. Further firmware tweaking for higher sensor rate doesn't yield considerable improvements and is not recommended by the software author.
+The Razor IMU is connected directly to the Rasberry Pi and we used the razor\_imu\_9dof\footnotemark  ROS package for reading its data. We flashed the included default firmware onto the Razor board. Further firmware tweaking for higher sensor rate doesn't yield considerable improvements and is not recommended by the software author.
 
 \footnotetext{http://wiki.ros.org/razor\_imu\_9dof}
 
@@ -60,6 +60,6 @@ In our tests the CPU of the Raspberry Pi proved not to be powerful enough to run
 
 \footnotetext{https://github.com/stevenlovegrove/Pangolin}
 
-Our conclusion is that using the published ORB-SLAM2 code in its current state is not possible in real time on the Raspberry Pi 3B and would require GPU acceleration or other code optimizations to run all system threads.
+Our conclusion is that using the published ORB-SLAM2 code in its current state is not possible in real time on the Raspberry Pi 3B and would require GPU acceleration or other code optimizations.
 
 \end{document}

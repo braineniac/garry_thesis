@@ -5,18 +5,18 @@
 
 \begin{document}
 
-\subsection{Custom Kalman Filter}\label{subsec:customkalman}
-State estimation is an important part of any mobile robot. Its accuracy can be refined by multiple sensors. In order to deal with sensor noise and other inaccuracies during our position estimation, we used a linear quadratic estimator known as the Kalman Filter.
+\subsection{Custom Kalman filter}\label{subsec:customkalman}
+State estimation is an important part of any mobile robot. Its accuracy can be refined by multiple sensors. In order to deal with sensor noise and other inaccuracies during our position estimation, we used a linear quadratic estimator known as the Kalman filter.
 
 It is widely used in control theory and control systems engineering. Its applications include aircraft, spacecraft, ships and robot motion planning.
 
-\subsubsection{Kalman Filter Theory}\label{subsubsec:kalmanfilter}
+\subsubsection{Kalman filter Theory}\label{subsubsec:kalmanfilter}
 
-The Kalman Filter is a recursive digital filter that uses the system's dynamic model with uncertainties and noisy sensor measurements to estimate the system state while minimizing errors.
+The Kalman filter is a recursive digital filter that uses the system's dynamic model with uncertainties and noisy sensor measurements to estimate the system state while minimizing errors.
 
 It uses a relative weight called the Kalman gain that is used with the current state estimation and sensor measurements. Its purpose is to "trust" values more that have a smaller uncertainty and thus give a more reliable estimation. It achieves that by the using covariances of the measurements and known, also to some extent unknown, noise that effect the states.
 
-The following system model seen in \eqref{eq:generickalman} is a generic model of the Kalman Filter we used. It is based on a lecture script from Kemmetm{\"u}ller, W and Kugi, A\cite{regelungssysteme1} that is currently used in the Automation Master degree course Control Systems 1 at TU Vienna.
+The following system model seen in \eqref{eq:generickalman} is a generic model of the Kalman filter we used. It is based on a lecture script from Kemmetm{\"u}ller, W and Kugi, A\cite{regelungssysteme1} that is currently used in the Automation Master degree course Control Systems 1 at TU Vienna.
 
 \begin{equation}
 \begin{gathered}
@@ -309,9 +309,9 @@ $ \textbf{P}^-_{k+1} = \boldsymbol{\Phi}_k \textbf{P}^+_k \boldsymbol{\Phi}^T_k 
 
 Steps 2 and 3 are the "a posteriori" estimations, which were used in all of the figures in the thesis unless stated otherwise.
 
-\subsubsection{Kalman Filter with adaptive process noise}\label{subsubsec:kfapn}
+\subsubsection{Kalman filter with adaptive process noise}\label{subsubsec:kfapn}
 
-Our model of the Kalman Filter doesn't account for the ramp-up time of the motors before they reach their desired actuation force once the voltage is applied on them.
+Our model of the Kalman filter doesn't account for the ramp-up time of the motors before they reach their desired actuation force once the voltage is applied on them.
 
 In order to combat this, we adapt the state estimation by increasing our noise covariance matrix $\textbf{Q}_k$ during this delay.
 
@@ -399,9 +399,9 @@ and $M_1, M_2 \in \mathbb{R}$ are constants for scaling the peak, $\textbf{q}_k^
 
 \subsubsection{Simulation}\label{subsubsec:sim}
 
-In order to test our Kalman Filter, we first simulated an approximate v state of our robot where we drive it in a straight line with the help of a box function we used as an input.
+In order to test our Kalman filter, we first simulated an approximate v state of our robot where we drive it in a straight line with the help of a box function we used as an input.
 
-Next we we create the differential of the v state to get the a state and add some noise to be used as a system output. This can be seen figure \ref{fig:vsim}.
+Next we we create the differential of the v state to get the a state and add some noise to be used as a system output. This can be seen in Figure \ref{fig:vsim}.
 
 The top speed of our robot was calculated with:
 \begin{align*}
@@ -437,7 +437,10 @@ The top speed of our robot was calculated with:
     \end{axis}
   \end{tikzpicture}
 \end{flushleft}
+\caption{Simulated system input}\label{fig:vsimin}
+\end{figure}
 
+\begin{figure}[H]
 \begin{flushleft}
   \begin{tikzpicture}
     \begin{axis}[
@@ -450,7 +453,7 @@ The top speed of our robot was calculated with:
       ytick distance=0.2,
       xtick distance = 1,
       xlabel={Time $[s]$},
-      ylabel={Simulated v state $[m/s] $},
+      ylabel={v state $[m/s] $},
       grid=both,
       grid style={
         line width=.1pt,
@@ -464,6 +467,10 @@ The top speed of our robot was calculated with:
     \end{axis}
   \end{tikzpicture}
 \end{flushleft}
+\caption{Simulated v state}\label{fig:vsim}
+\end{figure}
+
+\begin{figure}[H]
 \begin{flushleft}
   \begin{tikzpicture}
     \begin{axis}[
@@ -476,7 +483,7 @@ The top speed of our robot was calculated with:
       ytick distance=2.5,
       xtick distance = 1,
       xlabel={Time $[s]$},
-      ylabel={Simulated a state $[m/s^2] $},
+      ylabel={a state $[m/s^2] $},
       grid=both,
       grid style={
         line width=.1pt,
@@ -490,6 +497,10 @@ The top speed of our robot was calculated with:
     \end{axis}
   \end{tikzpicture}
 \end{flushleft}
+\caption{Simulated a state}\label{fig:asim}
+\end{figure}
+
+\begin{figure}[H]
 \begin{flushleft}
   \begin{tikzpicture}
     \begin{axis}[
@@ -516,12 +527,12 @@ The top speed of our robot was calculated with:
     \end{axis}
   \end{tikzpicture}
 \end{flushleft}
-\caption{System simulation}\label{fig:vsim}
+\caption{Simulated a state with noise}\label{fig:asimnoise}
 \end{figure}
 
 \vspace{0.5cm}
 
-We use the output from figure \ref{fig:vsim} as an output of our system. If we set $\textbf{Q}_k$ to a value close to zero, we v state estimation relies on the system model completely, if we set it high, it relies almost completely on the system output. These two extremes are illustrated in figure \ref{fig:sysextreme}.
+We use the output from Figure \ref{fig:asimnoise} as an output of our system. If we set $\textbf{Q}_k$ to a value close to zero, we v state estimation relies on the system model completely, if we set it high, it relies almost completely on the system output. These two extremes are illustrated in Figure \ref{fig:sysextreme}.
 
 \vspace{0.5cm}
 
@@ -594,12 +605,12 @@ We use the output from figure \ref{fig:vsim} as an output of our system. If we s
   \end{tikzpicture}
   \caption{Falling edge}
  \end{subfigure}
- \caption{Extreme $\textbf{Q}_k$ simulation}\label{fig:sysextreme}
+ \caption{Simulation of two $\textbf{Q}_k$ extremes}\label{fig:sysextreme}
 \end{figure}
 
 \vspace{0.5cm}
 
-Next we set $\textbf{Q}_k$ with $\varrho_{\vartheta\zeta}=0.05$, which we used in the rest of the thesis and compare our Kalman Filter with and without the adaptive process noise feature with the v state simulation in Figure \ref{fig:kalmansim}.
+Next we set $\textbf{Q}_k$ with $\varrho_{\vartheta\zeta}=0.05$, which we used in the rest of the thesis and compare our Kalman filter with and without the adaptive process noise feature with the v state simulation in Figure \ref{fig:kalmansim}.
 
 \begin{figure}[H]
  \begin{subfigure}[b]{0.5\textwidth}
@@ -673,6 +684,6 @@ Next we set $\textbf{Q}_k$ with $\varrho_{\vartheta\zeta}=0.05$, which we used i
  \caption{Comparison of our KF and KF(APN) with the simulation}\label{fig:kalmansim}
 \end{figure}
 
-In the realistic scenario in Figure \ref{fig:kalmansim} we can see that the Kalman Filter with the adaptive process noise approximates our simulation more closely, especially on the edges where our joystick input signal suddenly jumps.
+In the realistic scenario in Figure \ref{fig:kalmansim} we can see that the Kalman filter with the adaptive process noise approximates our simulation more closely, especially on the edges where our joystick input signal suddenly jumps.
 
 \end{document}

@@ -6,7 +6,7 @@
 
 \section{Parameter fitting}\label{sec:paramfitting}
 
-We have a few parameters that we need to set in our Kalman Filter model. In the next subsections we will tune $\mu_v$ and $\mu_{\dot{\Psi}}$ to an appropriate value with the help of a few experiments. We assume that the rest of the parameters were already set.
+We have a few parameters that we need to set in our Kalman filter model. In the next subsections we will tune $\mu_v$ and $\mu_{\dot{\Psi}}$ to an appropriate value with the help of a few experiments. We assume that the rest of the parameters were already set.
 
 All of the tuning and experiments are done with a very low process noise covariance $\textbf{Q}_k$ to see how our model performs in general before correcting them through measurements.
 
@@ -16,7 +16,7 @@ Since our system is two dimensional and the x and y state depends highly not jus
 
 This way we ensure that small turns don't effect our tuning and can fine tune $\mu_v$ without worrying that other factors effect our x state. This corresponds to driving the robot in a straight line.
 
-For our $\mu_v$ tuning experiment we drove the robot in a distance of 5 meters with a longer section where the speed is constant. Once we got an x state estimation close enough to 5 meters with a set $\mu_v$, we varied $\mu_v$ to see how to effects the x state estimate. This can be seen in figure \ref{fig:muv}.
+For our $\mu_v$ tuning experiment we drove the robot in a distance of 5 meters with a longer section where the speed is constant. Once we got an x state estimation close enough to 5 meters with a set $\mu_v$, we varied $\mu_v$ to see how to effects the x state estimate. This can be seen in Figure \ref{fig:muv}.
 
 \vspace{0.5cm}
 
@@ -112,7 +112,7 @@ The difference in the x state estimation will show how well our tuned $\mu_v$ pa
 
 \vspace{0.5cm}
 
-As we can see in figure \ref{fig:testmicrov}, our tuned $\mu_v$ describes our robot trajectory pretty well, even if the robot velocity is not constant.
+As we can see in Figure \ref{fig:testmicrov}, our tuned $\mu_v$ describes our robot trajectory pretty well, even if the robot velocity is not constant.
 
 \subsection{Tuning $\mu_{\dot{\Psi}}$}\label{sebsec:tunemudpsi}
 
@@ -202,6 +202,6 @@ Next we test our set $\mu_{\dot{\Psi}}$ in an experiment where we turn 5 times a
  \caption{Different $\mu_{\dot{\Psi}}$ effects on the $\Psi$ state}\label{fig:testmupsi}
 \end{figure}
 
-As we can see from figure \ref{fig:testmupsi}, our model is not very accurate in describing the rotation of the robot. We are off about about 2 turns. We will reflect this in the process covariance $\textbf{Q}_k$ and rely more on the gyroscope.
+As we can see from Figure \ref{fig:testmupsi}, our model is not very accurate in describing the rotation of the robot. We are off about about 2 turns. We will reflect this in the process covariance $\textbf{Q}_k$ and rely more on the gyroscope.
 
 \end{document}
