@@ -309,11 +309,11 @@ $ \textbf{P}^-_{k+1} = \boldsymbol{\Phi}_k \textbf{P}^+_k \boldsymbol{\Phi}^T_k 
 
 Steps 2 and 3 are the "a posteriori" estimations, which were used in all of the figures in the thesis unless stated otherwise.
 
-\subsubsection{Extended Kalman Filter}\label{subsubsec:ekf}
+\subsubsection{Kalman Filter with adaptive process noise}\label{subsubsec:kfapn}
 
 Our model of the Kalman Filter doesn't account for the ramp-up time of the motors before they reach their desired actuation force once the voltage is applied on them.
 
-In order to combat this, we extended the Kalman Filter by increasing our noise covariance matrix $\textbf{Q}_k$ during this delay.
+In order to combat this, we adapt the state estimation by increasing our noise covariance matrix $\textbf{Q}_k$ during this delay.
 
 We first introduce a ratio matrix $\boldsymbol{\Upsilon}_k$ that describes our process noise covariance matrix $\textbf{Q}_k$ in relation to the measurement noise covariance matrix $\textbf{R}_k$:
 \begin{align*}
@@ -594,12 +594,12 @@ We use the output from figure \ref{fig:vsim} as an output of our system. If we s
   \end{tikzpicture}
   \caption{Falling edge}
  \end{subfigure}
- \caption{Exteme $\textbf{Q}_k$ simulation}\label{fig:sysextreme}
+ \caption{Extreme $\textbf{Q}_k$ simulation}\label{fig:sysextreme}
 \end{figure}
 
 \vspace{0.5cm}
 
-Next we set $\textbf{Q}_k$ with $\varrho_{\vartheta\zeta}=0.05$, which we used in the rest of the thesis and compare our Kalman Filter and Extended Kalman Filter with the v state simulation in Figure \ref{fig:kalmansim}.
+Next we set $\textbf{Q}_k$ with $\varrho_{\vartheta\zeta}=0.05$, which we used in the rest of the thesis and compare our Kalman Filter with and without the adaptive process noise feature with the v state simulation in Figure \ref{fig:kalmansim}.
 
 \begin{figure}[H]
  \begin{subfigure}[b]{0.5\textwidth}
@@ -627,11 +627,11 @@ Next we set $\textbf{Q}_k$ with $\varrho_{\vartheta\zeta}=0.05$, which we used i
       },
     ]
     \addplot+[color=black, dashed, mark=none,line width=1pt,mark size=1pt] table {plots/line_sim0_x2.csv};
-    \addlegendentry{sim v}
+    \addlegendentry{sim}
     \addplot+[color=blue, mark=none,line width=1pt,mark size=1pt] table {plots/line_sim1_x2.csv};
     \addlegendentry{KF}
     \addplot+[color=red, mark=none,line width=1pt,mark size=1pt] table {plots/line_sim2_x2.csv};
-    \addlegendentry{EKF}
+    \addlegendentry{KF(APN)}
    \end{axis}
   \end{tikzpicture}
   \caption{Rising edge}
@@ -661,18 +661,18 @@ Next we set $\textbf{Q}_k$ with $\varrho_{\vartheta\zeta}=0.05$, which we used i
       },
     ]
     \addplot+[color=black, dashed, mark=none,line width=1pt,mark size=1pt] table {plots/line_sim0_x2.csv};
-    \addlegendentry{sim v}
+    \addlegendentry{sim}
     \addplot+[color=blue, mark=none,line width=1pt,mark size=1pt] table {plots/line_sim1_x2.csv};
     \addlegendentry{KF}
     \addplot+[color=red, mark=none,line width=1pt,mark size=1pt] table {plots/line_sim2_x2.csv};
-    \addlegendentry{EKF}
+    \addlegendentry{KF(APN)}
    \end{axis}
   \end{tikzpicture}
   \caption{Falling edge}
  \end{subfigure}
- \caption{Comparison of our KF and EKF with the simulation}\label{fig:kalmansim}
+ \caption{Comparison of our KF and KF(APN) with the simulation}\label{fig:kalmansim}
 \end{figure}
 
-In the realistic scenario in Figure \ref{fig:kalmansim} we can see that EKF approximates our simulation more closely, especially on the edges where our joystick input signal suddenly jumps.
+In the realistic scenario in Figure \ref{fig:kalmansim} we can see that the Kalman Filter with the adaptive process noise approximates our simulation more closely, especially on the edges where our joystick input signal suddenly jumps.
 
 \end{document}

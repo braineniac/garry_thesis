@@ -7,7 +7,7 @@
 
 \section{Straight line}\label{sec:straightline}
 
-Now that we have all of our parameters set, we will try to recreate the simulation done in section \ref{subsubsec:ekf} with the $\mu_v$ tuning experiment and see if our EKF improves the x state estimation and if our rotation parameters influences it or not.
+Now that we have all of our parameters set, we will try to recreate the simulation done in section \ref{subsubsec:kfapn} with the $\mu_v$ tuning experiment and see if our Kalman Filter with adaptive process noise improves the x state estimation and if our rotation parameters have an influence on it.
 
 \begin{figure}[H]
  \begin{flushleft}
@@ -39,7 +39,7 @@ Now that we have all of our parameters set, we will try to recreate the simulati
     \addplot+[color=red, dashed,mark=none,line width=1pt,mark size=1pt] table {plots/straight_line0_x0.csv};
     \addlegendentry{KF}
     \addplot+[color=blue, mark=none,line width=1pt,mark size=1pt] table {plots/straight_line1_x0.csv};
-    \addlegendentry{EKF}
+    \addlegendentry{KF(APN)}
    \end{axis}
   \end{tikzpicture}
   \begin{tikzpicture}
@@ -70,14 +70,14 @@ Now that we have all of our parameters set, we will try to recreate the simulati
     \addplot+[color=red, dashed,mark=none,line width=1pt,mark size=1pt] table {plots/straight_line0_x2.csv};
     \addlegendentry{KF}
     \addplot+[color=blue, mark=none,line width=1pt,mark size=1pt] table {plots/straight_line1_x2.csv};
-    \addlegendentry{EKF}
+    \addlegendentry{KF(APN)}
    \end{axis}
   \end{tikzpicture}
  \end{flushleft}
  \caption{Straight line experiment}\label{fig:straightline}
 \end{figure}
 
-Our x state estimation barely changes, since the additional corrections done by the acceleromater during the input jumps have insignificant impact on the x state estimation.
+Our x state estimation barely changes, since the additional corrections done by the accelerometer during the input jumps have insignificant impact on the x state estimation.
 
 Since the distance is still 5 meters, the influence of the rotational parameters is minimal.
 

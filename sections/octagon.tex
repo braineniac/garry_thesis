@@ -47,7 +47,7 @@ We set up an experiment where we can observe drifts and test the accuracy of our
     \addplot+[color=red, mark=none,line width=1pt,mark size=1pt, dashed] table {plots/octagon0_x0x1.csv};
     \addlegendentry{KF}
     \addplot+[color=blue, mark=none,line width=1pt,mark size=1pt] table {plots/octagon1_x0x1.csv};
-    \addlegendentry{EKF}
+    \addlegendentry{KF(APN)}
     \filldraw [fill=black, draw=white, thick] (axis cs:0,0) circle [radius=4pt] node[anchor=north] {Start};
     \filldraw [fill=blue, draw=white, thick] (axis cs:3.900866408655341844e-01, 7.026190321121479343e-01) circle [radius=4pt] node[anchor=north] {End};
     \filldraw [fill=red, draw=white, thick] (axis cs:-1.281200888097691615e-01, 2.669405901909106538e-01) circle [radius=4pt] node[anchor=north] {End};
@@ -59,7 +59,7 @@ We set up an experiment where we can observe drifts and test the accuracy of our
 
 \vspace{0.5cm}
 
-The robot wasn't driven perfectly due to difficulties in turning accurately, but we can observe drifts due to accumulating errors in the $\Psi$ state. This error gets bigger with EKF due to higher reliance on the gyroscope. A steady balance between model and measurement seems to yield better results with a well set $\varrho_{\eta\chi}$ ratio.
+The robot wasn't driven perfectly due to difficulties in turning accurately, but we can observe drifts due to accumulating errors in the $\Psi$ state. This error gets bigger with KF(APN) due to higher reliance on the gyroscope. A steady balance between model and measurement seems to yield better results with a well set $\varrho_{\eta\chi}$ ratio.
 
 \vspace{0.5cm}
 
