@@ -1,31 +1,70 @@
 \documentclass[class=article, crop=false]{standalone}
 \usepackage[subpreambles=true]{standalone}
 \usepackage{import}
-%\input{../packages}
+\input{../packages}
 
 \begin{document}
 
 \section{Hardware}\label{sec:hardware}
 
-Here is an overview of all the parts seen in Figure \ref{fig:platform}:
+\vspace{0.5cm}
 
-\begin{enumerate}
- \item Raspberry Pi Night Vision Camera Module and Logitech C905 Webcam
- \item Arduino Motor Shield Rev 3
- \item Arduino Uno Rev 3
- \item Raspberry Pi 3 Model B Rev 1.2
- \item SparkFun 9DoF Razor IMU M0
- \item 2x 1000 mAh batteries with 2x 5V voltage regulators
- \item chassis, motors and other remains of the Cybot
-\end{enumerate}
+We can see all the parts used to construct the robot in Figure \ref{fig:platform}.
+
+\vspace{0.5cm}
 
 \begin{figure}
-  \centering
-    \includegraphics[width=8cm]{images/profile_numbered}
-    \caption{Platform components}\label{fig:platform}
+ \centering
+ \includegraphics[width=8cm]{images/profile_numbered}
+ \captionsetup{singlelinecheck=off}
+ \caption[]{
+  An overview of of all components:
+  \begin{enumerate}
+   \item Raspberry Pi Night Vision Camera Module and Logitech C905 Webcam
+   \item Arduino Motor Shield Rev 3
+   \item Arduino Uno Rev 3
+   \item Raspberry Pi 3 Model B Rev 1.2
+   \item SparkFun 9DoF Razor IMU M0
+   \item 2x 1000 mAh batteries with a 5V voltage regulator
+   \item chassis, motors and other remains of the Cybot
+  \end{enumerate}
+ }
+ \label{fig:platform}
 \end{figure}
 
 An exact cost of the platform is hard to determine, because many of the parts were either scraps or were freely available to use for this project. We estimate a sub 200\$ for all the parts used if bought new.
+
+Here is a block diagram of the hardware layout:
+\begin{center}
+\begin{tikzpicture}[align=center,node distance=2.5cm]
+    \node[block] (lipo1) {11.1V LiPo};
+
+    \node[block] (regulator) [right of=lipo1] {5V regulator};
+
+    \node[block] (rpi) [right of=regulator] {RPI};
+    \node[block] (imu) [right of=rpi] {IMU};
+    \node[block] (cameras) [above of=imu] {Cameras};
+    \node[block] (arduino) [below of=imu] {Arduino};
+    \node[block] (motorshield) [below of=arduino] {Motor Shield};
+    \node[block] (motors) [right of=motorshield] {DC motors};
+    \node (empty1) [below of=lipo1] {};
+    \node[block] (lipo2) [below of=empty1] {11.1V LiPo};
+
+    \draw[-] (rpi.south) |- (arduino.west);
+    \draw[-] (arduino.south) -- (motorshield.north);
+    \draw[-] (motorshield.east) -- (motors.west);
+    \draw[-] (rpi.east) -- (imu.west);
+    \draw[-] (rpi.north) |- (cameras.west);
+
+    \draw[dashed] (lipo1.east) -- (regulator.west);
+    \draw[dashed] (regulator.east) -- (rpi.west);
+    \draw[dashed] (lipo2.east) -- (motorshield.west);
+
+
+\end{tikzpicture}
+\end{center}
+
+\vspace{1cm}
 
 \subsection{Embedded Computing}\label{subsec:soc}
 We built our platform around the Raspberry Pi 3 Model B. Its low cost, computational performance, availability, low power consumption and ROS support made it a clear choice.
@@ -37,7 +76,7 @@ The Raspberry Pi is a single board computer(SBC) with a Broadcom BCM2837 system 
 The Raspberry Pi is connected to an Arduino Uno via a USB and the Arduino Uno is connected to an Arduino Motor Shield. Therefore any Arduino compatible sensors or actuators can be easily integrated onto the platform.
 
 \subsection{Chassis}\label{subsec:chassis}
-The chassis and most of the plastic parts were taken from the Cybot, which is a toy robot that came with the magazine Real Robots by Eaglemoss Publications\footnotemark.
+The chassis and most of the plastic parts were taken from the Cybot, a toy robot that came with the magazine Real Robots by Eaglemoss Publications\footnotemark.
 
 \footnotetext{https://www.getreading.co.uk/news/local-news/make-your-robot-home-4278122}
 

@@ -1,17 +1,23 @@
 \documentclass[class=report, crop=false]{standalone}
 \usepackage[subpreambles=true]{standalone}
-\usepackage{import}
+%\input{../packages}
 
 \begin{document}
 
-\chapter{Conclusion}\label{cha:conclusion}
+\chapter{Experiments}
 
-In the thesis we introduced a platform built out of remains of a toy robot and equipped it with components that make it a cost effective solution for research.
+In this section we show the experiments with the platform and how we set the parameters described in section \ref{subsec:customkalman} and our Kalman filter accuracy.
 
-We have implemented custom Kalman filters for odometry using joystick signals as a control input and IMU sensors as an output.
+After choosing the parameters during the \ref{sec:paramfitting} we run the same experiments with the adaptive process noise feature to see how it effects the states with the same parameters.
 
-From the conducted experiments we learned that small errors in the rotation accumulate easily and cause deformation of the overall trajectory.
+All of the experiments were performed by recording the sensor data on the robot while performing the experiment. Then we transformed the sensor data to the same reference point and ran the Kalman filters offline. This process was automated to ensure parameter consistency during each run, but could also be easily run online on the robot.
 
-We have also learned that correcting robot velocity with an accelerometer might lead to higher accuracy, but due to the short acceleration period and noise from the motors, a more expensive high frequency one should be used with some kind of dampening for the motor vibrations for best results.
+\import{sections/}{paramfitting}
+
+\import{sections/}{line}
+
+\import{sections/}{octagon}
+
+\import{sections/}{floor}
 
 \end{document}

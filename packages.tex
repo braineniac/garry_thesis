@@ -17,6 +17,7 @@
 \usepackage[parfill]{parskip}
 \usepackage{float}
 \usepackage[bottom]{footmisc}
+\usepackage{textcomp}
 
 \setlength{\parindent}{2em}
 \setlength{\parskip}{0.5em}
@@ -26,11 +27,17 @@
 \usepgfplotslibrary{external}
 \usepackage{tikz}
 \usepackage{shellesc}
-\usetikzlibrary{external}
+\usetikzlibrary{external,shapes,arrows,positioning}
 \tikzexternalize[shell escape=-enable-write18]
 %\tikzexternalize[shell escape=-shell-escape]
 \tikzset{external/system call={lualatex \tikzexternalcheckshellescape -halt-on-error -interaction=batchmode -jobname "\image" "\texsource"}}
-
+\tikzset{%
+  block/.style    = {draw, thick, rectangle, minimum height = 3em,
+    minimum width = 3em},
+  sum/.style      = {draw, circle, node distance = 2cm}, % Adder
+  input/.style    = {coordinate}, % Input
+  output/.style   = {coordinate} % Output
+}
 \setcounter{secnumdepth}{5}
 
 % \usepackage{pgfplots}
