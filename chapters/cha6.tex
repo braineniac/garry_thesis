@@ -1,6 +1,7 @@
 \documentclass[class=report, crop=false]{standalone}
 \usepackage[subpreambles=true]{standalone}
-\usepackage{import}
+%\input{../packages}
+
 
 \begin{document}
 
@@ -8,10 +9,12 @@
 
 In the thesis we introduced a platform built out of remains of a toy robot and equipped it with components that make it a cost effective solution for research.
 
-We have implemented custom Kalman filters for odometry using joystick signals as a control input and IMU sensors as an output.
+We have implemented a system using custom Kalman filters for odometry using joystick signals as a control input and IMU sensors as an output.
 
-From the conducted experiments we learned that small errors in the rotation accumulate easily and cause deformation of the overall trajectory.
+Due to the accelerometer's lower than 1 signal-to-noise ratio(SNR) we supressed its impact on the state estimation with a higher process noise covariance $\textbf{Q}_k$. The noise originated from the DC motor's vibrations.
 
-We have also learned that correcting robot velocity with an accelerometer might lead to higher accuracy, but due to the short acceleration period and noise from the motors, a more expensive high frequency one should be used with some kind of dampening for the motor vibrations for best results.
+From the conducted experiments we have learned that small errors in the rotation accumulate easily and cause deformation of the overall trajectory.
+
+Improving the odometry with visual SLAM like ORB-SLAM2\cite{mur2017orb} is not computationally feasable on the Raspberry Pi 3 without further code optimizations.
 
 \end{document}

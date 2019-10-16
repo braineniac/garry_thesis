@@ -4,7 +4,7 @@
 %\input{../packages}
 \begin{document}
 
-\section{Floor Mapping}\label{sec:floor}
+\section{Corridor mapping}\label{sec:floor}
 
 In this experiment we do a more realistic test to see differences in our Kalman filter with and without adaptive process noise.
 
@@ -42,7 +42,7 @@ We drive around in a corridor about 33 meters in length and 2.5 meters wide. We 
    \end{axis}
   \end{tikzpicture}
  \end{flushleft}
- \caption{Floor experiment trajectories}\label{fig:floorxy}
+ \caption{Comparison of the xy-trajectory estimates with the Kalman filter and Kalman filter with adaptive process noise after driving the robot close to the walls of the corridor}\label{fig:floorxy}
 \end{figure}
 \end{center}
 
@@ -80,7 +80,7 @@ Figure \ref{fig:floorxy} shows that our filters can't estimate small turns accur
    \end{axis}
   \end{tikzpicture}
  \end{flushleft}
- \caption{Mistuned floor experiment}\label{fig:floormistuned}
+ \caption{Effects of mistuning the $\varrho_{\eta\chi}$ parameter by 50\% on the x-y trajectory after driving the robot close to the walls of the corridor}\label{fig:floormistuned}
 \end{figure}
 \end{center}
 

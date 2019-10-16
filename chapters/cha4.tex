@@ -86,7 +86,7 @@ We modeled our system with the 7-dimensional state vector:
 
 where $x_k$ is the distance traveled in x, $y_k$ the distance traveled in y, $v_k$ is the robot's relative x speed, $a_k$ is the robot's relative x acceleration, $\Psi_k$ is the yaw of the robot, $\dot{\Psi}_k$ is the yaw speed and $\ddot{\Psi}_k$ the yaw acceleration.
 
-Our system input is a joystick controller, which we use to move our robot forward and backward by setting the voltage on the motors, which generate a force or torque that move our robot.
+Our system input is a joystick controller, which we use to move our robot forward and backward by setting the voltage on the motors, which generate a force or torque.
 
 \begin{center}
 $ \textbf{u}_k =
@@ -99,7 +99,7 @@ $
 
 Where $\vartheta_k \in [-1,1]$ is our forwards and backwards signal and $\eta_k \in [-1,1]$ is our rotation signal in the right and left direction. The top force of the motors, by setting $\vartheta_k = \pm 1$, is the constant $\alpha$ and the top torque at $\eta_k = \pm 1$ is the constant $\beta$.
 
-To construct our dynamic coefficient matrix $ \boldsymbol{\Phi_k} $ and input coupling matrix $ \boldsymbol{\Gamma_k} $, we used the following equations based on the Taylor series expansion:
+To construct our dynamic coefficient matrix $ \boldsymbol{\Phi_k} $ and input coupling matrix $ \boldsymbol{\Gamma_k} $, we used the following equations based on the Taylor series expansion at $f(t_k+\Delta t)$:
 
 \begin{align*}
     x_{k+1} &\approx x_{k} + v_k cos(\Phi_k) \Delta t + \frac{1}{2} a_k cos(\Phi_k) (\Delta t)^2\\
@@ -109,7 +109,7 @@ To construct our dynamic coefficient matrix $ \boldsymbol{\Phi_k} $ and input co
     \dot{\Psi}_{k+1} &\approx \dot{\Psi}_{k} + \ddot{\Psi}_{k} \Delta t\\
 \end{align*}
 
-and linear drag:
+and linear drag based on Newtonian mechanics:
 
 \begin{align*}
     m a_{k+1} &= \alpha \vartheta_k - \mu_v v_k\\
@@ -444,7 +444,7 @@ The top speed of our robot was calculated with:
     \end{axis}
   \end{tikzpicture}
 \end{flushleft}
-\caption{Simulated system input}\label{fig:vsimin}
+\caption{Simulation of the system input $ \textbf{u}^\vartheta_k$ and the desired v state of driving the robot in a stright line}\label{fig:vsimin}
 \end{figure}
 
 \begin{figure}[H]
@@ -478,7 +478,7 @@ The top speed of our robot was calculated with:
     \end{axis}
   \end{tikzpicture}
 \end{flushleft}
-\caption{Simulated a state}\label{fig:asim}
+\caption{Simulation of the system output $ \textbf{y}^\zeta_k$ and the desired a state of driving the robot in a straight line}\label{fig:asim}
 \end{figure}
 
 \vspace{0.5cm}
@@ -556,7 +556,7 @@ We use the output from Figure \ref{fig:asimnoise} as an output of our system. If
   \end{tikzpicture}
   \caption{Falling edge}
  \end{subfigure}
- \caption{Simulation of two $\textbf{Q}_k$ extremes}\label{fig:sysextreme}
+ \caption{Simulation of the effects on the v state by setting $\textbf{Q}_k$ to extreme values}\label{fig:sysextreme}
 \end{figure}
 
 \vspace{0.5cm}
@@ -632,7 +632,7 @@ Next we set $\textbf{Q}_k$ somewhere in between with $\varrho_{\vartheta\zeta}=0
   \end{tikzpicture}
   \caption{Falling edge}
  \end{subfigure}
- \caption{Comparison of our KF and KF(APN) with the simulation}\label{fig:kalmansim}
+ \caption{Comparison of the desired simulated v state and estimated v state by the Kalman filter and Kalman filter with adaptive process noise during rising and falling edge}\label{fig:kalmansim}
 \end{figure}
 
 In the realistic scenario in Figure \ref{fig:kalmansim} we can see that the Kalman filter with the adaptive process noise approximates our simulation more closely, especially on the edges where our joystick input signal suddenly jumps.
