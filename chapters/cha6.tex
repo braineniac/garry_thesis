@@ -11,10 +11,10 @@ In the thesis we introduced a platform built out of remains of a toy robot and e
 
 We have implemented a system using custom Kalman filters for odometry using joystick signals as a control input and IMU sensors as an output.
 
-Due to the accelerometer's lower than 1 signal-to-noise ratio(SNR) we supressed its impact on the state estimation with a higher process noise covariance $\textbf{Q}_k$. The noise originated from the DC motor's vibrations.
+Due to the accelerometer's lower than 1 signal-to-noise ratio(SNR) we suppressed its impact on the state estimation with a higher process noise covariance $\textbf{Q}_k$. The noise originated from the DC motor's vibrations.
 
 From the conducted experiments we have learned that small errors in the rotation accumulate easily and cause deformation of the overall trajectory.
 
-Improving the odometry with visual SLAM like ORB-SLAM2\cite{mur2017orb} is not computationally feasable on the Raspberry Pi 3 without further code optimizations.
+Improving the odometry with visual SLAM like ORB-SLAM2\cite{mur2017orb} is not computationally feasible on the Raspberry Pi 3 without further code optimizations.
 
 \end{document}

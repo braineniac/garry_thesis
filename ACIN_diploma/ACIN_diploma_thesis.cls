@@ -239,21 +239,24 @@
 %\RequirePackage[a4paper,includehead,top=2cm]{geometry}
 
 % packages for layout
-\RequirePackage[automark]{scrlayer-scrpage}		% Kopf-/Fusszeilen für KOMA-Klassen
+\RequirePackage[automark,autooneside=false]{scrlayer-scrpage}		% Kopf-/Fusszeilen für KOMA-Klassen
 \RequirePackage{microtype} % optischer Randausgleich (nur pdflatex)
 
-\renewcommand\chapterlinesformat[3]{%
-  \ifstr{#1}{chapter}
-  {%
-    \makebox[\textwidth][l]{%
-      \parbox[b]{\textwidth}{\raggedchapter #3}%
-      \hspace*{\marginparsep}#2%
-    }\\*[-.5\baselineskip]
-    \rule{\textwidth}{.4pt}%
-    \par%
-  }
-  {\@hangfrom{#2}{#3}}%
-}
+% \renewcommand\chapterlinesformat[3]{%
+%   \ifstr{#1}{chapter}
+%   {%
+%     \makebox[\textwidth][l]{%
+%       \parbox[b]{\textwidth}{\raggedchapter #3}%
+%       \hspace*{\marginparsep}#2%
+%     }\\*[-.5\baselineskip]
+%     \rule{\textwidth}{.4pt}%
+%     \par%
+%   }
+%   {\@hangfrom{#2}{#3}}%
+% }
+
+\setcounter{secnumdepth}{2}
+\setcounter{tocdepth}{3}
 
 \AtEndOfClass{
 	% erweiterte Optionen für den Umgang mit dem Literaturverzeichnis
@@ -291,8 +294,8 @@
 \input{ACIN_diploma/ACIN_diploma_colors}
 
 
-\setcounter{secnumdepth}{2}
-\setcounter{tocdepth}{3}
+% \setcounter{secnumdepth}{2}
+% \setcounter{tocdepth}{3}
 
 
 % ++++++++++++++++++++++++++++++
@@ -334,7 +337,7 @@
 % ihead: innere Kopfzeile, ohead: äußere Kopfzeile, cfoot: mittlere Fusszeile
 % [Definition für scrplain]{Definition für scrheadings}
 % scrplain wird bei Seiten mit neuem Kapitel verwendet, scrheadings sonst
-%\setheadsepline{.4pt}		% Linie zwischen Kopfzeile und Text
+\setheadsepline{.4pt}		% Linie zwischen Kopfzeile und Text
 %\automark[section]{chapter}
 %leftmark wird durch subsection, rightmark durch section aktualisiert
 \clearscrheadfoot 		% lösche bisherige Definition vollständig
@@ -343,6 +346,9 @@
 \cfoot[\rmfamily\thepage]{}
 
 \automark[section]{chapter}
+%\automark[chapter]{chapter}
+%\automark[section]{section}% <- added
+%\automark*[subsection]{}% <- added
 
 \newpagestyle{Preface} % neuer Seitenstil
   %Seitenkopf:

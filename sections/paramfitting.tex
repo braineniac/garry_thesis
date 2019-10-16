@@ -48,9 +48,9 @@ For our $\mu_v$ tuning experiment we drove the robot in a distance of 5 meters w
       domain=0:36,
     ]
     \addplot+[color=teal, mark=none,line width=1pt,mark size=1pt] table {plots/micro_v_tune0_x0.csv};
-    \addlegendentry{4}
+    \addlegendentry{4 m}
     \addplot+[color=violet, mark=none,line width=1pt,mark size=1pt] table {plots/micro_v_tune1_x0.csv};
-    \addlegendentry{5}
+    \addlegendentry{5 m}
     \addplot+[color=black, mark=none,line width=1pt,mark size=1pt] table {plots/micro_v_tune2_x0.csv};
     \addlegendentry{6}
     \addplot+[color=red, mark=none,line width=1pt,mark size=1pt] table {plots/micro_v_tune3_x0.csv};
@@ -61,10 +61,10 @@ For our $\mu_v$ tuning experiment we drove the robot in a distance of 5 meters w
    \end{axis}
   \end{tikzpicture}
 \end{flushleft}
- \caption{Estimate of the x state with different $\mu_v$-s after driving the robot 5 meters in a stright line}\label{fig:muv}
+ \caption{Estimate of the x state with different $\mu_v$-s after driving the robot 5 meters in a straight line.}\label{fig:muv}
 \end{figure}
 
-We set $\mu_v=6m$ since its the closest one to 5 meters. We can also see that higher values effect the state estimation slightly less than lower ones.
+We set $\mu_v=6 kgs^{-1}$ since its the closest one to 5 meters. We can also see that higher values effect the state estimation slightly less than lower ones.
 
 \subsection{Testing $\mu_v$}
 
@@ -107,7 +107,7 @@ The difference in the x state estimation will show how well our tuned $\mu_v$ pa
    \end{axis}
   \end{tikzpicture}
  \end{flushleft}
- \caption{Effects on the x state estimation when jerking the controller after driving the robot 5meters in a straight line}\label{fig:testmicrov}
+ \caption{Effects on the x state estimation when jerking the controller after driving the robot 5 meters in a straight line.}\label{fig:testmicrov}
 \end{figure}
 
 \vspace{0.5cm}
@@ -116,7 +116,7 @@ As we can see in Figure \ref{fig:testmicrov}, our tuned $\mu_v$ describes our ro
 
 \subsection{Tuning $\mu_{\dot{\Psi}}$}\label{sebsec:tunemudpsi}
 
-Next we tune our $\mu_{\dot{\Psi}}$ parameter with an experiment where we turn 5 times 360 degrees without jerking the controller to achieve a longer constant turn speed period, very similarly as in \ref{subsec:tunemuv}.
+Next we tune our $\mu_{\dot{\Psi}}$ parameter with an experiment where we turn 5 times 360\si{\degree} without jerking the controller to achieve a longer constant turn speed period, very similarly as in \ref{subsec:tunemuv}.
 
 \vspace{0.5cm}
 
@@ -157,14 +157,14 @@ Next we tune our $\mu_{\dot{\Psi}}$ parameter with an experiment where we turn 5
     \addlegendentry{0.151}
    \end{axis}
   \end{tikzpicture}
- \caption{Estimate of the $\Psi$ state with different $\mu_{\dot{\Psi}}$-s after turning 5 times 360 degrees}\label{fig:mupsi}
+ \caption{Estimate of the $\Psi$ state with different $\mu_{\dot{\Psi}}$-s after turning 5 times 360\si{\degree}.}\label{fig:mupsi}
 \end{figure}
 
-We set $\mu_{\dot{\Psi}}=0.147[rad]$, since the closest one to 0 or $2 \pi$. We can see that this parameter is very sensitive to small changes.
+We set $\mu_{\dot{\Psi}}=0.147 kgms^{-1}$, since the closest one to 0 or $2 \pi$. We can see that this parameter is very sensitive to small changes.
 
 \subsection{Testing $\mu_{\dot{\Psi}}$}\label{sebsec:testmudpsi}
 
-Next we test our set $\mu_{\dot{\Psi}}$ in an experiment where we turn 5 times 360 degrees as well, but jerk the controller and stop frequently.
+Next we test our set $\mu_{\dot{\Psi}}$ in an experiment where we turn 5 times 360\si{\degree} as well, but jerk the controller and stop frequently.
 
 \vspace{0.5cm}
 
@@ -199,9 +199,9 @@ Next we test our set $\mu_{\dot{\Psi}}$ in an experiment where we turn 5 times 3
    \addlegendentry{jerking}
   \end{axis}
  \end{tikzpicture}
- \caption{Effects on the $\Psi$ state estimation when jerking the controller after turing 5 times 360 degrees}\label{fig:testmupsi}
+ \caption{Effects on the $\Psi$ state estimation when jerking the controller after turning 5 times 360\si{\degree}.}\label{fig:testmupsi}
 \end{figure}
 
-As we can see from Figure \ref{fig:testmupsi}, our model is not very accurate in describing the rotation of the robot. We are off about about 2 turns. We will reflect this in the process covariance $\textbf{Q}_k$ and rely more on the gyroscope.
+As we can see from Figure \ref{fig:testmupsi}, our model is not very accurate in describing the rotation of the robot. We are off about about 2 full 360\si{\degree} turns. We will reflect this in the process covariance $\textbf{Q}_k$ and rely more on the gyroscope.
 
 \end{document}

@@ -1,7 +1,7 @@
 \documentclass[class=report, crop=false]{standalone}
 \usepackage[subpreambles=true]{standalone}
 \usepackage{import}
-\input{../packages}
+%\input{../packages}
 
 \begin{document}
 
@@ -100,6 +100,12 @@ $
 Where $\vartheta_k \in [-1,1]$ is our forwards and backwards signal and $\eta_k \in [-1,1]$ is our rotation signal in the right and left direction. The top force of the motors, by setting $\vartheta_k = \pm 1$, is the constant $\alpha$ and the top torque at $\eta_k = \pm 1$ is the constant $\beta$.
 
 To construct our dynamic coefficient matrix $ \boldsymbol{\Phi_k} $ and input coupling matrix $ \boldsymbol{\Gamma_k} $, we used the following equations based on the Taylor series expansion at $f(t_k+\Delta t)$:
+
+\begin{align*}
+    f(t_k+\Delta t) = f(t_k) + \frac{f'(t_k)}{1!} \Delta t + \frac{f''(t_k)}{2!} (\Delta t)^2 + ... + \frac{f^{n}(t_k)}{n!} (\Delta t)^n
+\end{align*}
+
+as:
 
 \begin{align*}
     x_{k+1} &\approx x_{k} + v_k cos(\Phi_k) \Delta t + \frac{1}{2} a_k cos(\Phi_k) (\Delta t)^2\\
@@ -405,7 +411,7 @@ and $M_1, M_2 \in \mathbb{R}$ are constants for scaling the peak, $\textbf{q}_k^
 
 In order to test our Kalman filter, we first simulated an approximate v state of our robot where we drive it in a straight line with the help of a box function we used as an input.
 
-Next we we create the differential of the v state to get the a state and add some noise to be used as a system output. This can be seen in Figure \ref{fig:vsim}.
+Next we we create the differential of the v state to get the a state and add some noise to be used as a system output.
 
 The top speed of our robot was calculated with:
 \begin{align*}
@@ -483,7 +489,7 @@ The top speed of our robot was calculated with:
 
 \vspace{0.5cm}
 
-We use the output from Figure \ref{fig:asimnoise} as an output of our system. If we set $\textbf{Q}_k$ to a value close to zero, we v state estimation relies on the system model completely, if we set it high, it relies almost completely on the system output. These two extremes are illustrated in Figure \ref{fig:sysextreme}.
+We use the output from Figure \ref{fig:asim} as an output of our system. If we set $\textbf{Q}_k$ to a value close to zero, the v state estimation relies on the system model completely, if we set it high, it relies almost completely on the system output. These two extremes are illustrated in Figure \ref{fig:sysextreme}.
 
 \vspace{0.5cm}
 
@@ -632,9 +638,7 @@ Next we set $\textbf{Q}_k$ somewhere in between with $\varrho_{\vartheta\zeta}=0
   \end{tikzpicture}
   \caption{Falling edge}
  \end{subfigure}
- \caption{Comparison of the desired simulated v state and estimated v state by the Kalman filter and Kalman filter with adaptive process noise during rising and falling edge}\label{fig:kalmansim}
+ \caption{Comparison of the desired simulated v state and estimated v state by the Kalman filter and Kalman filter with adaptive process noise during rising and falling edge. The KF(APN) follows the measurement more closely before to relies on the model again.}\label{fig:kalmansim}
 \end{figure}
-
-In the realistic scenario in Figure \ref{fig:kalmansim} we can see that the Kalman filter with the adaptive process noise approximates our simulation more closely, especially on the edges where our joystick input signal suddenly jumps.
 
 \end{document}

@@ -1,24 +1,18 @@
 \documentclass[class=article, crop=false]{standalone}
 \usepackage[subpreambles=true]{standalone}
 \usepackage{import}
-\input{../packages}
+%\input{../packages}
 
 \begin{document}
 
 \section{Hardware}\label{sec:hardware}
 
-\vspace{0.5cm}
-
-We can see all the parts used to construct the robot in Figure \ref{fig:platform}.
-
-\vspace{0.5cm}
-
-\begin{figure}
+\begin{figure}[H]
  \centering
  \includegraphics[width=8cm]{images/profile_numbered}
  \captionsetup{singlelinecheck=off}
  \caption[]{
-  An overview of of all components:
+  Here is an overview of all the components:
   \begin{enumerate}
    \item Raspberry Pi Night Vision Camera Module and Logitech C905 Webcam
    \item Arduino Motor Shield Rev 3
@@ -26,7 +20,7 @@ We can see all the parts used to construct the robot in Figure \ref{fig:platform
    \item Raspberry Pi 3 Model B Rev 1.2
    \item SparkFun 9DoF Razor IMU M0
    \item 2x 1000 mAh batteries with a 5V voltage regulator
-   \item chassis, motors and other remains of the Cybot
+   \item Cybot chassis, motors and other remains
   \end{enumerate}
  }
  \label{fig:platform}
@@ -34,27 +28,27 @@ We can see all the parts used to construct the robot in Figure \ref{fig:platform
 
 An exact cost of the platform is hard to determine, because many of the parts were either scraps or were freely available to use for this project. We estimate a sub 200\$ for all the parts used if bought new.
 
-Here is a block diagram of the hardware layout:
 \begin{center}
-\begin{tikzpicture}[align=center,node distance=2.5cm]
+    \begin{figure}
+\begin{tikzpicture}[align=center,node distance=3cm]
     \node[block] (lipo1) {11.1V LiPo};
 
     \node[block] (regulator) [right of=lipo1] {5V regulator};
 
     \node[block] (rpi) [right of=regulator] {RPI};
     \node[block] (imu) [right of=rpi] {IMU};
-    \node[block] (cameras) [above of=imu] {Cameras};
-    \node[block] (arduino) [below of=imu] {Arduino};
+    \node[block] (cameras) [above of=rpi] {Cameras};
+    \node[block] (arduino) [below of=rpi] {Arduino};
     \node[block] (motorshield) [below of=arduino] {Motor Shield};
     \node[block] (motors) [right of=motorshield] {DC motors};
     \node (empty1) [below of=lipo1] {};
     \node[block] (lipo2) [below of=empty1] {11.1V LiPo};
 
-    \draw[-] (rpi.south) |- (arduino.west);
+    \draw[-] (rpi.south) -- (arduino.north);
     \draw[-] (arduino.south) -- (motorshield.north);
     \draw[-] (motorshield.east) -- (motors.west);
     \draw[-] (rpi.east) -- (imu.west);
-    \draw[-] (rpi.north) |- (cameras.west);
+    \draw[-] (rpi.north) -- (cameras.south);
 
     \draw[dashed] (lipo1.east) -- (regulator.west);
     \draw[dashed] (regulator.east) -- (rpi.west);
@@ -62,11 +56,15 @@ Here is a block diagram of the hardware layout:
 
 
 \end{tikzpicture}
+\caption{Block diagram of the hardware layout}
+\end{figure}
 \end{center}
 
 \vspace{1cm}
 
 \subsection{Embedded Computing}\label{subsec:soc}
+\pagestyle{scrheadings}
+
 We built our platform around the Raspberry Pi 3 Model B. Its low cost, computational performance, availability, low power consumption and ROS support made it a clear choice.
 
 The Raspberry Pi is a single board computer(SBC) with a Broadcom BCM2837 system on chip(SoC) that has a Quad-Core ARM Cortex-A53 and a Broadcom VideoCore IV. It has 1GB of LPDDR2 memory. For communication it has Bluetooth, Wifi and 10/100 Mbit Ethernet, 40 GPIO pins, display serial interface(DSI), camera serial interface(CSI) and 4 USB ports\footnotemark.
@@ -76,6 +74,8 @@ The Raspberry Pi is a single board computer(SBC) with a Broadcom BCM2837 system 
 The Raspberry Pi is connected to an Arduino Uno via a USB and the Arduino Uno is connected to an Arduino Motor Shield. Therefore any Arduino compatible sensors or actuators can be easily integrated onto the platform.
 
 \subsection{Chassis}\label{subsec:chassis}
+\pagestyle{scrheadings}
+
 The chassis and most of the plastic parts were taken from the Cybot, a toy robot that came with the magazine Real Robots by Eaglemoss Publications\footnotemark.
 
 \footnotetext{https://www.getreading.co.uk/news/local-news/make-your-robot-home-4278122}
@@ -83,7 +83,7 @@ The chassis and most of the plastic parts were taken from the Cybot, a toy robot
 In order to securely stack the boards, plates were 3D printed and mounted between the Raspberry Pi and the chassis, Arduino and Raspberry Pi, the Arduino Motor Shield and camera stand.
 
 \subsection{Actuators}\label{subsec:actuators}
-There are two generic 12V DC motors that were left in from the Cybot that are mounted under the base plate and are connected to a wheel and can move forwards and backwards. They are directly connected to the Arduino Motor Shield.
+There are two generic 12V DC motors that were left in from the Cybot. They are mounted under the base plate and are connected to the wheels with a plastic gearbox. The Arduino Motor Shield supplies them with 11.1V and can reverse the polarity to turn in both directions.
 
 \subsection{Sensors}\label{subsec:sensors}
 There are two cameras on the top of the robot facing away from each other, providing almost full 360 degrees of field of view. The Logitech Webcam is connected via USB and the Camera Module via camera serial interface(CSI) to the Raspberry Pi.
@@ -91,6 +91,6 @@ There are two cameras on the top of the robot facing away from each other, provi
 As for an inertial measurement unit(IMU) we first deployed an MPU6050 and was connected through $ I^2C $ on the Raspberry Pi, but because of driver issues we went with a 9DoF Razor IMU M0, which is an all in one solution fully supported by ROS.
 
 \subsection{Power management}\label{subsec:power}
-To ensure adequate longer mobility, two 1000 mAh LiPo batteries were used: One of them distributes power to the actuators, while the other to the sensors and boards. This was done for additional voltage stability, since the motor movement causes additional noise which will interfere with our sensors. For easy plug and play a power distributing board was made from the boards of the Cybot and secured with hot glue. Since the LiPo batteries voltage is 11.1V, the conversion to 5V is handled by two voltage regulators.
+To ensure adequate longer mobility, two 1000 mAh LiPo batteries were used: One of them distributes power to the actuators, while the other to the sensors and boards. This was done for additional voltage stability, since the motor movement causes additional noise and spikes which will interfere with our sensors. For easy plug and play a power distributing board was made from the boards of the Cybot and secured with hot glue. Since the LiPo batteries voltage is 11.1V, the conversion to 5V is handled by a voltage regulator.
 
 \end{document}

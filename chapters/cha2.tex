@@ -1,27 +1,32 @@
 \documentclass[class=report, crop=false]{standalone}
+\usepackage[subpreambles=true]{standalone}
 \usepackage{import}
+%\input{../packages}
 
 \begin{document}
 
-\chapter{Related Works}\label{cha:related-works}
-\pagestyle{scrheadings}
+\chapter{Related works}\label{cha:related-works}
+
 In this chapter we list a few related platforms that are similar in price, hardware and software to ours. This list is not exhaustive and serves only as a base of comparison.
 
 
 \section{Turtlebot 3 Burger}\label{sec:turtlebot3burger}
+
 One of the most popular ROS platforms similar to ours is the Turtlebot 3 Burger\footnotemark. It is similarly equipped with a Raspberry Pi 3, 3-Axis accelerometer, 3-Axis gyroscope, 3-Axis magnetometer.
 
-It also has Dynamixel actuators with magnetic contactless rotary encoders, a custom OpenCR control board with an ARM Cortex-M7 which is compatible with the Arduino software development environment and a 360 degree LiDAR for simultaneous localization and mapping(SLAM).
+It also has Dynamixel actuators with magnetic contactless rotary encoders, a custom OpenCR control board with an ARM Cortex-M7 which is compatible with the Arduino software development environment and a 360\si{\degree} LiDAR for simultaneous localization and mapping(SLAM).
 The platform is modular, extensible and it is open source software and hardware for 549\$\cite{turtlebot3}.
 
 \footnotetext{http://www.robotis.us/turtlebot-3/}
 
 \section{Wolfbot}\label{sec:wolfbot}
+
 The Wolfbot\cite{wolfbot} platform is built around the Beaglebone Black, which has a ARM Cortex A8 1GHz processor. Its focus is on environmental sensing with a SensorDrone module with low and high power communication(ZigBee and WiFi). It is also equipped with an omidirectional wheel, a 3D accelerometer with a magnetometer, infrared distance sensor(IR) and a 720p camera with a microphone. It utilizes SLAM through the IR sensor and provides a software interface for OptiTrack Tracking tools for a more accurate visual SLAM.
 
 The electrical layout of the platform consists of multiple PCBs and a 5200mAh battery for long and reliable operation. It lasts around 8.72 hours with a constant medium load. The total bill of materials(BOM) is under 550\$.
 
 \section{JetBot}\label{sec:jetbot}
+
 The JetBot\footnotemark is an open source autonomous robotics kit that provides a low cost deep learning capable robot with the Jetson Nano Developer Kit from Nvidia for around 250\$.
 
 
