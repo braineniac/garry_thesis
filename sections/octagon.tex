@@ -6,17 +6,13 @@
 
 \section{Octagon}\label{sec:octagon}
 
-We set up an experiment where we can observe drifts and test the accuracy of our system. We taped down 8 straight equidistant lines with 1.5 meter distance from the middle and marked the 1.5 meter mark on the tape. This way if we drive our robot from point to point, the path will be an octagonal shape where we can see drifts in accuracy over longer periods if we do multiple loops through the same path. We can see a part of this in Figure \ref{fig:octagonexp}.
-
-\vspace{0.5cm}
+We set up an experiment where we can observe drifts and test the accuracy of our system. We taped down 8 straight equidistant lines with 1.5 meter distance from the middle and marked the 1.5 meter mark on the tape. This way if we drive our robot from point to point, the path will be an octagonal shape where we can see drifts in accuracy over longer periods if we do multiple loops through the same path.
 
 \begin{figure}[H]
     \centering
 \includegraphics[width=10cm, height=5cm]{images/octagon.jpg}
-\caption{Octagon experiment setup: 8x 3 meter long tape on the floor with their middles on top of each other in 45\si{\degree} spacing.}
+\caption{Octagon experiment setup: 8x 3 meter long tape on the floor with their centers on top of each other in 45\si{\degree} spacing.}
 \end{figure}\label{fig:octagonexp}
-
-\vspace{0.5cm}
 
 \begin{center}
 \begin{figure}[H]
@@ -57,11 +53,9 @@ We set up an experiment where we can observe drifts and test the accuracy of our
 \end{figure}
 \end{center}
 
-\vspace{0.5cm}
-
 The robot wasn't driven perfectly due to difficulties in turning accurately, but we can observe drifts due to accumulating errors in the $\Psi$ state. This error gets bigger with KF(APN) due to higher reliance on the gyroscope.
 
-A steady balance between model and measurement seems to yield better results with a well set $\varrho_{\eta\chi}$ ratio, same as in Section \ref{sec:floor}.
+A steady balance between model and measurement seems to yield better results with a well set $\varrho_{\eta\chi}$ ratio, similar to in Section \ref{sec:floor}.
 
 \vspace{0.5cm}
 

@@ -71,7 +71,7 @@ The Raspberry Pi is a single board computer(SBC) with a Broadcom BCM2837 system 
 
 \footnotetext{https://www.raspberrypi.org/magpi/raspberry-pi-3-specs-benchmarks/}
 
-The Raspberry Pi is connected to an Arduino Uno via a USB and the Arduino Uno is connected to an Arduino Motor Shield. Therefore any Arduino compatible sensors or actuators can be easily integrated onto the platform.
+The Raspberry Pi is connected to an Arduino Uno via a USB and the Arduino Uno is connected to an Arduino Motor Shield. Therefore, any Arduino compatible sensors or actuators can be easily integrated into the platform.
 
 \subsection{Chassis}\label{subsec:chassis}
 \pagestyle{scrheadings}
@@ -91,6 +91,6 @@ There are two cameras on the top of the robot facing away from each other, provi
 As for an inertial measurement unit(IMU) we first deployed an MPU6050 and was connected through $ I^2C $ on the Raspberry Pi, but because of driver issues we went with a 9DoF Razor IMU M0, which is an all in one solution fully supported by ROS.
 
 \subsection{Power management}\label{subsec:power}
-To ensure adequate longer mobility, two 1000 mAh LiPo batteries were used: One of them distributes power to the actuators, while the other to the sensors and boards. This was done for additional voltage stability, since the motor movement causes additional noise and spikes which will interfere with our sensors. For easy plug and play a power distributing board was made from the boards of the Cybot and secured with hot glue. Since the LiPo batteries voltage is 11.1V, the conversion to 5V is handled by a voltage regulator.
+To ensure adequate longer mobility, two 1000 mAh LiPo batteries were used: one of them distributes power to the actuators, while the other to the sensors and boards. This was done for additional voltage stability, since the motor movement causes additional noise and spikes which will interfere with our sensors. For easy plug and play a power distributing board was made from the boards of the Cybot and secured with hot glue. Since the LiPo batteries voltage is 11.1V, the conversion to 5V is handled by a voltage regulator.
 
 \end{document}

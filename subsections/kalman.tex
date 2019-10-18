@@ -14,7 +14,7 @@ It is widely used in control theory and control systems engineering. Its applica
 
 The Kalman filter is a recursive digital filter that uses the system's dynamic model with uncertainties and noisy sensor measurements to estimate the system state while minimizing errors.
 
-It uses a relative weight called the Kalman gain that is used with the current state estimation and sensor measurements. Its purpose is to "trust" values more that have a smaller uncertainty and thus give a more reliable estimation. It achieves that by the using covariances of the measurements and known, also to some extent unknown, noise that effect the states.
+It uses a relative weight called the Kalman gain that is used with the current state estimation and sensor measurements. Its purpose is to "trust" values more that have a smaller uncertainty and thus give a more reliable estimation. It achieves this by the using covariances of the measurements and known, also to some extent unknown, noise that effect the states.
 
 The following system model seen in \eqref{eq:generickalman} is a generic model of the Kalman filter we used. It is based on a lecture script from Kemmetm{\"u}ller, W and Kugi, A\cite{regelungssysteme1} that is currently used in the Automation Master degree course Control Systems 1 at TU Vienna.
 
@@ -86,7 +86,7 @@ We modeled our system with the 7-dimensional state vector:
 
 where $x_k$ is the distance traveled in x, $y_k$ the distance traveled in y, $v_k$ is the robot's relative x speed, $a_k$ is the robot's relative x acceleration, $\Psi_k$ is the yaw of the robot, $\dot{\Psi}_k$ is the yaw speed and $\ddot{\Psi}_k$ the yaw acceleration.
 
-Our system input is a joystick controller, which we use to move our robot forward and backward by setting the voltage on the motors, which generate a force or torque that move our robot.
+Our system input is a joystick controller, which we used to move our robot forward and backward by setting the voltage on the motors, which generate a force or torque that move our robot.
 
 \begin{center}
 $ \textbf{u}_k =
@@ -333,7 +333,7 @@ We first introduce a ratio matrix $\boldsymbol{\Upsilon}_k$ that describes our p
 
 To respond to the jumps from our joystick we used a moving weighted window with a set length N.
 
-We implemented a mirrored sigmoid curve using the logistic function in our moving weighted window due its ability to hold the peak relatively high before it decreases rapidly closer to its half-life.
+We implemented a mirrored sigmoid curve using the logistic function in our moving weighted window due to its ability to hold the peak relatively high before it decreases rapidly closer to its half-life.
 
 We calculate the $w_k$ weights of a moving weighted window of length $N$ as:
 \begin{align*}
@@ -399,7 +399,7 @@ and $M_1, M_2 \in \mathbb{R}$ are constants for scaling the peak, $\textbf{q}_k^
 
 \subsubsection{Simulation}\label{subsubsec:sim}
 
-In order to test our Kalman filter, we first simulated an approximate v state of our robot where we drive it in a straight line with the help of a box function we used as an input.
+In order to test our Kalman filter, we first simulate an approximate v state of our robot where we drive it in a straight line with the help of a box function we used as an input.
 
 Next we we create the differential of the v state to get the a state and add some noise to be used as a system output. This can be seen in Figure \ref{fig:vsim}.
 

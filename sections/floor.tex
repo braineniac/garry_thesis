@@ -8,7 +8,7 @@
 
 In this experiment we do a more realistic test to see differences in our Kalman filter with and without adaptive process noise.
 
-We drive around in a corridor about 33 meters in length and 2.5 meters wide. We also drove through a small 10 meters long and 2.5 meters wide side corridor on the left side. There were also some glass doors that we maneuvered around.
+We drive around in a corridor about 33 meters in length and 2.5 meters wide. We also drove through a small side corridor on the left which measured 10 meters long and 2.5 meters wide. There were also some glass doors that we maneuvered around.
 
 \begin{center}
 \begin{figure}[H]
@@ -46,7 +46,7 @@ We drive around in a corridor about 33 meters in length and 2.5 meters wide. We 
 \end{figure}
 \end{center}
 
-Figure \ref{fig:floorxy} shows that our filters can't estimate small turns accurately, but we can still see the floor shape. The error seems to consistent since when we return to our starting point, its in a distance of less than 1 meter.
+Figure \ref{fig:floorxy} shows that our filters can't estimate small turns accurately, but we can still see the floor shape. The error seems to be consistent since when we return to our starting point, its in a distance of less than 1 meter.
 
 The Kalman filter with adaptive process noise is further away from the starting point, because it relies more on the gyroscope during turns. Balancing model and gyroscope achieves better results than relying just on the gyroscope. This can be seen in Figure \ref{fig:floormistuned}, where we increased the ratio $\varrho_{\eta\chi}$ by 150\%.
 

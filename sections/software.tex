@@ -4,7 +4,7 @@
 \begin{document}
 
 \section{Software}\label{sec:software}
-In this section we present the software used on the platform and what alternatives were considered.
+In this section we present the software used on the platform and which alternatives were considered.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Operating system}\label{subsec:os}
@@ -17,7 +17,7 @@ We chose the classic Ubuntu 16.04 developed for the Raspberry Pi 2 from Canonica
 \footnotetext{https://wiki.ubuntu.com/ARM/RaspberryPi}
 In order to communicate with our platform remotely, we set up a wireless access point on the Raspberry Pi and use secure shell(ssh) for communication.
 
-On the Arduino Uno we used a custom firmware\footnotemark that behaves like a node for the Raspberry Pi using the rosserial\_arduino ROS package. This way we can directly control the actuators and use the sensors connected to the Arduino with ROS messages.
+On the Arduino Uno we used a custom firmware\footnotemark that behaves like a node for the Raspberry Pi using the rosserial\_arduino ROS package. This way we can directly control the actuators and used the sensors connected to the Arduino with ROS messages.
 
 \footnotetext{https://github.com/braineniac/garry-firmware}
 
@@ -52,7 +52,7 @@ The joystick was handled by the joy\footnotetext{http://wiki.ros.org/joy} ROS pa
 
 In order to evaluate the platform a complete simultaneous localization and mapping solution(SLAM) described in the papers\cite{mur2017orb}\cite{mur2015orb} by Mur-Artal, Ra\'ul and Tard{\'o}s, Juan D was attempted. We used a Monocular Camera input from our Logitech C905 Webcam mounted on the front of the platform.
 
-Since the publication, the source code\footnote{https://github.com/raulmur/ORB\_SLAM2} was not maintained by the authors so we created our own fork\footnotemark in order to immediately evaluate and plot the trajectory with the python package evo\cite{grupp2017evo}.
+Since publication, the source code\footnote{https://github.com/raulmur/ORB\_SLAM2} was not maintained by the authors so we created our own fork\footnotemark in order to immediately evaluate and plot the trajectory with the python package evo\cite{grupp2017evo}.
 
 \footnotetext{https://github.com/braineniac/ORB\_SLAM2}
 
