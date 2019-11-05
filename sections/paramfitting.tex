@@ -48,15 +48,15 @@ For our $\mu_v$ tuning experiment we drove the robot for a distance of 5 meters 
       domain=0:36,
     ]
     \addplot+[color=teal, mark=none,line width=1pt,mark size=1pt] table {plots/micro_v_tune0_x0.csv};
-    \addlegendentry{4 m}
+    \addlegendentry{4 $kgs^{-1}$}
     \addplot+[color=violet, mark=none,line width=1pt,mark size=1pt] table {plots/micro_v_tune1_x0.csv};
-    \addlegendentry{5 m}
+    \addlegendentry{5 $kgs^{-1}$}
     \addplot+[color=black, mark=none,line width=1pt,mark size=1pt] table {plots/micro_v_tune2_x0.csv};
-    \addlegendentry{6}
+    \addlegendentry{6 $kgs^{-1}$}
     \addplot+[color=red, mark=none,line width=1pt,mark size=1pt] table {plots/micro_v_tune3_x0.csv};
-    \addlegendentry{7}
+    \addlegendentry{7 $kgs^{-1}$}
     \addplot+[color=blue, mark=none,line width=1pt,mark size=1pt] table {plots/micro_v_tune4_x0.csv};
-    \addlegendentry{8}
+    \addlegendentry{8 $kgs^{-1}$}
     \addplot+[color=gray, mark=none,line width=1pt,mark size=1pt, samples=2, dashed] {5.0};
    \end{axis}
   \end{tikzpicture}
@@ -146,15 +146,15 @@ Next we tune our $\mu_{\dot{\Psi}}$ parameter with an experiment where we turn 5
       },
     ]
     \addplot+[color=teal, mark=none,line width=1pt,mark size=1pt] table {plots/micro_dpsi_tune0_x4.csv};
-    \addlegendentry{0.143}
+    \addlegendentry{0.143 $kgms^{-1}$}
     \addplot+[color=violet, mark=none,line width=1pt,mark size=1pt] table {plots/micro_dpsi_tune1_x4.csv};
-    \addlegendentry{0.145}
+    \addlegendentry{0.145 $kgms^{-1}$}
     \addplot+[color=black, mark=none,line width=1pt,mark size=1pt] table {plots/micro_dpsi_tune2_x4.csv};
-    \addlegendentry{0.147}
+    \addlegendentry{0.147 $kgms^{-1}$}
     \addplot+[color=red, mark=none,line width=1pt,mark size=1pt] table {plots/micro_dpsi_tune3_x4.csv};
-    \addlegendentry{0.149}
+    \addlegendentry{0.149 $kgms^{-1}$}
     \addplot+[color=blue, mark=none,line width=1pt,mark size=1pt] table {plots/micro_dpsi_tune4_x4.csv};
-    \addlegendentry{0.151}
+    \addlegendentry{0.151 $kgms^{-1}$}
    \end{axis}
   \end{tikzpicture}
  \caption{Estimate of the $\Psi$ state with different $\mu_{\dot{\Psi}}$-s after turning 5 times 360\si{\degree}.}\label{fig:mupsi}

@@ -391,6 +391,8 @@
 % ||   hyphen rules   ||
 % ======================
 \input{ACIN_diploma/hyphen_english.tex}
+
+%\input{ACIN_diploma/hyphen_german.tex}
 	% \IfFileExists{ACIN_diploma/hyphen_german.tex}{
 	% 	\begin{otherlanguage*}{ngerman}
 	% 		{\input{ACIN_diploma/hyphen_german.tex}}

@@ -1,0 +1,21 @@
+\documentclass[class=report, crop=false]{standalone}
+\usepackage[subpreambles=true]{standalone}
+\usepackage{import}
+%\input{../packages}
+
+\begin{document}
+
+\chapter{Einführung}\label{cha:einfuhrung}
+
+Dieses Projekt zielt darauf ab, aus Standardkomponenten einen rudimentären Roboter mit grundlegenden odometrischen Fähigkeiten mit minimalem Budget zu bauen.
+
+Durch die Herstellung eines Roboters mit solchen Einschränkungen kann abgeschätzt werden, was auf vernünftige Weise baubar ist.
+Als Basis für eine erweiterbare Plattform für Forschung und Entwicklung dienen heutzutage leicht verfügbare Evaluierungsboards und Standardkomponenten.
+
+Aus Kostengründen wird auf Drehgeber verzichtet, wie er bei ähnlichen Plattformen üblich ist; die Adäquatheit wird von Trägheitsmesssensoren und Joysticksignalens untersucht. Anschließend wird die resultierende Zustandschätzung mit dem visuellen SLAM unserer Kameras verfeinert.
+
+Unsere Komponentenwahl wird dadurch bestimmt, welche Teile uns zum Zeitpunkt der Konstruktion zur Verfügung standen. Weder steht im Vordergrund, die kostengünstigste Variante zu produzieren, noch ist das beste Preis-Leistungs-Verhältnis im Bereich der Sensorikgenauigkeit das Ziel. Fast alle Komponenten der Plattform sind leicht erweiterbar, um für die gezielte Anwendung besser anpassbar zu sein.
+
+Im Anschluss an die Einleitung werden in Kapitel 2 dieser Arbeit sämtliche Plattformen mit einer ähnlichen Komponentenwahl und ähnlichen Kosten diskutiert, in Kapitel 3 wird der Hard-und Software-Ansatz besprochen. In Kapitel 4 werden etliche Experimente und Auswertungen präsentiert. Kapitel 5 fasst die Ergebnisse dieser Arbeit zusammen, die Grundlage für das abschließende Kapitel 6 sind, in dem ein Ausblick darauf gegeben wird, wie die Probleme und Einschränkungen der Plattform gelöst werden könnten.
+
+\end{document}
